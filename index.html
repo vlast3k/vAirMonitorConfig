@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="slider/less/slider.less"   rel="stylesheet/less" type="text/css"  />
+    <link href="slider/css/slider.css"   rel="stylesheet" type="text/css"  />
+
+  </head>
+  <body>
+
+  <div class="container-fluid">
+    <br>
+	<div class="row">
+		<div class="col-md-6">
+				<input  id="btnAutoConnect" type="button" class="btn btn-info" value="Auto Connect">
+    </div>	    
+  </div>
+  <br/>
+  <div class="row">
+    <div class="col-xs-12">
+      <form class="form-inline">
+				<div class="form-group">
+					<label for="ssid">SSID</label>
+					<input type="text" class="form-control" id="ssid">
+				</div>
+				<div class="form-group">
+					<label for="pass">Pass</label>
+					<input type="text" class="form-control" id="pass">
+				</div>
+  			<button id="setWifi" type="Set Wifi" class="btn btn-default">
+  				Submit
+  			</button>
+      </form>
+    </div>
+  </div>
+  <br/>
+  <div class="row">
+    <div class="col-xs-12">
+			<form class="form-inline">
+				<div class="form-group">
+					<label for="ts">ThingSpeak Write API Key</label>
+					<input type="text" class="form-control" id="tsKey">
+					<button id="tsBtn" type="submit" class="btn btn-default">	Set Key	</button>
+				</div>
+			</form>
+    </div>
+	</div>
+  <br/>
+	<div class="row hidden">
+		<div class="col-md-6">
+				<button id="brgMin" type="submit" class="btn btn-default">
+					Brg -
+				</button>
+				<button id="brgPlus" type="submit" class="btn btn-default">
+					Brg +
+				</button>
+				<button id="co2Min"  class="btn btn-default">
+					CO2 -
+				</button>
+				<button id="co2Plus" class="btn btn-default">
+					CO2 +
+				</button>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group">
+      <label for="comment">Log:</label>
+      <textarea class="form-control" rows="10" id="buffer"></textarea>
+   </div>
+	</div>
+</div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="utils.js"></script>
+    <script src="slider/js/bootstrap-slider.js"></script>
+    <script src="main.js"></script>
+
+  </body>
+</html>
