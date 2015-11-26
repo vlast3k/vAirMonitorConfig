@@ -21,7 +21,8 @@ function onSSIDChange() {
 
 
 function onSerialSend() {
-  chrome.serial.send(connectionId, str2ab($("serial").val() +"\n"), onSend); 
+  log ($("#serial").val());
+  chrome.serial.send(connectionId, str2ab($("#serial").val() +"\n"), onSend); 
 }
 
 
