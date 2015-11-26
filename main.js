@@ -1,5 +1,29 @@
-const DEVICE_PATH = '/dev/ttyACM0';
-const serial = chrome.serial;
+
+document.getElementById('brgPlus').addEventListener('click', onBrgPlus);
+document.getElementById('brgMin') .addEventListener('click', onBrgMinus);
+document.getElementById('co2Plus').addEventListener('click', onCo2Plus);
+document.getElementById('co2Min') .addEventListener('click', onCo2Minus);
+document.getElementById('setWifi').addEventListener('click', onSetWifi);
+document.getElementById('tsBtn').addEventListener('click', onSetTs);
+document.getElementById('btnAutoConnect').addEventListener('click', onbtnAutoConnect);
+$("#btnSerialSend").click(onSerialSend);
+$("#ssid").change(onSSIDChange)
+
+function onSSIDChange() {
+  if ($("#ssid").val() == "SAP-Guest") {
+    $("label[for=pass]").text("Username");
+    $("#sap").removeClass("hidden");
+  } else {
+    $("label[for=pass]").text("Pass");
+    $("#sap").addClass("hidden");
+  }
+}
+
+
+function onSerialSend() {
+  chrome.serial.send(connectionId, str2ab($("serial").val() +"\n"), onSend); 
+}
+
 
 function findDevice(idStr, onDeviceFound) {
   var devices = {};
@@ -42,10 +66,8 @@ function findDevice(idStr, onDeviceFound) {
 
 
 
-//chrome.serial.connect("COM16", {bitrate: 9600}, onConnect2);
 function onConnect2(conn) {
   log ("Connected to: " + JSON.stringify(conn));
-  log("connected!");
   chrome.serial.onReceive.addListener(onReceiveCallback);
   connectionId = conn.connectionId;
 }
@@ -59,7 +81,6 @@ var serialString = "";
 var serialTimeout;
 var onReceiveCallback = function(info) {
   var str = ab2str(info.data);
-  //log (str);
   clearTimeout(serialTimeout);
   serialTimeout = setTimeout(onSerialString, 100);
   serialString += str;
@@ -72,17 +93,9 @@ function onSerialString() {
   
 }
 
- document.getElementById('brgPlus').addEventListener('click', onBrgPlus);
- document.getElementById('brgMin') .addEventListener('click', onBrgMinus);
- document.getElementById('co2Plus').addEventListener('click', onCo2Plus);
- document.getElementById('co2Min') .addEventListener('click', onCo2Minus);
- document.getElementById('setWifi').addEventListener('click', onSetWifi);
- document.getElementById('tsBtn').addEventListener('click', onSetTs);
- document.getElementById('btnAutoConnect').addEventListener('click', onbtnAutoConnect);
 
  function onbtnAutoConnect() {
    function onVAirFound(comPort) {
-     log ("sadsadsa");
      if (!comPort) {
        document.getElementById('btnAutoConnect').className="btn btn-danger";
        document.getElementById('btnAutoConnect').value ="Not Found";
@@ -99,9 +112,10 @@ function onSerialString() {
    document.getElementById('btnAutoConnect').value ="Searching...";
    findDevice("vAir", onVAirFound);
  } 
+
  function onSetTs() {
    log ("td:" +   document.getElementById('tsKey').value)
-   chrome.serial.send(connectionId, str2ab("t " + document.getElementById('tsKey').value + "\r"), onSend); 
+   chrome.serial.send(connectionId, str2ab("tskey " + document.getElementById('tsKey').value + "\n"), onSend); 
  }
  
  var brg = 50; 
@@ -127,35 +141,25 @@ function onSerialString() {
  }
 
 function setBrg(val) {
-  chrome.serial.send(connectionId, str2ab("b " + brg + "\r"), onSend); 
+  chrome.serial.send(connectionId, str2ab("brg " + brg + "\n"), onSend); 
 }
 
 function setCo2(val) {
-  chrome.serial.send(connectionId, str2ab("o " +  co2+ "\r"), onSend); 
+  chrome.serial.send(connectionId, str2ab("ppm " +  co2+ "\n"), onSend); 
 }
 
 function onDebug() {
-  chrome.serial.send(connectionId, str2ab("d  dasd\r"), onSend); 
+  chrome.serial.send(connectionId, str2ab("debug\n"), onSend); 
 }
 
 function onSetWifi() {
-  log("setting wifi")
-  onOK = function() {
-    log ("setting pass")
-    onOK = function() {
-      log ("connecting")
-      onOK = null;
-      chrome.serial.send(connectionId, str2ab("c sdf\r"), onSend);
-    }
-    chrome.serial.send(connectionId, str2ab("p " + document.getElementById('pass').value + "\r"), onSend); 
-    
-  }
-  log (connectionId);
-  chrome.serial.send(connectionId, str2ab("s " + document.getElementById('ssid').value +"\r\n"), onSend);
+  var ssid = document.getElementById('ssid').value;
+  var pass = document.getElementById('pass').value;
+  var sapPass = document.getElementById('sapPass').value;
+  chrome.serial.send(connectionId, str2ab("wifi \"" + ssid + "\",\""+ pass + "\"" + (sapPass?",\"" + sapPass + "\"":":") + "\n"), onSend);
 }
 
 function onSend(data) {
-  //log(JSON.stringify(data))
 }
 
  function log(msg) {

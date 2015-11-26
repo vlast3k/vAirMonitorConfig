@@ -31,6 +31,10 @@
 					<label for="pass">Pass</label>
 					<input type="text" class="form-control" id="pass">
 				</div>
+		  	<div id="sap" class="form-group hidden">
+					<label for="sapPass">Pass</label>
+					<input type="text" class="form-control" id="sapPass">
+				</div>
   			<button id="setWifi" type="Set Wifi" class="btn btn-default">
   				Submit
   			</button>
@@ -68,11 +72,27 @@
 		</div>
 	</div>
 	<div class="row">
+		<div class="col-md-10">
 		<div class="form-group">
-      <label for="comment">Log:</label>
+      <label for="comment">vAir Output:</label>
       <textarea class="form-control" rows="10" id="buffer"></textarea>
    </div>
+   </div>
 	</div>
+  <div class="row">
+    <div class="col-md-10">
+      <form class="form-inline">
+				<div class="form-group">
+					<label for="serial">Send command: </label>
+					<input type="text" class="form-control" id="serial">
+				</div>
+  			<button id="btnSerialSend" type="Set Wifi" class="btn btn-default">
+  				Send
+  			</button>
+      </form>
+    </div>
+  </div>
+
 </div>
 
     <script src="js/jquery.min.js"></script>
