@@ -15,8 +15,15 @@
   <div class="container-fluid">
     <br>
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-xs-2">
 				<input  id="btnAutoConnect" type="button" class="btn btn-info" value="Auto Connect">
+    </div>	    
+		<div class="col-xs-1">
+    </div>	    
+		<div class="col-xs-3">
+		  <a href="http://vair-monitor.com" target="_new">Home Page</a>
+		  <br>
+		  <a href="https://github.com/vlast3k/simple-co2-monitor-fw/wiki" target="_new">Install USB Driver</a>
     </div>	    
   </div>
   <br/>
@@ -35,13 +42,13 @@
 					<label for="sapPass">Pass</label>
 					<input type="text" class="form-control" id="sapPass">
 				</div>
-  			<button id="setWifi" class="btn btn-default">
-  				Set Wifi
+  			<button id="setWifi" type="Set Wifi" class="btn btn-default">
+  				Submit
   			</button>
       </form>
     </div>
   </div>
-  <br/>
+  <hr/>
   <div class="row">
     <div class="col-xs-12">
 			<form class="form-inline">
@@ -51,9 +58,54 @@
 					<button id="tsBtn" type="submit" class="btn btn-default">	Set Key	</button>
 				</div>
 			</form>
+			<a href="https://thingspeak.com/channels" target="_new">Create Thingspeak channel</a>
     </div>
 	</div>
-  <br/>
+	<hr>
+  <div class="row">
+    <div class="col-xs-12">
+			<form class="form-inline">
+				<div class="form-group">
+					<label for="ubik">Ubidots Short Token:</label>
+					<input type="text" class="form-control" id="ubik">
+					<label for="ubiv">Variable ID:</label>
+					<input type="text" class="form-control" id="ubiv">
+					<button id="ubiBtn" type="submit" class="btn btn-default">	Set Key	</button>
+				</div>
+			</form>
+			<a href="http://ubidots.com" target="_new">Create Ubidots Source</a>
+    </div>
+	</div>
+  <hr>
+  <div class="row">
+    <div class="col-xs-12">
+			<form class="form-inline">
+				<div class="form-group">
+					<label for="sapHost">SAP HCP IOT Host:</label>
+					<input type="text" class="form-control" id="sapHost">
+					<label for="sapDeviceId">Device Id:</label>
+					<input type="text" class="form-control" id="sapDeviceId">
+					<label for="sapMessageId">Message ID:</label>
+					<input type="text" class="form-control" id="sapMessageId">
+					<label for="sapVarName">Var Name:</label>
+					<input type="text" class="form-control" id="sapVarName">
+					<label for="sapToken">Token:</label>
+					<input type="text" class="form-control" id="sapToken">
+					<button id="sapBtn" type="submit" class="btn btn-default"> Set 	</button>
+				</div>
+			</form>
+			<a href="http://scn.sap.com/community/developer-center/cloud-platform/blog/2015/06/09/using-the-sap-hcp-iot-services" target="_new">More Info</a>
+    </div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-md-10">
+				<button id="testCfgBtn" type="submit" class="btn btn-default">
+					Test Configuration (send 567 ppm)
+				</button>
+		</div>
+  </div>
+  <hr>
 	<div class="row hidden">
 		<div class="col-md-6">
 				<button id="brgMin" type="submit" class="btn btn-default">
@@ -75,7 +127,7 @@
 		<div class="col-md-10">
 		<div class="form-group">
       <label for="comment">vAir Output:</label>
-      <textarea class="form-control" rows="10" id="buffer"></textarea>
+      <textarea class="form-control" rows="7" id="buffer"></textarea>
    </div>
    </div>
 	</div>
@@ -86,7 +138,7 @@
 					<label for="serial">Send command: </label>
 					<input type="text" class="form-control" id="serial">
 				</div>
-  			<button id="btnSerialSend"  target="_blank"  class="btn btn-default">
+  			<button id="btnSerialSend" type="Set Wifi" class="btn btn-default">
   				Send
   			</button>
       </form>

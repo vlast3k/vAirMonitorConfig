@@ -1,5 +1,5 @@
 {
-  "name": "Serial Test",
+  "name": "vAir - CO2 Monitor - Configuration Utility",
   "version": "2",
   "manifest_version": 2,
   "permissions": ["serial"],
