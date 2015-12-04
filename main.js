@@ -91,8 +91,10 @@ var onReceiveCallback = function(info) {
 function onSerialString() {
   log (serialString);
   if (serialString.indexOf(onOKString) > -1) {
-    onOK && onOK();
+    log ("Matched: onok= " + onOK)
+    var ss = onOK;
     onOK = null;
+    ss && ss();
   }
   serialString = "";
 }
@@ -144,15 +146,17 @@ function onbtnAutoConnect() {
  }
  
  function onBtnUbi() {
-   log ("td:" +   $("#ubik").val() + "," +   $("#ubiv").val())
+   log ("ubi:" +   $("#ubik").val() + "," +   $("#ubiv").val())
    sendSerial("ubik " + $("#ubik").val(), 
    function() {sendSerial("ubiv " + $("#ubiv").val()) } );
  }
  
  function onBtnSAP() {
-   sendSerial("proxy", "GOT IP",
-   function() {sendSerial("cfgiot \"" + $("#sapHost").val()     + "\",\""+ $("#sapDeviceId").val() + "\",\""
-                          + $("#sapMessageId").val() + "\",\""+ $("#sapVarName").val()  + "\",\"" + $("#sapToken").val()  + "\"") } )
+   var cfgiot = function() { sendSerial("cfgiot \"" + $("#sapHost").val()     + "\",\""+ $("#sapDeviceId").val() + "\",\""
+                                   + $("#sapMessageId").val() + "\",\""+ $("#sapVarName").val()  + "\",\"" + $("#sapToken").val()  + "\"") };
+   var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot) } 
+   
+   sendSerial("sap 1", proxy);
  }
  
  function onBtnTestCfg() {
