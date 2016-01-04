@@ -56,9 +56,10 @@ function findDevice(idStr, onDeviceFound) {
   
   var foundTimeout = setTimeout(function() {
     onIntDeviceFound(null);
-  }, 4000);
+  }, 10000);
   
   function onRecvFindDev(conn) {
+    log ("rcv: " + ab2str(conn.data));
     ab2str(conn.data).startsWith(idStr) && onIntDeviceFound(devices[conn.connectionId], conn.connectionId);
   }
 
