@@ -2,7 +2,7 @@
   "name": "vAir - CO2 Monitor - Configuration Utility",
   "version": "2.1",
   "manifest_version": 2,
-  "permissions": ["serial"],
+  "permissions": ["serial", "storage"],
   "minimum_chrome_version": "23",
   "icons": {
     "16": "icon_16.png",

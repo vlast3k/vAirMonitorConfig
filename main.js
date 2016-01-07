@@ -10,8 +10,28 @@ $("#btnSerialSend").click(onSerialSend);
 $("#ssid").change(onSSIDChange);
 $("#sapBtn").click(onBtnSAP);
 $("#ubiBtn").click(onBtnUbi);
+$("#customBtn").click(onBtnCustom);
 $("#testCfgBtn").click(onBtnTestCfg);
 
+var inputSelector = ":input[type='text'][id!='serial'][id!='pass'][id!='sapPass']";
+$(inputSelector).change(function(event) {
+  var obj = {};
+  obj[event.target.id] = event.target.value;
+  chrome.storage.sync.set(obj);
+});
+
+function loadAllSettings() {
+  $(inputSelector).each(function() {
+    var id = this.id;
+    log(id);
+    chrome.storage.sync.get(this.id, function(value) {
+      $("#" + id).val(value[id])
+    })
+  })
+}
+
+
+loadAllSettings();
 
 
 var stringReceived = '';
@@ -160,6 +180,16 @@ function onbtnAutoConnect() {
    sendSerial("sap 1", proxy);
  }
  
+ function onBtnCustom() {
+   var ss = $("#customURL").val();
+   var cfgiot = function() { 
+     sendSerial("cfggen" + (ss ? (" " + ss) : "")) };
+   var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot) } 
+   
+   sendSerial("sap " + (ss?"1":"0"), proxy);
+   
+ }
+ 
  function onBtnTestCfg() {
    sendSerial("test");
  }
@@ -214,4 +244,4 @@ function onSend(data) {
    buffer.scrollTop = buffer.scrollHeight;
  }
 
-onbtnAutoConnect();
+//onbtnAutoConnect();
