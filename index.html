@@ -32,10 +32,10 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Reporting: ThingSpeak</a>
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseWifi">Setup: Wifi</a>
                 </h4>
             </div>  
-            <div id="collapseOne" class="panel-collapse collapse in">
+            <div id="collapseWifi" class="panel-collapse collapse in">
                 <div class="panel-body">
                   <div class="row">
                     <div class="col-xs-12">
@@ -51,14 +51,32 @@
                 		  	<div id="sap" class="form-group hidden">
                 					<label for="sapPass">Pass</label>
                 					<input type="text" class="form-control" id="sapPass">
+                					<a href="https://emea-guestvoucher.wlan.sap.com/guest/auth_login.php?target=%2Fguest%2F" target="_new">get pass</a>
                 				</div>
-                  			<button id="setWifi" type="Set Wifi" class="btn btn-default">
-                  				Submit
+                  			<button id="setWifi" class="btn btn-default">
+                  				Set Wifi
                   			</button>
                       </form>
                     </div>
                   </div>
-  <hr/>
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <form class="form-inline">
+                				<div class="form-group">
+                					<label for="upd_int">Update Interval (sec)</label>
+                					<input type="text" class="form-control" id="upd_int">
+                				</div>
+                  			<button id="updIntButton" class="btn btn-default">
+                  				Set
+                  			</button>
+                      </form>
+                      (default is 120 sec)
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+
     <div class="panel-group" id="accordion">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -66,7 +84,7 @@
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Reporting: ThingSpeak</a>
                 </h4>
             </div>  
-            <div id="collapseOne" class="panel-collapse collapse in">
+            <div id="collapseOne" class="panel-collapse collapse">
                 <div class="panel-body">
                   <div class="row">
                     <div class="col-xs-12">
@@ -150,7 +168,7 @@
                 <div class="panel-body">
                   <div class="row">
                     <div class="col-xs-12">
-                			<form class="form-inlinewwww">
+                			<form class="form-inline">
                 				<div class="form-group">
                 					<label for="customURL">URL</label>
                 					<input type="text" class="form-control" id="customURL">
@@ -160,6 +178,38 @@
                 			Example: <i>http://192.168.123:2234/myService?co2=<strong>%s</strong>&id=vAir </i>
                 			<p/>
                 			  %s will be replaced with the actual CO2 ppm value
+                    </div>
+                	</div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseRst">Other Settings</a>
+                </h4>
+            </div>  
+            <div id="collapseRst" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-xs-12">
+                			<form class="form-inline">
+                				<div class="form-group">
+                					<label for="setPPM">Set Current PPM</label>
+                					<input type="text" class="form-control" id="setPPM">
+                					<button id="setPPMBtn" type="submit" class="btn btn-default">	Set	</button>
+                					Override calibration data and preset CO2 Value (make sure that the device has warmed up for 15 minutes)
+                					<p/>
+                					<label for="setColors">Set Color Thresholds</label>
+                					<input type="text" class="form-control" id="setColors">
+                					<button id="setColorsBtn" type="submit" class="btn btn-default">	Set	</button>
+                					Set the threshold for each CO2 Level as 5 ppm values. E.g. default is: 700 1000 1300 1600 1900
+                					<p/>
+                					<p/>
+                					<button id="resetCal" type="submit" class="btn btn-default">Reset Calibration</button>
+                					<button id="resetAll" type="submit" class="btn btn-default">Factory Reset</button>
+                				</div>
+                			</form>
                     </div>
                 	</div>
                 </div>

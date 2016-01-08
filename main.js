@@ -12,6 +12,13 @@ $("#sapBtn").click(onBtnSAP);
 $("#ubiBtn").click(onBtnUbi);
 $("#customBtn").click(onBtnCustom);
 $("#testCfgBtn").click(onBtnTestCfg);
+$("#updIntButton").click(onUpdIntButton);
+$("#resetCal").click(onResetCal);
+$("#resetAll").click(onResetFact);
+$("#setPPMBtn").click(onSetPPMBtn);
+$("#setColorsBtn").click(onSetColorsBtn);
+
+
 
 var inputSelector = ":input[type='text'][id!='serial'][id!='pass'][id!='sapPass']";
 $(inputSelector).change(function(event) {
@@ -23,7 +30,7 @@ $(inputSelector).change(function(event) {
 function loadAllSettings() {
   $(inputSelector).each(function() {
     var id = this.id;
-    log(id);
+   // log(id);
     chrome.storage.sync.get(this.id, function(value) {
       $("#" + id).val(value[id])
     })
@@ -32,7 +39,7 @@ function loadAllSettings() {
 
 
 loadAllSettings();
-
+setTimeout(onSSIDChange, 500);
 
 var stringReceived = '';
 var connectionId;
@@ -112,7 +119,7 @@ var onReceiveCallback = function(info) {
 function onSerialString() {
   log (serialString);
   if (serialString.indexOf(onOKString) > -1) {
-    log ("Matched: onok= " + onOK)
+    //log ("Matched: onok= " + onOK)
     var ss = onOK;
     onOK = null;
     ss && ss();
@@ -174,7 +181,8 @@ function onbtnAutoConnect() {
  
  function onBtnSAP() {
    var cfgiot = function() { sendSerial("cfgiot \"" + $("#sapHost").val()     + "\",\""+ $("#sapDeviceId").val() + "\",\""
-                                   + $("#sapMessageId").val() + "\",\""+ $("#sapVarName").val()  + "\",\"" + $("#sapToken").val()  + "\"") };
+                                   + $("#sapMessageId").val() + "\",\""+ $("#sapVarName").val()  + "\",\"" + $("#sapToken").val()  + "\"",
+                                   "IOT OAuth Token", onbtnAutoConnect) };
    var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot) } 
    
    sendSerial("sap 1", proxy);
@@ -182,8 +190,7 @@ function onbtnAutoConnect() {
  
  function onBtnCustom() {
    var ss = $("#customURL").val();
-   var cfgiot = function() { 
-     sendSerial("cfggen" + (ss ? (" " + ss) : "")) };
+   var cfgiot = function() { sendSerial("cfggen" + (ss ? (" " + ss) : ""), "DONE", onbtnAutoConnect) };
    var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot) } 
    
    sendSerial("sap " + (ss?"1":"0"), proxy);
@@ -224,6 +231,28 @@ function setCo2(val) {
   chrome.serial.send(connectionId, str2ab("ppm " +  co2+ "\n"), onSend); 
 }
 
+function onUpdIntButton() {
+  chrome.serial.send(connectionId, str2ab("wsi " +  $("#upd_int").val() + "\n"), onSend); 
+}
+
+function onResetFact() {
+  chrome.serial.send(connectionId, str2ab("reset\n"), onSend); 
+}
+
+function onResetCal() {
+  chrome.serial.send(connectionId, str2ab("rco\n"), onSend); 
+}
+
+$("#setPPMBtn").click(onSetPPMBtn);
+$("#setColorsBtn").click(onSetColorsBtn);
+function onSetPPMBtn() {
+  chrome.serial.send(connectionId, str2ab("ppx " +  $("#setPPM").val() + "\n"), onSend); 
+}
+
+function onSetColorsBtn() {
+ chrome.serial.send(connectionId, str2ab("lt " +  $("#setColors").val() + " \n"), onSend); 
+}
+
 function onDebug() {
   chrome.serial.send(connectionId, str2ab("debug\n"), onSend); 
 }
@@ -244,4 +273,4 @@ function onSend(data) {
    buffer.scrollTop = buffer.scrollHeight;
  }
 
-//onbtnAutoConnect();
+onbtnAutoConnect();
