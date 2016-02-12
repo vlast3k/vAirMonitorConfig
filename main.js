@@ -17,6 +17,7 @@ $("#resetCal").click(onResetCal);
 $("#resetAll").click(onResetFact);
 $("#setPPMBtn").click(onSetPPMBtn);
 $("#setColorsBtn").click(onSetColorsBtn);
+$("#setMQTT").click(onSetMQTT);
 
 
 
@@ -66,8 +67,11 @@ function onSerialSend() {
   //chrome.serial.send(connectionId, str2ab($("#serial").val() +"\n"), onSend); 
 }
 
+var VAIR = "vAir";
+var VTHING = "vThing";
+var deviceType = null;
 
-function findDevice(idStr, onDeviceFound) {
+function findDevice(onDeviceFound) {
   var devices = {};
   var findInterval = setInterval(function() { log(" . ", true);  }, 500);
   
@@ -87,7 +91,13 @@ function findDevice(idStr, onDeviceFound) {
   
   function onRecvFindDev(conn) {
     log ("rcv: " + ab2str(conn.data));
-    ab2str(conn.data).startsWith(idStr) && onIntDeviceFound(devices[conn.connectionId], conn.connectionId);
+    var s = ab2str(conn.data);
+    if (s.startsWith(VAIR)) {
+      deviceType = VAIR;
+    } else if (s.startsWith(VTHING)) {
+      deviceType = VTHING;
+    }
+    onIntDeviceFound(devices[conn.connectionId], conn.connectionId);
   }
 
   function onGetDevices(ports) {
@@ -153,7 +163,7 @@ function onbtnAutoConnect() {
    } else {
      document.getElementById('btnAutoConnect').className="btn btn-warning";
      document.getElementById('btnAutoConnect').value ="Searching...";
-     findDevice("vAir", onVAirFound);
+     findDevice(onVAirFound);
    }
 } 
 
@@ -184,17 +194,29 @@ function onbtnAutoConnect() {
                                    + $("#sapMessageId").val() + "\",\""+ $("#sapVarName").val()  + "\",\"" + $("#sapToken").val()  + "\"",
                                    "IOT OAuth Token", onbtnAutoConnect) };
    var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot) } 
+   var sap   =  function() { sendSerial("sap 1", proxy); }
    
-   sendSerial("sap 1", proxy);
+   (deviceType == VAIR) ? sap() : cfgiot();
  }
  
  function onBtnCustom() {
    var ss = $("#customURL").val();
    var cfgiot = function() { sendSerial("cfggen" + (ss ? (" " + ss) : ""), "DONE", onbtnAutoConnect) };
    var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot) } 
+   var sap   =  function() { sendSerial("sap " + (ss?"1":"0"), proxy); }
    
-   sendSerial("sap " + (ss?"1":"0"), proxy);
+   (deviceType == VAIR) ? sap() : cfgiot();
    
+ }
+
+ function onSetMQTT() {
+   var setMqttValue= function() {sendSerial("cfg_mqval " + $("#mqttValue").val(), "DONE", function() {}); }
+   var setMqttCore = function() {sendSerial("cfg_mqtt \"" + $("#mqttHost").val() + "\",\"" + $("#mqttPort").val() + "\",\"" + $("#mqttClientId").val() + "\",\"" 
+                                                      + $("#mqttUser").val() + "\",\"" + $("#mqttPass").val() + "\",\"" + $("#mqttTopic")   .val()+ "\"",
+                                        "DONE", setMqttValue); }
+   var proxy =  function() { sendSerial("proxy", "GOT IP", setMqttCore) } 
+   var sap   =  function() { sendSerial("sap 1", proxy); }
+   (deviceType == VAIR) ? sap() : setMqttCore();
  }
  
  function onBtnTestCfg() {

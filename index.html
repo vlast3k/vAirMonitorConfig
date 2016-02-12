@@ -12,7 +12,7 @@
   </head>
   <body>
 
-  <div class="container-fluid">
+  <div class="container-fluid" style="height:800px;overflow-y:scroll">
     <br>
 	<div class="row">
 		<div class="col-xs-2">
@@ -183,6 +183,41 @@
                 </div>
             </div>
         </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseMQTT">Reporting: MQTT</a>
+                </h4>
+            </div>  
+            <div id="collapseMQTT" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-xs-12">
+                			<form class="form-inline">
+                				<div class="form-group">
+                					<label for="mqttHost">Host</label>
+                					<input type="text" class="form-control" id="mqttHost">
+                					<label for="mqttPort">Port</label>
+                					<input type="text" class="form-control" id="mqttPort">
+                					<label for="mqttClientId">Client ID</label>
+                					<input type="text" class="form-control" id="mqttClientId">
+                					<label for="mqttUser">User</label>
+                					<input type="text" class="form-control" id="mqttUser">
+                					<label for="mqttPass">Pass</label>
+                					<input type="text" class="form-control" id="mqttPass">
+                					<label for="mqttTopic">Topic</label>
+                					<input type="text" class="form-control" id="mqttTopic">
+                					<label for="mqttValue">Value Format</label>
+                					<input type="text" class="form-control" id="mqttFormat" value="dass">
+                					<button id="setMQTT" type="submit" class="btn btn-default">	Set MQTT	</button>
+                				</div>
+                			</form>
+                			SSL is not yet supported for MQTT. For <b>Value Format</b> use <u>%s</u> as a place holder for the CO2 ppm value. (e.g. {"data":%s,"write":true,"ispublic":true} for Beebotte)
+                    </div>
+                	</div>
+                </div>
+            </div>
+        </div>        
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
