@@ -71,7 +71,7 @@ var VAIR = "vAir";
 var VTHING = "vThing";
 var deviceType = null;
 
-function findDevice(onDeviceFound) {
+function findDevice(onDeviceFound, text, baud) {
   var devices = {};
   var findInterval = setInterval(function() { log(" . ", true);  }, 500);
   
@@ -92,23 +92,27 @@ function findDevice(onDeviceFound) {
   function onRecvFindDev(conn) {
     log ("rcv: " + ab2str(conn.data));
     var s = ab2str(conn.data);
-    if (s.startsWith(VAIR)) {
+    if (s.indexOf(VAIR) > -1) {
       deviceType = VAIR;
-    } else if (s.startsWith(VTHING)) {
+    } else if (s.indexOf(VTHING) > -1) {
       deviceType = VTHING;
-    }
+    } else { return; }
     onIntDeviceFound(devices[conn.connectionId], conn.connectionId);
   }
 
   function onGetDevices(ports) {
     chrome.serial.onReceive.addListener(onRecvFindDev);
     ports.forEach(function(ppp) {
-      chrome.serial.connect(ppp.path, {bitrate: 9600}, function(data) {
-        if (!chrome.runtime.lastError && data) devices[data.connectionId] = ppp.path;
+      chrome.serial.connect(ppp.path, {bitrate: baud}, function(data) {
+        if (!chrome.runtime.lastError && data) {
+          devices[data.connectionId] = ppp.path;
+          chrome.serial.send(data.connectionId, str2ab("info\n"), onSend); 
+        }
+        
       });
     });
   }
-  log ("Searching v.Air ", true);
+  log (text, true);
   chrome.serial.getDevices(onGetDevices); 
 
 }
@@ -137,18 +141,20 @@ function onSerialString() {
   serialString = "";
 }
 
-
 function onbtnAutoConnect() {
+
    function onVAirFound(comPort) {
      if (!comPort) {
        document.getElementById('btnAutoConnect').className="btn btn-danger";
        document.getElementById('btnAutoConnect').value ="Not Found";
-       
      } else {
        log ("\nvAir found on : " + comPort); 
        chrome.serial.connect(comPort, {bitrate: 9600}, onConnect2);
        document.getElementById('btnAutoConnect').className="btn btn-success";
        document.getElementById('btnAutoConnect').value ="Connected";
+       if (deviceType == VTHING) {
+         $("#otherSettingsVair").addClass("hidden");
+       }
      }
      
    }
@@ -163,7 +169,7 @@ function onbtnAutoConnect() {
    } else {
      document.getElementById('btnAutoConnect').className="btn btn-warning";
      document.getElementById('btnAutoConnect').value ="Searching...";
-     findDevice(onVAirFound);
+     findDevice(onVAirFound, "Searching for v.Air ", 9600);
    }
 } 
 
@@ -186,7 +192,7 @@ function onbtnAutoConnect() {
  function onBtnUbi() {
    log ("ubi:" +   $("#ubik").val() + "," +   $("#ubiv").val())
    sendSerial("ubik " + $("#ubik").val(), 
-   function() {sendSerial("ubiv " + $("#ubiv").val()) } );
+     function() {sendSerial("ubiv " + $("#ubiv").val()) } );
  }
  
  function onBtnSAP() {
