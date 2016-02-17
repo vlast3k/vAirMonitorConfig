@@ -18,6 +18,8 @@ $("#resetAll").click(onResetFact);
 $("#setPPMBtn").click(onSetPPMBtn);
 $("#setColorsBtn").click(onSetColorsBtn);
 $("#setMQTT").click(onSetMQTT);
+$("#setBRFBtn").click(onSetBRFBtn);
+$("#ota").click(onBtnOTA);
 
 
 
@@ -205,6 +207,12 @@ function onbtnAutoConnect() {
    (deviceType == VAIR) ? sap() : cfgiot();
  }
  
+ function onBtnOTA() {
+   var otacmd = function() { sendSerial("otah", "GOT IP", onbtnAutoConnect) };
+   sendSerial("proxy", "GOT IP", otacmd)
+   
+ }
+
  function onBtnCustom() {
    var ss = $("#customURL").val();
    var cfgiot = function() { sendSerial("cfggen" + (ss ? (" " + ss) : ""), "DONE", onbtnAutoConnect) };
@@ -279,6 +287,10 @@ function onSetPPMBtn() {
 
 function onSetColorsBtn() {
  chrome.serial.send(connectionId, str2ab("lt " +  $("#setColors").val() + " \n"), onSend); 
+}
+
+function onSetBRFBtn() {
+ chrome.serial.send(connectionId, str2ab("brf " +  ($("#setBRF").val()*10) + " \n"), onSend); 
 }
 
 function onDebug() {
