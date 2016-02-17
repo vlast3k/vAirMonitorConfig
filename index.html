@@ -20,10 +20,12 @@
     </div>	    
 		<div class="col-xs-1">
     </div>	    
-		<div class="col-xs-3">
+		<div class="col-xs-9">
 		  <a href="http://vair-monitor.com" target="_new">Home Page</a>
 		  <br>
 		  <a href="https://github.com/vlast3k/simple-co2-monitor-fw/wiki" target="_new">Install USB Driver</a>
+		  <br>
+		  <a href="https://www.facebook.com/vairmonitor" target="_new">Like the Facebook Page</a>, <a href="https://twitter.com/vAirMon" target="_new">Follow the Twitter</a> or 	  <a href="https://github.com/vlast3k/simple-co2-monitor-fw/wiki/Version-History" target="_new">Watch the Github Page</a>, to get notified when there is a new version
     </div>	    
   </div>
   <br/>
@@ -195,6 +197,11 @@
                     <div class="col-xs-12">
                 			<form class="form-inline">
                 				<div class="form-group">
+                					<label for="setBRF">Set LED Brightness Factor (0.1 - 10, default 1)</label>
+                					<input type="text" class="form-control" id="setBRF">
+                					<button id="setBRFBtn" type="submit" class="btn btn-default">	Set	</button>
+                					Override the LED brightness factor. If the leds are too dim put a value > 1, if they are too bright < 1
+                					<br/>
                 					<label for="setPPM">Set Current PPM</label>
                 					<input type="text" class="form-control" id="setPPM">
                 					<button id="setPPMBtn" type="submit" class="btn btn-default">	Set	</button>
@@ -208,6 +215,9 @@
                 					<p/>
                 					<button id="resetCal" type="submit" class="btn btn-default">Reset Calibration</button>
                 					<button id="resetAll" type="submit" class="btn btn-default">Factory Reset</button>
+                					<p/>
+                					<button id="ota" type="submit" class="btn btn-default">Update WiFi Firmware</button>
+                					
                 				</div>
                 			</form>
                     </div>
@@ -216,9 +226,6 @@
             </div>
         </div>
 
-
-
-	<hr>
 	<div class="row">
 		<div class="col-md-10">
 				<button id="testCfgBtn" type="submit" class="btn btn-default">
@@ -226,7 +233,6 @@
 				</button>
 		</div>
   </div>
-  <hr>
 	<div class="row hidden">
 		<div class="col-md-6">
 				<button id="brgMin" type="submit" class="btn btn-default">
