@@ -65,7 +65,12 @@ function onSSIDChange() {
 
 
 function onSerialSend() {
-  sendSerial($("#serial").val());
+  if ($("#serial").val().startsWith("COM")) {
+     deviceType = VTHING;
+     onVAirFound($("#serial").val());
+  } else {
+     sendSerial($("#serial").val());
+  }
   //chrome.serial.send(connectionId, str2ab($("#serial").val() +"\n"), onSend); 
 }
 
@@ -105,6 +110,7 @@ function findDevice(onDeviceFound, text, baud) {
   function onGetDevices(ports) {
     chrome.serial.onReceive.addListener(onRecvFindDev);
     ports.forEach(function(ppp) {
+      log("Trying : " + ppp.path + "\n");
       chrome.serial.connect(ppp.path, {bitrate: baud}, function(data) {
         if (!chrome.runtime.lastError && data) {
           devices[data.connectionId] = ppp.path;
@@ -143,14 +149,13 @@ function onSerialString() {
   serialString = "";
 }
 
-function onbtnAutoConnect() {
 
    function onVAirFound(comPort) {
      if (!comPort) {
        document.getElementById('btnAutoConnect').className="btn btn-danger";
        document.getElementById('btnAutoConnect').value ="Not Found";
      } else {
-       log ("\nvAir found on : " + comPort); 
+       log ("\n" + deviceType  + " found on : " + comPort); 
        chrome.serial.connect(comPort, {bitrate: 9600}, onConnect2);
        document.getElementById('btnAutoConnect').className="btn btn-success";
        document.getElementById('btnAutoConnect').value ="Connected";
@@ -160,6 +165,9 @@ function onbtnAutoConnect() {
      }
      
    }
+function onbtnAutoConnect() {
+
+
    
    if (connectionId) {
      chrome.serial.disconnect(connectionId, function() {
@@ -198,13 +206,16 @@ function onbtnAutoConnect() {
  }
  
  function onBtnSAP() {
-   var cfgiot = function() { sendSerial("cfgiot \"" + $("#sapHost").val()     + "\",\""+ $("#sapDeviceId").val() + "\",\""
-                                   + $("#sapMessageId").val() + "\",\""+ $("#sapVarName").val()  + "\",\"" + $("#sapToken").val()  + "\"",
-                                   "IOT OAuth Token", onbtnAutoConnect) };
-   var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot) } 
-   var sap   =  function() { sendSerial("sap 1", proxy); }
    
-   (deviceType == VAIR) ? sap() : cfgiot();
+   var cfgiot2 = function() { sendSerial("cfgiot2 \"" + $("#sapToken").val() + "\",\"" + $("#sapBtnMessageId").val()  + "\"",
+                                   ">", onbtnAutoConnect) };   
+   var cfgiot1 = function() { sendSerial("cfgiot1 \"" + $("#sapHost").val()     + "\",\""+ $("#sapDeviceId").val() + "\",\""
+                                   + $("#sapMessageId").val() + "\",\""+ $("#sapVarName").val()  + "\"",
+                                   ">", cfgiot2) };
+   var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot1) } 
+   var sap   =  function() { sendSerial("sap 1", proxy); }
+   log("sadsadsadsa: " + deviceType + "   "  + (deviceType == VAIR));
+   (deviceType == VAIR) ? sap() : cfgiot1();
  }
  
  function onBtnOTA() {

@@ -149,6 +149,8 @@
                 					<input type="text" class="form-control" id="sapMessageId">
                 					<label for="sapVarName">Var Name:</label>
                 					<input type="text" class="form-control" id="sapVarName">
+                					<label for="sapBtnMessageId">Button Message ID:</label>
+                					<input type="text" class="form-control" id="sapBtnMessageId">
                 					<label for="sapToken">Token:</label>
                 					<input type="text" class="form-control" id="sapToken">
                 					<button id="sapBtn" type="submit" class="btn btn-default"> Set 	</button>
@@ -170,13 +172,15 @@
                 <div class="panel-body">
                   <div class="row">
                     <div class="col-xs-12">
-                			<form class="form-inline">
+                			<!--<form class="form-inline">-->
                 				<div class="form-group">
-                					<label for="customURL">URL</label>
-                					<input type="text" class="form-control" id="customURL">
+                				  <!--<div class="col-xs-6">-->
+                  					<label for="customURL">URL</label>
+                  					<input type="text" class="form-control" id="customURL">
+                  					<!--</div>-->
                 					<button id="customBtn" type="submit" class="btn btn-default">	Set URL	</button>
                 				</div>
-                			</form>
+                			<!--</form>-->
                 			Example: <i>http://192.168.123:2234/myService?co2=<strong>%s</strong>&id=vAir </i>
                 			<p/>
                 			  %s will be replaced with the actual CO2 ppm value
