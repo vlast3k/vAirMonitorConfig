@@ -20,6 +20,7 @@ $("#setColorsBtn").click(onSetColorsBtn);
 $("#setMQTT").click(onSetMQTT);
 $("#setBRFBtn").click(onSetBRFBtn);
 $("#ota").click(onBtnOTA);
+$("#resetESP").click(onResetESP);
 
 
 
@@ -75,7 +76,8 @@ function onSerialSend() {
 }
 
 var VAIR = "vAir";
-var VTHING = "vThing";
+var VTHING = "vThing - CO2";
+var VTHING_STARTER = "vThing - Starter"
 var deviceType = null;
 
 function findDevice(onDeviceFound, text, baud) {
@@ -99,11 +101,10 @@ function findDevice(onDeviceFound, text, baud) {
   function onRecvFindDev(conn) {
     log ("rcv: " + ab2str(conn.data));
     var s = ab2str(conn.data);
-    if (s.indexOf(VAIR) > -1) {
-      deviceType = VAIR;
-    } else if (s.indexOf(VTHING) > -1) {
-      deviceType = VTHING;
-    } else { return; }
+    if (s.indexOf(VAIR) > -1)         deviceType = VAIR;
+    else if (s.indexOf(VTHING) > -1)  deviceType = VTHING;
+    else if (s.indexOf(VTHING_STARTER) > -1)  deviceType = VTHING_STARTER;
+    else return;
     onIntDeviceFound(devices[conn.connectionId], conn.connectionId);
   }
 
@@ -160,7 +161,22 @@ function onSerialString() {
        document.getElementById('btnAutoConnect').className="btn btn-success";
        document.getElementById('btnAutoConnect').value ="Connected";
        if (deviceType == VTHING) {
-         $("#otherSettingsVair").addClass("hidden");
+         $("#otherSettingsVthing").removeClass("hidden");
+         $("#panelTS").removeClass("hidden");
+         $("#panelUBI").removeClass("hidden");
+         $("#panelSAP").removeClass("hidden");
+         $("#panelCustom").removeClass("hidden");
+         $("#panelMQTT").removeClass("hidden");
+       } else if (deviceType == VAIR) {
+         $("#otherSettingsVair").removeClass("hidden");
+         $("#panelTS").removeClass("hidden");
+         $("#panelUBI").removeClass("hidden");
+         $("#panelSAP").removeClass("hidden");
+         $("#panelCustom").removeClass("hidden");
+         $("#panelMQTT").removeClass("hidden");
+       } else if (deviceType == VTHING_STARTER) {
+         $("#panelSAP").removeClass("hidden");
+         
        }
      }
      
@@ -313,6 +329,12 @@ function onSetWifi() {
   var pass = document.getElementById('pass').value;
   var sapPass = document.getElementById('sapPass').value;
   chrome.serial.send(connectionId, str2ab("wifi \"" + ssid + "\",\""+ pass + "\"" + (sapPass?",\"" + sapPass + "\"":"") + "\n"), onSend);
+}
+
+function onResetESP() {
+  chrome.serial.setControlSignals(connectionId, {rts: true, dtr:true}, function(res) {log("set rts : " + res)});
+  setTimeout(function() {chrome.serial.setControlSignals(connectionId, {rts: false, dtr:false}, function(res) {log("set rts : " + res)})}, 1000)
+  
 }
 
 function onSend(data) {

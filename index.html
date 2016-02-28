@@ -80,7 +80,7 @@
         </div>
 
     <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
+        <div class="panel panel-default hidden" id="panelTS">
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Reporting: ThingSpeak</a>
@@ -103,7 +103,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default">
+        <div class="panel panel-default hidden" id="panelUBI">
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Reporting: Ubidots</a>
@@ -129,7 +129,7 @@
             </div>
         </div>
 
-        <div class="panel panel-default">
+        <div class="panel panel-default hidden" id="panelSAP">
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Reporting: SAP HCP Internet of Things</a>
@@ -139,30 +139,28 @@
                 <div class="panel-body">
                   <div class="row">
                     <div class="col-xs-12">
-                			<form class="form-inline">
                 				<div class="form-group">
                 					<label for="sapHost">SAP HCP IOT Host:</label>
                 					<input type="text" class="form-control" id="sapHost">
                 					<label for="sapDeviceId">Device Id:</label>
                 					<input type="text" class="form-control" id="sapDeviceId">
+                					<label for="sapToken">Token:</label>
+                					<input type="text" class="form-control" id="sapToken">
                 					<label for="sapMessageId">Message ID:</label>
                 					<input type="text" class="form-control" id="sapMessageId">
                 					<label for="sapVarName">Var Name:</label>
                 					<input type="text" class="form-control" id="sapVarName">
                 					<label for="sapBtnMessageId">Button Message ID:</label>
                 					<input type="text" class="form-control" id="sapBtnMessageId">
-                					<label for="sapToken">Token:</label>
-                					<input type="text" class="form-control" id="sapToken">
                 					<button id="sapBtn" type="submit" class="btn btn-default"> Set 	</button>
                 				</div>
-                			</form>
                 			<a href="http://scn.sap.com/community/developer-center/cloud-platform/blog/2015/06/09/using-the-sap-hcp-iot-services" target="_new">More Info</a>
                     </div>
                 	</div>
                 </div>
             </div>
         </div>
-        <div class="panel panel-default">
+        <div class="panel panel-default hidden" id="panelCustom">
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">Reporting: Custom Server</a>
@@ -189,7 +187,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default">
+        <div class="panel panel-default hidden" id="panelMQTT">
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseMQTT">Reporting: MQTT</a>
@@ -235,7 +233,7 @@
                   <div class="row">
                     <div class="col-xs-12">
                 			<form class="form-inline">
-                				<div class="form-group" id="otherSettingsVair">
+                				<div class="form-group hidden" id="otherSettingsVair">
                 					<label for="setBRF">Set LED Brightness Factor (0.1 - 10, default 1)</label>
                 					<input type="text" class="form-control" id="setBRF">
                 					<button id="setBRFBtn" type="submit" class="btn btn-default">	Set	</button>
@@ -258,6 +256,10 @@
                 					<button id="ota" type="submit" class="btn btn-default">Update WiFi Firmware</button>
                 					
                 				</div>
+              		  	<div class="form-group hidden" id="otherSettingsVthing">
+                					<!--<button id="resetESP" type="submit" class="btn btn-default">Restart</button>-->
+                			  
+              				</div>
                 			</form>
                     </div>
                 	</div>
@@ -265,7 +267,7 @@
             </div>
         </div>
 
-	<div class="row">
+	<div class="row" >
 		<div class="col-md-10">
 				<button id="testCfgBtn" type="submit" class="btn btn-default">
 					Test Configuration (send 567 ppm)
