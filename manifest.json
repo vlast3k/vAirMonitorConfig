@@ -1,6 +1,6 @@
 {
-  "name": "vAir - CO2 Monitor - Configuration Utility",
-  "version": "4.1",
+  "name": "vThings - Configuration Utility",
+  "version": "5.0",
   "manifest_version": 2,
   "permissions": ["serial", "storage"],
   "minimum_chrome_version": "23",

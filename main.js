@@ -77,7 +77,7 @@ function onSerialSend() {
 
 var VAIR = "vAir";
 var VTHING = "vThing - CO2";
-var VTHING_STARTER = "vThing - Starter"
+var VTHING_STARTER = "vThing - S"
 var deviceType = null;
 
 function findDevice(onDeviceFound, text, baud) {
@@ -221,12 +221,17 @@ function onbtnAutoConnect() {
      function() {sendSerial("ubiv " + $("#ubiv").val()) } );
  }
  
+ function alertConfigStored() {
+   log("\nConfiguration Stored\n");
+ }
+ 
  function onBtnSAP() {
    
    var cfgiot2 = function() { sendSerial("cfgiot2 \"" + $("#sapToken").val() + "\",\"" + $("#sapBtnMessageId").val()  + "\"",
-                                   ">", onbtnAutoConnect) };   
+                                   ">", (deviceType == VTHING_STARTER)? alertConfigStored :  onbtnAutoConnect)};   
    var cfgiot1 = function() { sendSerial("cfgiot1 \"" + $("#sapHost").val()     + "\",\""+ $("#sapDeviceId").val() + "\",\""
-                                   + $("#sapMessageId").val() + "\",\""+ $("#sapVarName").val()  + "\"",
+//                                 + $("#sapMessageId").val() + "\",\""+ $("#sapVarName").val()  + "\"",
+                                   + $("#sapMessageId").val() + "\",\"temp\"",
                                    ">", cfgiot2) };
    var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot1) } 
    var sap   =  function() { sendSerial("sap 1", proxy); }
