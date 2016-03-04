@@ -78,6 +78,8 @@ function onSerialSend() {
 var VAIR = "vAir";
 var VTHING = "vThing - CO2";
 var VTHING_STARTER = "vThing - S"
+var VTHING_H801    = "vThing - H8"
+
 var deviceType = null;
 
 function findDevice(onDeviceFound, text, baud) {
@@ -99,14 +101,19 @@ function findDevice(onDeviceFound, text, baud) {
   }, 10000);
   
   function onRecvFindDev(conn) {
+    var str = ab2str(conn.data);
     log ("rcv: " + ab2str(conn.data));
-    var s = ab2str(conn.data);
+    devices[conn.connectionId].str += str;
+    var s = devices[conn.connectionId].str;
+    log("s=" + s);
     if (s.indexOf(VAIR) > -1)         deviceType = VAIR;
     else if (s.indexOf(VTHING) > -1)  deviceType = VTHING;
     else if (s.indexOf(VTHING_STARTER) > -1)  deviceType = VTHING_STARTER;
+    else if (s.indexOf(VTHING_H801) > -1)  deviceType = VTHING_H801;
     else return;
-    onIntDeviceFound(devices[conn.connectionId], conn.connectionId);
+    onIntDeviceFound(devices[conn.connectionId].path, conn.connectionId);
   }
+
 
   function onGetDevices(ports) {
     chrome.serial.onReceive.addListener(onRecvFindDev);
@@ -114,7 +121,7 @@ function findDevice(onDeviceFound, text, baud) {
       log("Trying : " + ppp.path + "\n");
       chrome.serial.connect(ppp.path, {bitrate: baud}, function(data) {
         if (!chrome.runtime.lastError && data) {
-          devices[data.connectionId] = ppp.path;
+          devices[data.connectionId] = {path:ppp.path, str:""};
           chrome.serial.send(data.connectionId, str2ab("info\n"), onSend); 
         }
         
@@ -176,7 +183,9 @@ function onSerialString() {
          $("#panelMQTT").removeClass("hidden");
        } else if (deviceType == VTHING_STARTER) {
          $("#panelSAP").removeClass("hidden");
-         
+       } else if (deviceType == VTHING_H801) {
+         $("#panelCustom").removeClass("hidden");
+         $("#panelMQTT").removeClass("hidden");
        }
      }
      

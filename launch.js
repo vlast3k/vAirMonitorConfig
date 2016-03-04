@@ -3,8 +3,8 @@ chrome.app.runtime.onLaunched.addListener(function() {
 	  id: "vAirMonitor2",
     innerBounds: {
       width: 900,
-      height: 800
+      height: 750
     },
-    resizable:false
+    resizable:true
   });
 });
