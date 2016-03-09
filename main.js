@@ -24,6 +24,12 @@ $("#resetESP").click(onResetESP);
 
 
 
+ function log(msg, skipNL) {
+   var buffer = document.querySelector('#buffer');
+   buffer.value += msg + (skipNL?"":"\n");
+   buffer.scrollTop = buffer.scrollHeight;
+ }
+
 var inputSelector = ":input[type='text'][id!='serial'][id!='pass'][id!='sapPass']";
 $(inputSelector).change(function(event) {
   var obj = {};
@@ -105,7 +111,6 @@ function findDevice(onDeviceFound, text, baud) {
     log ("rcv: " + ab2str(conn.data));
     devices[conn.connectionId].str += str;
     var s = devices[conn.connectionId].str;
-    log("s=" + s);
     if (s.indexOf(VAIR) > -1)         deviceType = VAIR;
     else if (s.indexOf(VTHING) > -1)  deviceType = VTHING;
     else if (s.indexOf(VTHING_STARTER) > -1)  deviceType = VTHING_STARTER;
@@ -147,9 +152,8 @@ var onReceiveCallback = function(info) {
 };
 
 function onSerialString() {
-  log (serialString);
+  log ("received:" + serialString); // + "\n waiting for : " + onOKString);
   if (serialString.indexOf(onOKString) > -1) {
-    //log ("Matched: onok= " + onOK)
     var ss = onOK;
     onOK = null;
     ss && ss();
@@ -190,10 +194,23 @@ function onSerialString() {
      }
      
    }
-function onbtnAutoConnect() {
-
-
    
+   
+function reconnect() {
+   if (connectionId) {
+     chrome.serial.disconnect(connectionId, function() {
+       connectionId = null;
+       chrome.serial.onReceive.removeListener(onReceiveCallback);
+       document.getElementById('btnAutoConnect').className="btn btn-info";
+       document.getElementById('btnAutoConnect').value ="Auto Connect";
+       onbtnAutoConnect();
+     })
+   }
+  
+  
+}
+   
+function onbtnAutoConnect() {
    if (connectionId) {
      chrome.serial.disconnect(connectionId, function() {
        connectionId = null;
@@ -213,7 +230,7 @@ function onbtnAutoConnect() {
  }
  
  function sendSerial(str, _onOKString, _onOK) {
-   log("sending serial: " + str);
+   log("sending: " + str);
    if (_onOK) {
      onOKString = _onOKString || ">";
      onOK = _onOK;
@@ -244,34 +261,49 @@ function onbtnAutoConnect() {
                                    ">", cfgiot2) };
    var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot1) } 
    var sap   =  function() { sendSerial("sap 1", proxy); }
-   log("sadsadsadsa: " + deviceType + "   "  + (deviceType == VAIR));
-   (deviceType == VAIR) ? sap() : cfgiot1();
+   //log("sadsadsadsa: " + deviceType + "   "  + (deviceType == VAIR));
+    if (deviceType == VAIR) {
+      sap()
+    } else {
+      cfgiot1()
+    }
  }
  
  function onBtnOTA() {
-   var otacmd = function() { sendSerial("otah", "GOT IP", onbtnAutoConnect) };
+   var otacmd = function() { sendSerial("otah", "GOT IP", reconnect) };
    sendSerial("proxy", "GOT IP", otacmd)
    
  }
 
  function onBtnCustom() {
    var ss = $("#customURL").val();
-   var cfgiot = function() { sendSerial("cfggen" + (ss ? (" " + ss) : ""), "DONE", onbtnAutoConnect) };
+   var cfgiot = function() { sendSerial("cfggen" + (ss ? (" " + ss) : ""), "DONE", reconnect) };
    var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot) } 
    var sap   =  function() { sendSerial("sap " + (ss?"1":"0"), proxy); }
    
-   (deviceType == VAIR) ? sap() : cfgiot();
-   
+    if (deviceType == VAIR) {
+      sap()
+    } else {
+      cfgiot()
+    }
  }
 
  function onSetMQTT() {
-   var setMqttValue= function() {sendSerial("cfg_mqval " + $("#mqttValue").val(), "DONE", function() {}); }
-   var setMqttCore = function() {sendSerial("cfg_mqtt \"" + $("#mqttHost").val() + "\",\"" + $("#mqttPort").val() + "\",\"" + $("#mqttClientId").val() + "\",\"" 
+   var setMqttValue= function() {sendSerial("cfg_mqval " + $("#mqttValue").val(), "DONE", reconnect); }
+   var setMqttCore = function() {
+     sendSerial("cfg_mqtt \"" + $("#mqttHost").val() + "\",\"" + $("#mqttPort").val() + "\",\"" + $("#mqttClientId").val() + "\",\"" 
                                                       + $("#mqttUser").val() + "\",\"" + $("#mqttPass").val() + "\",\"" + $("#mqttTopic")   .val()+ "\"",
                                         "DONE", setMqttValue); }
-   var proxy =  function() { sendSerial("proxy", "GOT IP", setMqttCore) } 
-   var sap   =  function() { sendSerial("sap 1", proxy); }
-   (deviceType == VAIR) ? sap() : setMqttCore();
+   var sap   =  function() { sendSerial("sap 1", proxy, null); }
+   var proxy =  function() { sendSerial("proxy", "GOT IP", setMqttCore); } 
+
+ // ((deviceType == VAIR) ? sap : setMqttCore)();
+    // }
+    if (deviceType == VAIR) {
+      sap()
+    } else {
+      setMqttCore()
+    }
  }
  
  function onBtnTestCfg() {
@@ -354,10 +386,5 @@ function onResetESP() {
 function onSend(data) {
 }
 
- function log(msg, skipNL) {
-   var buffer = document.querySelector('#buffer');
-   buffer.value += msg + (skipNL?"":"\n");
-   buffer.scrollTop = buffer.scrollHeight;
- }
-
+//onSetMQTT();
 onbtnAutoConnect();
