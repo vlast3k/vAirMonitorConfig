@@ -1,6 +1,6 @@
 {
   "name": "vThings - Configuration Utility",
-  "version": "5.0",
+  "version": "5.2",
   "manifest_version": 2,
   "permissions": ["serial", "storage"],
   "minimum_chrome_version": "23",

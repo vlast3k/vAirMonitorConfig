@@ -289,6 +289,7 @@ function onbtnAutoConnect() {
  }
 
  function onSetMQTT() {
+   log("set mqtt, value= " + $("#mqttValue").val());
    var setMqttValue= function() {sendSerial("cfg_mqval " + $("#mqttValue").val(), "DONE", reconnect); }
    var setMqttCore = function() {
      sendSerial("cfg_mqtt \"" + $("#mqttHost").val() + "\",\"" + $("#mqttPort").val() + "\",\"" + $("#mqttClientId").val() + "\",\"" 
@@ -307,6 +308,7 @@ function onbtnAutoConnect() {
  }
  
  function onBtnTestCfg() {
+   
    sendSerial("test");
  }
  
