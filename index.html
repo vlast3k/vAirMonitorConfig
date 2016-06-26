@@ -30,15 +30,25 @@
   </div>
   <br/>
 
-    <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseWifi">Setup: Wifi</a>
-                </h4>
-            </div>  
-            <div id="collapseWifi" class="panel-collapse collapse in">
-                <div class="panel-body">
+ <div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#setupWifi"     aria-controls="setupWifi"     role="tab" data-toggle="tab">WiFi</a></li>
+    <li role="presentation">               <a href="#repThingSpeak" aria-controls="repThingSpeak" role="tab" data-toggle="tab">ThingSpeak</a></li>
+    <li role="presentation">               <a href="#repUbidots"    aria-controls="repUbidots"    role="tab" data-toggle="tab">Ubidots</a></li>
+    <li role="presentation">               <a href="#repSAPIOT"     aria-controls="repSAPIOT"     role="tab" data-toggle="tab">SAP HCP IoT</a></li>
+    <li role="presentation">               <a href="#repCustomHTTP" aria-controls="repCustomHTTP" role="tab" data-toggle="tab">Custom HTTP</a></li>
+    <li role="presentation">               <a href="#repCustomMQTT" aria-controls="repCustomMQTT" role="tab" data-toggle="tab">Custom MQTT</a></li>
+    <li role="presentation">               <a href="#vESPrino" aria-controls="vESPrino" role="tab" data-toggle="tab">vESPrino Setup</a></li>
+    <li role="presentation">               <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="setupWifi">
+        <div class="panel panel-default ">
+            <div class="panel-body">
                   <div class="row">
                     <div class="col-xs-12">
                       <form class="form-inline">
@@ -78,16 +88,9 @@
                 </div>
             </div>
         </div>
-
-    <div class="panel-group" id="accordion">
-        <div class="panel panel-default hidden" id="panelTS">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Reporting: ThingSpeak</a>
-                </h4>
-            </div>  
-            <div id="collapseOne" class="panel-collapse collapse">
-                <div class="panel-body">
+    <div role="tabpanel" class="tab-pane" id="repThingSpeak">
+        <div class="panel panel-default ">
+            <div class="panel-body">
                   <div class="row">
                     <div class="col-xs-12">
                 			<form class="form-inline">
@@ -100,17 +103,21 @@
                 			<a href="https://thingspeak.com/channels" target="_new">Create Thingspeak channel</a>
                     </div>
                 	</div>
+                    <br>
+                    <div class="row" >
+                        <div class="col-md-10">
+                                <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
+                                    Test Configuration (send 567 ppm)
+                                </button>
+                        </div>
+                    </div>                    
                 </div>
             </div>
+
         </div>
-        <div class="panel panel-default hidden" id="panelUBI">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Reporting: Ubidots</a>
-                </h4>
-            </div>  
-            <div id="collapseTwo" class="panel-collapse collapse">
-                <div class="panel-body">
+    <div role="tabpanel" class="tab-pane" id="repUbidots">
+        <div class="panel panel-default ">
+            <div class="panel-body">
                     <div class="row">
                       <div class="col-xs-12">
                   			<form class="form-inline">
@@ -125,18 +132,20 @@
                   			<a href="http://ubidots.com" target="_new">Create Ubidots Source</a>
                       </div>
                   	</div>
+                    <br>
+                    <div class="row" >
+                        <div class="col-md-10">
+                                <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
+                                    Test Configuration (send 567 ppm)
+                                </button>
+                        </div>
+                    </div>                     
                 </div>
             </div>
         </div>
-
-        <div class="panel panel-default hidden" id="panelSAP">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Reporting: SAP HCP Internet of Things</a>
-                </h4>
-            </div>  
-            <div id="collapse3" class="panel-collapse collapse">
-                <div class="panel-body">
+    <div role="tabpanel" class="tab-pane" id="repSAPIOT">
+        <div class="panel panel-default ">
+            <div class="panel-body">
                   <div class="row">
                     <div class="col-xs-12">
                 				<div class="form-group">
@@ -157,17 +166,20 @@
                 			<a href="http://scn.sap.com/community/developer-center/cloud-platform/blog/2015/06/09/using-the-sap-hcp-iot-services" target="_new">More Info</a>
                     </div>
                 	</div>
+                    <br>
+                    <div class="row" >
+                        <div class="col-md-10">
+                                <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
+                                    Test Configuration (send 567 ppm)
+                                </button>
+                        </div>
+                    </div>                     
                 </div>
             </div>
-        </div>
-        <div class="panel panel-default hidden" id="panelCustom">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">Reporting: Custom Server</a>
-                </h4>
-            </div>  
-            <div id="collapse4" class="panel-collapse collapse">
-                <div class="panel-body">
+         </div>
+    <div role="tabpanel" class="tab-pane" id="repCustomHTTP">
+        <div class="panel panel-default ">
+            <div class="panel-body">
                   <div class="row">
                     <div class="col-xs-12">
                 			<!--<form class="form-inline">-->
@@ -184,17 +196,20 @@
                 			  %s will be replaced with the actual CO2 ppm value
                     </div>
                 	</div>
+                    <br>
+                    <div class="row" >
+                        <div class="col-md-10">
+                                <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
+                                    Test Configuration (send 567 ppm)
+                                </button>
+                        </div>
+                    </div>                     
                 </div>
             </div>
         </div>
-        <div class="panel panel-default hidden" id="panelMQTT">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseMQTT">Reporting: MQTT</a>
-                </h4>
-            </div>  
-            <div id="collapseMQTT" class="panel-collapse collapse">
-                <div class="panel-body">
+    <div role="tabpanel" class="tab-pane" id="repCustomMQTT">
+      <div class="panel panel-default ">
+        <div class="panel-body">
                   <div class="row">
                     <div class="col-xs-12">
                 			<form class="form-inline">
@@ -219,17 +234,78 @@
                 			SSL is not yet supported for MQTT. For <b>Value Format</b> use <u>%s</u> as a place holder for the CO2 ppm value. (e.g. {"data":%s,"write":true,"ispublic":true} for Beebotte)
                     </div>
                 	</div>
+                    <br>
+                    <div class="row" >
+                        <div class="col-md-10">
+                                <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
+                                    Test Configuration (send 567 ppm)
+                                </button>
+                        </div>
+                    </div>                     
                 </div>
-            </div>
-        </div>        
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseRst">Other Settings</a>
-                </h4>
-            </div>  
-            <div id="collapseRst" class="panel-collapse collapse">
-                <div class="panel-body">
+             </div>
+         </div>
+    <div role="tabpanel" class="tab-pane" id="vESPrino">
+      <div class="panel panel-default ">
+        <div class="panel-body">
+                  <div class="row">
+                    <div class="col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Connect Button to <img src="https://d3rnbxvnd0hlox.cloudfront.net/assets/v2/ifttt-logo-1d341126b2a8e80318c2a5ef64e7cb1c.svg"/></div>
+                            <div class="panel-body">
+                                    <form class="form-inline">
+                                        <div class="form-group">
+                                            <label for="if_key"><img src="https://d3rnbxvnd0hlox.cloudfront.net/assets/v2/ifttt-logo-1d341126b2a8e80318c2a5ef64e7cb1c.svg"/> key</label>
+                                            <input type="text" class="form-control" id="if_key">
+                                        </div>
+                                        &nbsp;
+                                        <div class="form-group">
+                                            <label for="if_bttn_event"><img src="https://d3rnbxvnd0hlox.cloudfront.net/assets/v2/ifttt-logo-1d341126b2a8e80318c2a5ef64e7cb1c.svg"/> Event Name</label>
+                                            <input type="text" class="form-control" id="if_bttn_event">
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <button id="if_bttn_set" type="submit" class="btn btn-default">	Set	</button>
+                                    </form>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Connect RGB LED to <img src="https://d3rnbxvnd0hlox.cloudfront.net/assets/v2/ifttt-logo-1d341126b2a8e80318c2a5ef64e7cb1c.svg"/> via TalkBack</div>
+                            <div class="panel-body">
+                                    <form class="form-inline">
+                                        <div class="form-group">
+                                            <label for="tb_id">TalkBack ID</label>
+                                            <input type="text" class="form-control" id="tb_id">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tb_key">TalkBack API Key</label>
+                                            <input type="text" class="form-control" id="tb_key">
+                                        </div>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <button id="if_rgb_set" type="submit" class="btn btn-default">	Set	</button>                                        
+                                  </form>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Upload Temperature Data to ThingSpeak</div>
+                            <div class="panel-body">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <label for="ts">ThingSpeak Write API Key</label>
+                                        <input type="text" class="form-control" id="tsKey">
+                                    </div>
+                                        &nbsp;&nbsp;&nbsp;
+                                    <button id="if_temp_set" type="submit" class="btn btn-default">	Set	</button>                                    
+                              </form>
+                            </div>
+                      	</div>
+                    </div>
+                	</div>
+                </div>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="settings">
+        <div class="panel panel-default ">
+            <div class="panel-body">
                   <div class="row">
                     <div class="col-xs-12">
                 			<form class="form-inline">
@@ -257,8 +333,10 @@
                 					
                 				</div>
               		  	<div class="form-group hidden" id="otherSettingsVthing">
-                					<!--<button id="resetESP" type="submit" class="btn btn-default">Restart</button>-->
-                			  
+                					<button id="resetCal" type="submit" class="btn btn-default">Reset Calibration</button>
+                					<button id="resetAll" type="submit" class="btn btn-default">Factory Reset</button>
+                					<p/>
+                					<button id="ota" type="submit" class="btn btn-default">Update WiFi Firmware</button>
               				</div>
                 			</form>
                     </div>
@@ -267,13 +345,12 @@
             </div>
         </div>
 
-	<div class="row" >
-		<div class="col-md-10">
-				<button id="testCfgBtn" type="submit" class="btn btn-default">
-					Test Configuration (send 567 ppm)
-				</button>
-		</div>
   </div>
+
+</div>
+<hr/>
+   
+
 	<div class="row hidden">
 		<div class="col-md-6">
 				<button id="brgMin" type="submit" class="btn btn-default">

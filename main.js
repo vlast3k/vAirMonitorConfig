@@ -11,7 +11,7 @@ $("#ssid").change(onSSIDChange);
 $("#sapBtn").click(onBtnSAP);
 $("#ubiBtn").click(onBtnUbi);
 $("#customBtn").click(onBtnCustom);
-$("#testCfgBtn").click(onBtnTestCfg);
+$("button.testCfgBtn").click(onBtnTestCfg);
 $("#updIntButton").click(onUpdIntButton);
 $("#resetCal").click(onResetCal);
 $("#resetAll").click(onResetFact);
@@ -108,7 +108,7 @@ function findDevice(onDeviceFound, text, baud) {
   
   function onRecvFindDev(conn) {
     var str = ab2str(conn.data);
-    log ("rcv: " + ab2str(conn.data));
+    log ("[" + ab2str(conn.data).trim() + "]");
     devices[conn.connectionId].str += str;
     var s = devices[conn.connectionId].str;
     if (s.indexOf(VAIR) > -1)         deviceType = VAIR;
@@ -152,7 +152,7 @@ var onReceiveCallback = function(info) {
 };
 
 function onSerialString() {
-  log ("received:" + serialString); // + "\n waiting for : " + onOKString);
+  log ("[" + serialString.trim() + "]"); // + "\n waiting for : " + onOKString);
   if (serialString.indexOf(onOKString) > -1) {
     var ss = onOK;
     onOK = null;
@@ -271,7 +271,12 @@ function onbtnAutoConnect() {
  
  function onBtnOTA() {
    var otacmd = function() { sendSerial("otah", "GOT IP", reconnect) };
-   sendSerial("proxy", "GOT IP", otacmd)
+   
+    if (deviceType == VAIR) {
+      sendSerial("proxy", "GOT IP", otacmd)
+    } else {
+      otacmd();
+    }
    
  }
 
@@ -308,7 +313,6 @@ function onbtnAutoConnect() {
  }
  
  function onBtnTestCfg() {
-   
    sendSerial("test");
  }
  
@@ -347,7 +351,7 @@ function onUpdIntButton() {
 }
 
 function onResetFact() {
-  chrome.serial.send(connectionId, str2ab("reset\n"), onSend); 
+  chrome.serial.send(connectionId, str2ab("factory\n"), onSend); 
 }
 
 function onResetCal() {
