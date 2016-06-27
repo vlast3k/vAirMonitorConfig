@@ -13,6 +13,7 @@ $("#ubiBtn").click(onBtnUbi);
 $("#customBtn").click(onBtnCustom);
 $("button.testCfgBtn").click(onBtnTestCfg);
 $("#updIntButton").click(onUpdIntButton);
+$("#updThrButton").click(onUpdThrButton);
 $("#resetCal").click(onResetCal);
 $("#resetAll").click(onResetFact);
 $("#setPPMBtn").click(onSetPPMBtn);
@@ -85,6 +86,7 @@ var VAIR = "vAir";
 var VTHING = "vThing - CO2";
 var VTHING_STARTER = "vThing - S"
 var VTHING_H801    = "vThing - H8"
+var VESPRINO_V1    = "vESPrino v1"
 
 var deviceType = null;
 
@@ -115,6 +117,7 @@ function findDevice(onDeviceFound, text, baud) {
     else if (s.indexOf(VTHING) > -1)  deviceType = VTHING;
     else if (s.indexOf(VTHING_STARTER) > -1)  deviceType = VTHING_STARTER;
     else if (s.indexOf(VTHING_H801) > -1)  deviceType = VTHING_H801;
+    //else if (s.indexOf(VESPRINO_V1) > -1)  deviceType = VESPRINO_V1;
     else return;
     onIntDeviceFound(devices[conn.connectionId].path, conn.connectionId);
   }
@@ -125,11 +128,12 @@ function findDevice(onDeviceFound, text, baud) {
     ports.forEach(function(ppp) {
       log("Trying : " + ppp.path + "\n");
       chrome.serial.connect(ppp.path, {bitrate: baud}, function(data) {
+        function onRTSTimeout() { chrome.serial.setControlSignals(data.connectionId, {dtr:false, rts:false}, function() {}); }
+        function onCtrlSigSet() { setTimeout(onRTSTimeout, 300);  }
         if (!chrome.runtime.lastError && data) {
           devices[data.connectionId] = {path:ppp.path, str:""};
-          chrome.serial.send(data.connectionId, str2ab("info\n"), onSend); 
+          chrome.serial.setControlSignals(data.connectionId, {dtr:false, rts:true}, onCtrlSigSet);
         }
-        
       });
     });
   }
@@ -190,6 +194,8 @@ function onSerialString() {
        } else if (deviceType == VTHING_H801) {
          $("#panelCustom").removeClass("hidden");
          $("#panelMQTT").removeClass("hidden");
+       } else if (deviceType == VESPRINO_V1) {
+         $("#vESPrino_tab").removeClass("hidden");
        }
      }
      
@@ -348,6 +354,10 @@ function setCo2(val) {
 
 function onUpdIntButton() {
   chrome.serial.send(connectionId, str2ab("wsi " +  $("#upd_int").val() + "\n"), onSend); 
+}
+
+function onUpdThrButton() {
+  chrome.serial.send(connectionId, str2ab("wst " +  $("#upd_thr").val() + "\n"), onSend); 
 }
 
 function onResetFact() {

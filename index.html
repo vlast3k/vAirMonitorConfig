@@ -40,7 +40,7 @@
     <li role="presentation">               <a href="#repSAPIOT"     aria-controls="repSAPIOT"     role="tab" data-toggle="tab">SAP HCP IoT</a></li>
     <li role="presentation">               <a href="#repCustomHTTP" aria-controls="repCustomHTTP" role="tab" data-toggle="tab">Custom HTTP</a></li>
     <li role="presentation">               <a href="#repCustomMQTT" aria-controls="repCustomMQTT" role="tab" data-toggle="tab">Custom MQTT</a></li>
-    <li role="presentation">               <a href="#vESPrino" aria-controls="vESPrino" role="tab" data-toggle="tab">vESPrino Setup</a></li>
+    <li role="presentation" class="hidden"><a href="#vESPrino_tab" aria-controls="vESPrino" role="tab" data-toggle="tab">vESPrino Setup</a></li>
     <li role="presentation">               <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
   </ul>
 
@@ -69,20 +69,6 @@
                   				Set Wifi
                   			</button>
                       </form>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-xs-12">
-                      <form class="form-inline">
-                				<div class="form-group">
-                					<label for="upd_int">Update Interval (sec)</label>
-                					<input type="text" class="form-control" id="upd_int">
-                				</div>
-                  			<button id="updIntButton" class="btn btn-default">
-                  				Set
-                  			</button>
-                      </form>
-                      (default is 120 sec)
                     </div>
                   </div>
                 </div>
@@ -188,6 +174,7 @@
                   					<label for="customURL">URL</label>
                   					<input type="text" class="form-control" id="customURL">
                   					<!--</div>-->
+                  					<p></p>
                 					<button id="customBtn" type="submit" class="btn btn-default">	Set URL	</button>
                 				</div>
                 			<!--</form>-->
@@ -218,19 +205,23 @@
                 					<input type="text" class="form-control" id="mqttHost">
                 					<label for="mqttPort">Port</label>
                 					<input type="text" class="form-control" id="mqttPort">
-                					<label for="mqttClientId">Client ID</label>
-                					<input type="text" class="form-control" id="mqttClientId">
+                					<p></p>
                 					<label for="mqttUser">User</label>
                 					<input type="text" class="form-control" id="mqttUser">
                 					<label for="mqttPass">Pass</label>
                 					<input type="text" class="form-control" id="mqttPass">
+                					<p></p>
+                					<label for="mqttClientId">Client ID</label>
+                					<input type="text" class="form-control" id="mqttClientId">
                 					<label for="mqttTopic">Topic</label>
                 					<input type="text" class="form-control" id="mqttTopic">
+                					<p></p>
                 					<label for="mqttValue">Value Format</label>
                 					<input type="text" class="form-control" id="mqttValue" value="dass">
                 					<button id="setMQTT" type="submit" class="btn btn-default">	Set MQTT	</button>
                 				</div>
                 			</form>
+            					<p></p>
                 			SSL is not yet supported for MQTT. For <b>Value Format</b> use <u>%s</u> as a place holder for the CO2 ppm value. (e.g. {"data":%s,"write":true,"ispublic":true} for Beebotte)
                     </div>
                 	</div>
@@ -245,7 +236,7 @@
                 </div>
              </div>
          </div>
-    <div role="tabpanel" class="tab-pane" id="vESPrino">
+    <div role="tabpanel" class="tab-pane" id="vESPrino_tab">
       <div class="panel panel-default ">
         <div class="panel-body">
                   <div class="row">
@@ -306,6 +297,32 @@
     <div role="tabpanel" class="tab-pane" id="settings">
         <div class="panel panel-default ">
             <div class="panel-body">
+              
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <form class="form-inline">
+                				<div class="form-group">
+                					<label for="upd_int">Update Interval (sec)</label>
+                					<input type="text" class="form-control" id="upd_int">
+                				</div>
+                  			<button id="updIntButton" class="btn btn-default">
+                  				Set
+                  			</button>
+                  			(default is 120 sec)
+                  			<p/>
+                				<div class="form-group">
+                					<label for="upd_thr">Update Threshold (ppm)</label>
+                					<input type="text" class="form-control" id="upd_thr">
+                				</div>
+                  			<button id="updThrButton" class="btn btn-default">
+                  				Set
+                  			</button>
+
+                      </form>
+                      
+                    </div>
+                  </div>              
+                  <p></p>
                   <div class="row">
                     <div class="col-xs-12">
                 			<form class="form-inline">
@@ -333,9 +350,9 @@
                 					
                 				</div>
               		  	<div class="form-group hidden" id="otherSettingsVthing">
-                					<button id="resetCal" type="submit" class="btn btn-default">Reset Calibration</button>
+                					<button id="resetCal" type="submit" class="btn btn-default">Re-Calibrate</button>
                 					<button id="resetAll" type="submit" class="btn btn-default">Factory Reset</button>
-                					<p/>
+                					<p></p>
                 					<button id="ota" type="submit" class="btn btn-default">Update WiFi Firmware</button>
               				</div>
                 			</form>
