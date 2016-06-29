@@ -128,8 +128,8 @@ function findDevice(onDeviceFound, text, baud) {
     ports.forEach(function(ppp) {
       log("Trying : " + ppp.path + "\n");
       chrome.serial.connect(ppp.path, {bitrate: baud}, function(data) {
-        function onRTSTimeout() { chrome.serial.setControlSignals(data.connectionId, {dtr:false, rts:false}, function() {}); }
-        function onCtrlSigSet() { setTimeout(onRTSTimeout, 300);  }
+        function onRTSTimeout() {chrome.serial.setControlSignals(data.connectionId, {dtr:false, rts:false}, function() {}); }
+        function onCtrlSigSet() {setTimeout(onRTSTimeout, 1000);  }
         if (!chrome.runtime.lastError && data) {
           devices[data.connectionId] = {path:ppp.path, str:""};
           chrome.serial.setControlSignals(data.connectionId, {dtr:false, rts:true}, onCtrlSigSet);
