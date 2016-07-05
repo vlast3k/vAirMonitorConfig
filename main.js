@@ -22,8 +22,52 @@ $("#setMQTT").click(onSetMQTT);
 $("#setBRFBtn").click(onSetBRFBtn);
 $("#ota").click(onBtnOTA);
 $("#resetESP").click(onResetESP);
+$("#bttnSetAction").click(onBttnSetAction);
+$("#rfidSetAction").click(onRFIDSetAction);
+$("#cmdSetAction").click(onCMDSetAction);
 
 
+
+function onBttnSetAction() {
+  var selTabId = $('#veButtonTabContent').find('.tab-pane.active').attr("id");
+  if (selTabId == "bttnDweetio") {
+    sendSerial('vespBttnA "dw","' + $("#bttnDwFor").val() + '","' + encodeURIComponent($("#bttnDwParams").val()) + '"', "OK >")
+  } else if (selTabId == "bttnIfttt") {
+    sendSerial('vespBttnA "if","' + $("#bttnIfEvent").val() + '","' + $("#bttnIfKey").val() + '"', "OK >")
+  } else if (selTabId == "bttnCustomhttp") {
+    sendSerial('vespBttn ' + $("#bttnCustomUrl").val(), "OK >")
+  }
+}
+
+function onRFIDSetAction() {
+  var selTabId = $('#veRFIDTabContent').find('.tab-pane.active').attr("id");
+  if (selTabId == "rfidDweetio") {
+    sendSerial('vespRFID "dw","' + $("#rfidDwFor").val() + '","' + encodeURIComponent($("#rfidDwParams").val()) + '"', "OK >")
+  } else if (selTabId == "bttnIfttt") {
+    sendSerial('vespRFID "if","' + $("#rfidIfEvent").val() + '","' + $("#rfidIfKey").val() + '"', "OK >")
+  } else if (selTabId == "rfidCustomhttp") {
+    sendSerial('vespRFID ' + $("#rfidCustomUrl").val(), "OK >")
+  }
+}
+
+function onCMDSetAction() {
+  var selTabId = $('#veCMDTabContent').find('.tab-pane.active').attr("id");
+  if (selTabId == "cmdDweetio") {
+    sendSerial('vespDWCmd ' + $("#cmdDwFor").val(), "OK >")
+  } 
+}
+
+//on change hide all divs linked to select and show only linked to selected option
+$('.mystaff_hide').addClass('collapse');
+$('#sel1').change(function(){
+    var selector = '#sel1_' + $(this).val();
+
+    //hide all elements
+    $('.mystaff_hide').collapse('hide');
+
+    //show only element connected to selected option
+    $(selector).collapse('show');
+});
 
  function log(msg, skipNL) {
    var buffer = document.querySelector('#buffer');
@@ -84,9 +128,10 @@ function onSerialSend() {
 
 var VAIR = "vAir";
 var VTHING = "vThing - CO2";
-var VTHING_STARTER = "vThing - S"
+var VESPRINO_V1 = "vThing - S"
 var VTHING_H801    = "vThing - H8"
-var VESPRINO_V1    = "vESPrino v1"
+var VTHING_STARTER = "sadsa"
+//var VESPRINO_V1    = "vESPrino v1"
 
 var deviceType = null;
 
@@ -115,9 +160,9 @@ function findDevice(onDeviceFound, text, baud) {
     var s = devices[conn.connectionId].str;
     if (s.indexOf(VAIR) > -1)         deviceType = VAIR;
     else if (s.indexOf(VTHING) > -1)  deviceType = VTHING;
-    else if (s.indexOf(VTHING_STARTER) > -1)  deviceType = VTHING_STARTER;
+  //  else if (s.indexOf(VTHING_STARTER) > -1)  deviceType = VTHING_STARTER;
     else if (s.indexOf(VTHING_H801) > -1)  deviceType = VTHING_H801;
-    //else if (s.indexOf(VESPRINO_V1) > -1)  deviceType = VESPRINO_V1;
+    else if (s.indexOf(VESPRINO_V1) > -1)  deviceType = VESPRINO_V1;
     else return;
     onIntDeviceFound(devices[conn.connectionId].path, conn.connectionId);
   }
