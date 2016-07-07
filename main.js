@@ -31,7 +31,7 @@ $("#cmdSetAction").click(onCMDSetAction);
 function onBttnSetAction() {
   var selTabId = $('#veButtonTabContent').find('.tab-pane.active').attr("id");
   if (selTabId == "bttnDweetio") {
-    sendSerial('vespBttnA "dw","' + $("#bttnDwFor").val() + '","' + encodeURIComponent($("#bttnDwParams").val()) + '"', "OK >")
+    sendSerial('vespBttnA "dw","' + $("#bttnDwFor").val() + '","' + ($("#bttnDwParams").val()) + '"', "OK >")
   } else if (selTabId == "bttnIfttt") {
     sendSerial('vespBttnA "if","' + $("#bttnIfEvent").val() + '","' + $("#bttnIfKey").val() + '"', "OK >")
   } else if (selTabId == "bttnCustomhttp") {
@@ -42,9 +42,9 @@ function onBttnSetAction() {
 function onRFIDSetAction() {
   var selTabId = $('#veRFIDTabContent').find('.tab-pane.active').attr("id");
   if (selTabId == "rfidDweetio") {
-    sendSerial('vespRFID "dw","' + $("#rfidDwFor").val() + '","' + encodeURIComponent($("#rfidDwParams").val()) + '"', "OK >")
+    sendSerial('vespRFIDA "dw","' + $("#rfidDwFor").val() + '","' + ($("#rfidDwParams").val()) + '"', "OK >")
   } else if (selTabId == "bttnIfttt") {
-    sendSerial('vespRFID "if","' + $("#rfidIfEvent").val() + '","' + $("#rfidIfKey").val() + '"', "OK >")
+    sendSerial('vespRFIDA "if","' + $("#rfidIfEvent").val() + '","' + $("#rfidIfKey").val() + '"', "OK >")
   } else if (selTabId == "rfidCustomhttp") {
     sendSerial('vespRFID ' + $("#rfidCustomUrl").val(), "OK >")
   }
