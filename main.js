@@ -54,7 +54,7 @@ function onCMDSetAction() {
   var selTabId = $('#veCMDTabContent').find('.tab-pane.active').attr("id");
   if (selTabId == "cmdDweetio") {
     sendSerial('vespDWCmd ' + $("#cmdDwFor").val(), "OK >")
-  } 
+  }
 }
 
 //on change hide all divs linked to select and show only linked to selected option
@@ -123,7 +123,7 @@ function onSerialSend() {
   } else {
      sendSerial($("#serial").val());
   }
-  //chrome.serial.send(connectionId, str2ab($("#serial").val() +"\n"), onSend); 
+  //chrome.serial.send(connectionId, str2ab($("#serial").val() +"\n"), onSend);
 }
 
 var VAIR = "vAir";
@@ -138,7 +138,7 @@ var deviceType = null;
 function findDevice(onDeviceFound, text, baud) {
   var devices = {};
   var findInterval = setInterval(function() { log(" . ", true);  }, 500);
-  
+
   function onIntDeviceFound(comPort, connId) {
     clearInterval(findInterval);
     clearTimeout(foundTimeout);
@@ -148,11 +148,11 @@ function findDevice(onDeviceFound, text, baud) {
     chrome.serial.onReceive.removeListener(onRecvFindDev);
     setTimeout(function() {onDeviceFound(comPort)}, 1000);
   }
-  
+
   var foundTimeout = setTimeout(function() {
     onIntDeviceFound(null);
   }, 10000);
-  
+
   function onRecvFindDev(conn) {
     var str = ab2str(conn.data);
     log ("[" + ab2str(conn.data).trim() + "]");
@@ -183,7 +183,7 @@ function findDevice(onDeviceFound, text, baud) {
     });
   }
   log (text, true);
-  chrome.serial.getDevices(onGetDevices); 
+  chrome.serial.getDevices(onGetDevices);
 
 }
 
@@ -216,7 +216,7 @@ function onSerialString() {
        document.getElementById('btnAutoConnect').className="btn btn-danger";
        document.getElementById('btnAutoConnect').value ="Not Found";
      } else {
-       log ("\n" + deviceType  + " found on : " + comPort); 
+       log ("\n" + deviceType  + " found on : " + comPort);
        chrome.serial.connect(comPort, {bitrate: 9600}, onConnect2);
        document.getElementById('btnAutoConnect').className="btn btn-success";
        document.getElementById('btnAutoConnect').value ="Connected";
@@ -243,10 +243,10 @@ function onSerialString() {
          $("#vESPrino_tab").removeClass("hidden");
        }
      }
-     
+
    }
-   
-   
+
+
 function reconnect() {
    if (connectionId) {
      chrome.serial.disconnect(connectionId, function() {
@@ -257,10 +257,10 @@ function reconnect() {
        onbtnAutoConnect();
      })
    }
-  
-  
+
+
 }
-   
+
 function onbtnAutoConnect() {
    if (connectionId) {
      chrome.serial.disconnect(connectionId, function() {
@@ -274,12 +274,12 @@ function onbtnAutoConnect() {
      document.getElementById('btnAutoConnect').value ="Searching...";
      findDevice(onVAirFound, "Searching for v.Air ", 9600);
    }
-} 
+}
 
  function onSetTs() {
-   chrome.serial.send(connectionId, str2ab("tskey " + document.getElementById('tsKey').value + "\n"), onSend); 
+   chrome.serial.send(connectionId, str2ab("tskey " + document.getElementById('tsKey').value + "\n"), onSend);
  }
- 
+
  function sendSerial(str, _onOKString, _onOK) {
    log("sending: " + str);
    if (_onOK) {
@@ -289,28 +289,28 @@ function onbtnAutoConnect() {
      onOKString = ">";
      onOK = _onOKString;
    }
-   chrome.serial.send(connectionId, str2ab(str + "\n"), onSend); 
+   chrome.serial.send(connectionId, str2ab(str + "\n"), onSend);
  }
- 
+
  function onBtnUbi() {
    log ("ubi:" +   $("#ubik").val() + "," +   $("#ubiv").val())
-   sendSerial("ubik " + $("#ubik").val(), 
+   sendSerial("ubik " + $("#ubik").val(),
      function() {sendSerial("ubiv " + $("#ubiv").val()) } );
  }
- 
+
  function alertConfigStored() {
    log("\nConfiguration Stored\n");
  }
- 
+
  function onBtnSAP() {
-   
+
    var cfgiot2 = function() { sendSerial("cfgiot2 \"" + $("#sapToken").val() + "\",\"" + $("#sapBtnMessageId").val()  + "\"",
-                                   ">", (deviceType == VTHING_STARTER)? alertConfigStored :  onbtnAutoConnect)};   
+                                   ">", (deviceType == VTHING_STARTER)? alertConfigStored :  onbtnAutoConnect)};
    var cfgiot1 = function() { sendSerial("cfgiot1 \"" + $("#sapHost").val()     + "\",\""+ $("#sapDeviceId").val() + "\",\""
 //                                 + $("#sapMessageId").val() + "\",\""+ $("#sapVarName").val()  + "\"",
                                    + $("#sapMessageId").val() + "\",\"temp\"",
                                    ">", cfgiot2) };
-   var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot1) } 
+   var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot1) }
    var sap   =  function() { sendSerial("sap 1", proxy); }
    //log("sadsadsadsa: " + deviceType + "   "  + (deviceType == VAIR));
     if (deviceType == VAIR) {
@@ -319,40 +319,57 @@ function onbtnAutoConnect() {
       cfgiot1()
     }
  }
- 
+
  function onBtnOTA() {
    var otacmd = function() { sendSerial("otah", "GOT IP", reconnect) };
-   
+
     if (deviceType == VAIR) {
       sendSerial("proxy", "GOT IP", otacmd)
     } else {
       otacmd();
     }
-   
+
  }
 
  function onBtnCustom() {
-   var ss = $("#customURL").val();
+   var ss = $("#customURL").val().trim();
+   var res = ss.split("\n")
+               .filter(function(v) {return v.trim()})
+               .map   (function(v) {return v.trim()});
+   console.log(res);
+   var lastFunc;
+   for (var i=res.length - 1; i >= 0; i--) {
+     lastFunc = (function(idx, fff) {
+       return function() {sendSerial('custom_url_add "' + idx + '","' + res[idx] + '"', "ready >", fff )};
+
+     })(i, lastFunc);
+
+   }
+   var f1 = function() {sendSerial('custom_url_clean', "ready >", lastFunc)};
+
+  // f1();
+   /*
    var cfgiot = function() { sendSerial("cfggen" + (ss ? (" " + ss) : ""), "DONE", reconnect) };
-   var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot) } 
+   var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot) }
    var sap   =  function() { sendSerial("sap " + (ss?"1":"0"), proxy); }
-   
+
     if (deviceType == VAIR) {
       sap()
     } else {
       cfgiot()
     }
+    */
  }
 
  function onSetMQTT() {
    log("set mqtt, value= " + $("#mqttValue").val());
    var setMqttValue= function() {sendSerial("cfg_mqval " + $("#mqttValue").val(), "DONE", reconnect); }
    var setMqttCore = function() {
-     sendSerial("cfg_mqtt \"" + $("#mqttHost").val() + "\",\"" + $("#mqttPort").val() + "\",\"" + $("#mqttClientId").val() + "\",\"" 
+     sendSerial("cfg_mqtt \"" + $("#mqttHost").val() + "\",\"" + $("#mqttPort").val() + "\",\"" + $("#mqttClientId").val() + "\",\""
                                                       + $("#mqttUser").val() + "\",\"" + $("#mqttPass").val() + "\",\"" + $("#mqttTopic")   .val()+ "\"",
                                         "DONE", setMqttValue); }
    var sap   =  function() { sendSerial("sap 1", proxy, null); }
-   var proxy =  function() { sendSerial("proxy", "GOT IP", setMqttCore); } 
+   var proxy =  function() { sendSerial("proxy", "GOT IP", setMqttCore); }
 
  // ((deviceType == VAIR) ? sap : setMqttCore)();
     // }
@@ -362,12 +379,12 @@ function onbtnAutoConnect() {
       setMqttCore()
     }
  }
- 
+
  function onBtnTestCfg() {
    sendSerial("test");
  }
- 
- var brg = 50; 
+
+ var brg = 50;
  function onBrgPlus() {
    if (brg > 150) return;
    else setBrg (brg+=10);
@@ -377,8 +394,8 @@ function onbtnAutoConnect() {
    if (brg <= 10) setBrg(brg = 1);
    else setBrg (brg-=10);
  }
- 
- var co2 = 400; 
+
+ var co2 = 400;
  function onCo2Plus() {
    if (co2 > 2400) return;
    else setCo2(co2+=100);
@@ -390,45 +407,45 @@ function onbtnAutoConnect() {
  }
 
 function setBrg(val) {
-  chrome.serial.send(connectionId, str2ab("brg " + brg + "\n"), onSend); 
+  chrome.serial.send(connectionId, str2ab("brg " + brg + "\n"), onSend);
 }
 
 function setCo2(val) {
-  chrome.serial.send(connectionId, str2ab("ppm " +  co2+ "\n"), onSend); 
+  chrome.serial.send(connectionId, str2ab("ppm " +  co2+ "\n"), onSend);
 }
 
 function onUpdIntButton() {
-  chrome.serial.send(connectionId, str2ab("wsi " +  $("#upd_int").val() + "\n"), onSend); 
+  chrome.serial.send(connectionId, str2ab("wsi " +  $("#upd_int").val() + "\n"), onSend);
 }
 
 function onUpdThrButton() {
-  chrome.serial.send(connectionId, str2ab("wst " +  $("#upd_thr").val() + "\n"), onSend); 
+  chrome.serial.send(connectionId, str2ab("wst " +  $("#upd_thr").val() + "\n"), onSend);
 }
 
 function onResetFact() {
-  chrome.serial.send(connectionId, str2ab("factory\n"), onSend); 
+  chrome.serial.send(connectionId, str2ab("factory\n"), onSend);
 }
 
 function onResetCal() {
-  chrome.serial.send(connectionId, str2ab("rco\n"), onSend); 
+  chrome.serial.send(connectionId, str2ab("rco\n"), onSend);
 }
 
 $("#setPPMBtn").click(onSetPPMBtn);
 $("#setColorsBtn").click(onSetColorsBtn);
 function onSetPPMBtn() {
-  chrome.serial.send(connectionId, str2ab("ppx " +  $("#setPPM").val() + "\n"), onSend); 
+  chrome.serial.send(connectionId, str2ab("ppx " +  $("#setPPM").val() + "\n"), onSend);
 }
 
 function onSetColorsBtn() {
- chrome.serial.send(connectionId, str2ab("lt " +  $("#setColors").val() + " \n"), onSend); 
+ chrome.serial.send(connectionId, str2ab("lt " +  $("#setColors").val() + " \n"), onSend);
 }
 
 function onSetBRFBtn() {
- chrome.serial.send(connectionId, str2ab("brf " +  ($("#setBRF").val()*10) + " \n"), onSend); 
+ chrome.serial.send(connectionId, str2ab("brf " +  ($("#setBRF").val()*10) + " \n"), onSend);
 }
 
 function onDebug() {
-  chrome.serial.send(connectionId, str2ab("debug\n"), onSend); 
+  chrome.serial.send(connectionId, str2ab("debug\n"), onSend);
 }
 
 function onSetWifi() {
@@ -441,7 +458,7 @@ function onSetWifi() {
 function onResetESP() {
   chrome.serial.setControlSignals(connectionId, {rts: true, dtr:true}, function(res) {log("set rts : " + res)});
   setTimeout(function() {chrome.serial.setControlSignals(connectionId, {rts: false, dtr:false}, function(res) {log("set rts : " + res)})}, 1000)
-  
+
 }
 
 function onSend(data) {
