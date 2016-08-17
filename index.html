@@ -93,7 +93,7 @@
                     <div class="row" >
                         <div class="col-md-10">
                                 <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
-                                    Test Configuration (send 567 ppm)
+                                    Test Configuration
                                 </button>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
                     <div class="row" >
                         <div class="col-md-10">
                                 <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
-                                    Test Configuration (send 567 ppm)
+                                    Test Configuration
                                 </button>
                         </div>
                     </div>
@@ -156,7 +156,7 @@
                     <div class="row" >
                         <div class="col-md-10">
                                 <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
-                                    Test Configuration (send 567 ppm)
+                                    Test Configuration
                                 </button>
                         </div>
                     </div>
@@ -171,7 +171,14 @@
                 			<!--<form class="form-inline">-->
                 				<div class="form-group">
                 				  <!--<div class="col-xs-6">-->
-                  					<label for="customURL">URL</label>
+                  					<label for="customURL">URLs to invoke</label>
+                            <br>Each line is sent as a separate GET request
+                            <br><i>Use those placeholders for text replacement:</i>
+                            <br>(With Temp sensor)<b>%TEMP%</b> - Temperature in (C); <b>%HUM%</b> - Relative Humidity in (%);
+                            <br>(With Pressure sensor)<b>%PRES%</b> - Pressure in (hPa); <b>%ALT%</b> - Altitude in (m);
+                            <br>(With CO2 Sensor)<b>%CO2%</b> - CO2 Concentration in (PPM);
+                            <br>(With Dust Sensor)<b>%PM25%</b>,<b>%PM10%</b> Dust Level for PM2.5 / PM10 in (umg/m3)
+
                   					<!--<input type="text" class="form-control" id="customURL">-->
                                     <textarea class="form-control" rows="5" id="customURL"></textarea>
                   					<!--</div>-->
@@ -188,7 +195,7 @@
                     <div class="row" >
                         <div class="col-md-10">
                                 <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
-                                    Test Configuration (send 567 ppm)
+                                    Test Configuration
                                 </button>
                         </div>
                     </div>
@@ -198,46 +205,62 @@
     <div role="tabpanel" class="tab-pane" id="repCustomMQTT">
       <div class="panel panel-default ">
         <div class="panel-body">
-                  <div class="row">
-                    <div class="col-xs-12">
-                			<form class="form-inline">
-                				<div class="form-group">
-                					<label for="mqttHost">Host</label>
-                					<input type="text" class="form-control" id="mqttHost">
-                					<label for="mqttPort">Port</label>
-                					<input type="text" class="form-control" id="mqttPort">
-                					<p></p>
-                					<label for="mqttUser">User</label>
-                					<input type="text" class="form-control" id="mqttUser">
-                					<label for="mqttPass">Pass</label>
-                					<input type="text" class="form-control" id="mqttPass">
-                					<p></p>
-                					<label for="mqttClientId">Client ID</label>
-                					<input type="text" class="form-control" id="mqttClientId">
-                					<label for="mqttTopic">Topic</label>
-                					<input type="text" class="form-control" id="mqttTopic">
-                					<p></p>
-                					<label for="mqttValue">Messages</label>
-                          <textarea class="form-control" rows="7" id="mqttValue"></textarea>
-                					<!--<input type="text" class="form-control" id="mqttValue" value="dass">-->
-                					<button id="setMQTT" type="submit" class="btn btn-default">	Set MQTT	</button>
-                				</div>
-                			</form>
-            					<p></p>
-                			SSL is not yet supported for MQTT. For <b>Value Format</b> use <u>%s</u> as a place holder for the CO2 ppm value. (e.g. {"data":%s,"write":true,"ispublic":true} for Beebotte)
-                    </div>
-                	</div>
-                    <br>
-                    <div class="row" >
-                        <div class="col-md-10">
-                                <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
-                                    Test Configuration (send 567 ppm)
-                                </button>
-                        </div>
-                    </div>
-                </div>
-             </div>
-         </div>
+          <div class="row">
+            <div class="col-xs-10">
+              <label for="mqttHost">Host</label>
+              <input type="text" class="form-control" id="mqttHost">
+            </div>
+            <div class="col-xs-2">
+              <label for="mqttPort">Port</label>
+              <input type="text" class="form-control" id="mqttPort">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-6">
+              <label for="mqttUser">User</label>
+              <input type="text" class="form-control" id="mqttUser">
+            </div>
+            <div class="col-xs-6">
+              <label for="mqttPass">Pass</label>
+              <input type="text" class="form-control" id="mqttPass">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-6">
+              <label for="mqttClientId">Client ID</label>
+              <input type="text" class="form-control" id="mqttClientId">
+            </div>
+            <div class="col-xs-6">
+              <label for="mqttTopic">Topic</label>
+              <input type="text" class="form-control" id="mqttTopic">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+    					<label for="mqttValue">Messages</label>
+              <br>Each line is sent as a separate MQTT Message
+              <br><i>Use those placeholders for text replacement:</i>
+              <br>(With Temp sensor)<b>%TEMP%</b> - Temperature in (C); <b>%HUM%</b> - Relative Humidity in (%);
+              <br>(With Pressure sensor)<b>%PRES%</b> - Pressure in (hPa); <b>%ALT%</b> - Altitude in (m);
+              <br>(With CO2 Sensor)<b>%CO2%</b> - CO2 Concentration in (PPM);
+              <br>(With Dust Sensor)<b>%PM25%</b>,<b>%PM10%</b> Dust Level for PM2.5 / PM10 in (umg/m3)
+              <textarea class="form-control" rows="3" id="mqttValue"></textarea>
+    					<!--<input type="text" class="form-control" id="mqttValue" value="dass">-->
+    					<button id="setMQTT" type="submit" class="btn btn-default">	Set MQTT	</button>
+    				</div>
+  					<p></p>
+      			SSL is not yet supported for MQTT. (e.g. {"data":%CO2%,"write":true,"ispublic":true} for Beebotte)
+          </div>
+          <div class="row">
+            <div class="col-md-10">
+              <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
+                Test Configuration
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div role="tabpanel" class="tab-pane" id="vESPrino_tab">
       <div class="panel panel-default ">
         <div class="panel-body">
