@@ -191,6 +191,8 @@ function onConnect2(conn) {
   //log ("Connected to: " + JSON.stringify(conn));
   connectionId = conn.connectionId;
   chrome.serial.onReceive.addListener(onReceiveCallback);
+  sendSerial("info", "--- Setup DONE ---", loadPropertiesFromESP);
+  //loadPropertiesFromESP();
 }
 
 var onReceiveCallback = function(info) {
@@ -201,13 +203,15 @@ var onReceiveCallback = function(info) {
 };
 
 function onSerialString() {
+  collectedSerialData += serialString;
   log ("[" + serialString.trim() + "]"); // + "\n waiting for : " + onOKString);
   if (serialString.indexOf(onOKString) > -1) {
     var ss = onOK;
     onOK = null;
-    ss && ss();
+    ss && ss(collectedSerialData);
   }
   serialString = "";
+  if (collectedSerialData.length > 10000) collectedSerialData = "";
 }
 
 
@@ -279,9 +283,12 @@ function onbtnAutoConnect() {
  function onSetTs() {
    chrome.serial.send(connectionId, str2ab("tskey " + document.getElementById('tsKey').value + "\n"), onSend);
  }
+ 
+ var collectedSerialData = "";
 
  function sendSerial(str, _onOKString, _onOK) {
    log("sending: " + str);
+   collectedSerialData = "";
    if (_onOK) {
      onOKString = _onOKString || ">";
      onOK = _onOK;
@@ -336,11 +343,11 @@ function onbtnAutoConnect() {
    console.log(ss);
    var res = ss.split("\n");
    console.log(res);
-   "ready >";
+   
    var lastFunc;
    for (var i=res.length - 1; i >= 0; i--) {
      lastFunc = (function(idx, fff) {
-       return function() {sendSerial('custom_url_add "' + idx + "','" + res[idx] + "'", "ready >", fff )};
+       return function() {sendSerial('custom_url_add "' + idx + '","' + res[idx] + '"', "ready >", fff )};
 
      })(i, lastFunc);
 
@@ -461,8 +468,83 @@ function onResetESP() {
 
 }
 
+function loadPropertiesFromESP() {
+  sendSerial("prop_list", "---vESPrinoCFG_end---", onPropListDone); 
+}
+
+function onPropListDone(data) {
+  if (data.indexOf("---vESPrinoCFG_start---") > -1 &&  data.indexOf("---vESPrinoCFG_end---") > -1 );
+  data = data.substring(data.indexOf("---vESPrinoCFG_start---"), data.indexOf("---vESPrinoCFG_end---"));
+  processConfigurationFromESP(data);
+}
+
 function onSend(data) {
 }
 
+var testCfgData = 'wifi.ssid=vladiHome\n' +
+                  'wifi.p1=0888414447\n'  +
+                  'fake=\n'  +
+                  'fake2\n'  +
+                  'custom_url_arr0=url1\n'  +
+                  'custom_url_arr1=url1\n'  +
+                  'custom_url_arr2=url1\n';
+
+var espMapping = {
+  "wifi.ssid":"#ssid",
+  "wifi.p1" : "#pass",
+  "custom_url_arr" : "#customURL",
+  "mqtt_msg_arr" : "#mqttValue"
+}
+
+function combineLines(obj, prefix) {
+  var whole = "";
+  for (var i=0; i < 10; i++) {
+    if (!obj[prefix + i]) break;
+    whole += obj[prefix + i] + "\n";
+    delete obj[prefix + i];
+  }
+  
+  whole && (obj[prefix] = whole);
+}
+
+function processConfigurationFromESP(data) {
+  var lines = data.split("\n");
+  var obj = {};
+  for (var i=0; i < lines.length; i++) {
+    var t = lines[i].indexOf("=");
+    if (t == -1) continue;
+    var key = lines[i].substring(0, t);
+    var value = lines[i].substring(t+1);
+    if (value.length == 0) continue;
+    obj[key] = value;
+  }
+  combineLines(obj, "custom_url_arr");
+  combineLines(obj, "mqtt_msg_arr");
+  
+  cleanAllInputs();
+  Object.keys(obj).forEach(function(key) {
+     $(espMapping[key]).val(obj[key]);
+  });
+  
+  //lines.forEach(handleCfgLine);
+}
+function mapInUI(key, value) {
+  
+}
+
+function cleanAllInputs() {
+  $(":input[type='text'][id!='serial']").val("");
+  $("textarea[id!='buffer']").val("");
+}
+
+function espCfgTest() {
+  processConfigurationFromESP(testCfgData);
+}
+
+function handleCfgLine(line) {
+  var spl = line.split("=");
+  var key = spl[0];
+  var value = spl[1];
+}
 //onSetMQTT();
 onbtnAutoConnect();
