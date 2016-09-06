@@ -341,22 +341,25 @@ function onbtnAutoConnect() {
 
  }
 
+ function createFunctionLinkedList(arr, createCommandCallback, onOKStr, lastFunc) {
+   for (var i=arr.length-1; i >= 0; i--) {
+     lastFunc = (function(idx, nextFunc) {
+       return function() {sendSerial(createCommandCallback(idx, res[idx]), onOKStr, nextFunc)};
+     })(i, lastFunc);
+   }
+   return lastFunc;
+ }
+
+ function urlsAppendThingSpeak(res) {
+   //if
+ }
  function onBtnCustom() {
    var ss = $("#customURL").val();
-   console.log(ss);
    var res = ss.split("\n");
-   console.log(res);
-   
-   var lastFunc;
-   for (var i=res.length - 1; i >= 0; i--) {
-     lastFunc = (function(idx, fff) {
-       return function() {sendSerial('custom_url_add "' + idx + '","' + res[idx] + '"', "ready >", fff )};
-
-     })(i, lastFunc);
-
-   }
-   var f1 = function() {sendSerial('custom_url_clean', "ready >", lastFunc)};
-
+   res = urlsAppendThingSpeak(res);
+   function cb = function(idx, path) { return 'custom_url_add "' + idx + "','" + path + "'"};
+   function flist = createFunctionLinkedList(res, cb);
+   var f1 = function() {sendSerial('custom_url_clean', "ready >", flist)};
    f1();
    /*
    var cfgiot = function() { sendSerial("cfggen" + (ss ? (" " + ss) : ""), "DONE", reconnect) };
