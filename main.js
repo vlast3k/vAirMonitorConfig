@@ -192,6 +192,7 @@ function onConnect2(conn) {
   connectionId = conn.connectionId;
   chrome.serial.onReceive.addListener(onReceiveCallback);
   sendSerial("info", "--- Setup DONE ---", loadPropertiesFromESP);
+  startNOPTimer();
   //loadPropertiesFromESP();
 }
 
@@ -254,6 +255,7 @@ function onSerialString() {
 function reconnect() {
    if (connectionId) {
      chrome.serial.disconnect(connectionId, function() {
+       endNOPTimer();
        connectionId = null;
        chrome.serial.onReceive.removeListener(onReceiveCallback);
        document.getElementById('btnAutoConnect').className="btn btn-info";
@@ -268,6 +270,7 @@ function reconnect() {
 function onbtnAutoConnect() {
    if (connectionId) {
      chrome.serial.disconnect(connectionId, function() {
+       endNOPTimer();
        connectionId = null;
        chrome.serial.onReceive.removeListener(onReceiveCallback);
        document.getElementById('btnAutoConnect').className="btn btn-info";
@@ -545,6 +548,21 @@ function handleCfgLine(line) {
   var spl = line.split("=");
   var key = spl[0];
   var value = spl[1];
+}
+
+var nopInterval;
+
+function startNOPTimer() {
+  endNOPTimer();
+  nopInterval = setInterval(onNOPInterval, 60000);
+}
+
+function onNOPInterval() {
+  chrome.serial.send(connectionId, str2ab("nop\n"), onSend);
+}
+
+function endNOPTimer() {
+  clearInterval(nopInterval);
 }
 //onSetMQTT();
 onbtnAutoConnect();
