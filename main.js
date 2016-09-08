@@ -191,7 +191,9 @@ function onConnect2(conn) {
   //log ("Connected to: " + JSON.stringify(conn));
   connectionId = conn.connectionId;
   chrome.serial.onReceive.addListener(onReceiveCallback);
-  sendSerial("info", "--- Setup DONE ---", loadPropertiesFromESP);
+  sendSerial("nop", "ready >", function() {
+    sendSerial("info", "ready >", loadPropertiesFromESP)
+  });
   startNOPTimer();
   //loadPropertiesFromESP();
 }
