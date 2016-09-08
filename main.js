@@ -344,7 +344,7 @@ function onbtnAutoConnect() {
  function createFunctionLinkedList(arr, createCommandCallback, onOKStr, lastFunc) {
    for (var i=arr.length-1; i >= 0; i--) {
      lastFunc = (function(idx, nextFunc) {
-       return function() {sendSerial(createCommandCallback(idx, res[idx]), onOKStr, nextFunc)};
+       return function() {sendSerial(createCommandCallback(idx, arr[idx]), onOKStr, nextFunc)};
      })(i, lastFunc);
    }
    return lastFunc;
@@ -357,8 +357,8 @@ function onbtnAutoConnect() {
    var ss = $("#customURL").val();
    var res = ss.split("\n");
    res = urlsAppendThingSpeak(res);
-   function cb = function(idx, path) { return 'custom_url_add "' + idx + "','" + path + "'"};
-   function flist = createFunctionLinkedList(res, cb);
+   var cb = function(idx, path) { return 'custom_url_add "' + idx + "','" + path + "'"};
+   var flist = createFunctionLinkedList(res, cb);
    var f1 = function() {sendSerial('custom_url_clean', "ready >", flist)};
    f1();
    /*
@@ -376,21 +376,28 @@ function onbtnAutoConnect() {
 
  function onSetMQTT() {
    log("set mqtt, value= " + $("#mqttValue").val());
-   var setMqttValue= function() {sendSerial("cfg_mqval " + $("#mqttValue").val(), "DONE", reconnect); }
-   var setMqttCore = function() {
-     sendSerial("cfg_mqtt \"" + $("#mqttHost").val() + "\",\"" + $("#mqttPort").val() + "\",\"" + $("#mqttClientId").val() + "\",\""
-                                                      + $("#mqttUser").val() + "\",\"" + $("#mqttPass").val() + "\",\"" + $("#mqttTopic")   .val()+ "\"",
-                                        "DONE", setMqttValue); }
-   var sap   =  function() { sendSerial("sap 1", proxy, null); }
-   var proxy =  function() { sendSerial("proxy", "GOT IP", setMqttCore); }
+   var ss = $("#mqttValue").val();
+   var res = ss.split("\n");
+   var cb = function(idx, path) { return 'mqtt_msg_add "' + idx + '"' + path};
+   var callMqttMsgAdd = createFunctionLinkedList(res, cb);
+  // f1();
+//   var callMqttValue= function() {sendSerial("cfg_mqval " + $("#mqttValue").val(), "DONE", reconnect); }
+   var callMqttSetup = function() {
+     sendSerial('mqtt_setup "' + $("#mqttHost").val()     + '","' + $("#mqttPort").val() + '","' 
+                               + $("#mqttClientId").val() + '","' + $("#mqttUser").val() + '","'
+                               + $("#mqttPass").val()     + '"', "ready >", callMqttMsgAdd); }
+   var callMqttMsgClean = function() {sendSerial('mqtt_msg_clean', "ready >", callMqttSetup)};
+   callMqttMsgClean();
+//   var sap   =  function() { sendSerial("sap 1", proxy, null); }
+//   var proxy =  function() { sendSerial("proxy", "GOT IP", setMqttCore); }
 
- // ((deviceType == VAIR) ? sap : setMqttCore)();
-    // }
-    if (deviceType == VAIR) {
-      sap()
-    } else {
-      setMqttCore()
-    }
+// // ((deviceType == VAIR) ? sap : setMqttCore)();
+//     // }
+//     if (deviceType == VAIR) {
+//       sap()
+//     } else {
+//       setMqttCore()
+//     }
  }
 
  function onBtnTestCfg() {
