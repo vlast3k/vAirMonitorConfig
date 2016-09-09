@@ -86,6 +86,7 @@ function loadAllSettings() {
   $(inputSelector).each(function() {
     var id = this.id;
    // log(id);
+   if (chrome.storage)
     chrome.storage.sync.get(this.id, function(value) {
       $("#" + id).val(value[id])
     })
@@ -288,7 +289,7 @@ function onbtnAutoConnect() {
  function onSetTs() {
    chrome.serial.send(connectionId, str2ab("tskey " + document.getElementById('tsKey').value + "\n"), onSend);
  }
- 
+
  var collectedSerialData = "";
 
  function sendSerial(str, _onOKString, _onOK) {
@@ -343,26 +344,42 @@ function onbtnAutoConnect() {
 
  }
 
- function createFunctionLinkedList(arr, createCommandCallback, onOKStr, lastFunc) {
+ function createFunctionLinkedList(arr, onOKStr, lastFunc) {
    for (var i=arr.length-1; i >= 0; i--) {
-     lastFunc = (function(idx, nextFunc) {
-       return function() {sendSerial(createCommandCallback(idx, arr[idx]), onOKStr, nextFunc)};
-     })(i, lastFunc);
+     lastFunc = (function(cmd, nextFunc) {
+       return function() {sendSerial(cmd, onOKStr, nextFunc)};
+     })(arr[i], lastFunc);
    }
    return lastFunc;
  }
 
- function urlsAppendThingSpeak(res) {
-   //if
+ function urlsAppendThingSpeak() {
+   var tsKey = $("#tsKey").val();
+   if (!tsKey) return res;
+   var tsFields = $("#ts_fields option").filter(":selected").map(function() {return $(this).text()});
+   var url = "#http://api.thingspeak.com/update?api_key=tsKey";
+   for (var i=1; i<=tsFields.length; i++) {
+     if (!tsFields[i-1]) continue;
+     url += "&field" + i + "=%" + tsFields[i-1] + "%";
+   }
+
+   console.log("ts url: " + url);
+   return url;
  }
+
  function onBtnCustom() {
    var ss = $("#customURL").val();
-   var res = ss.split("\n");
-   res = urlsAppendThingSpeak(res);
-   var cb = function(idx, path) { return 'custom_url_add "' + idx + "','" + path + "'"};
-   var flist = createFunctionLinkedList(res, cb);
-   var f1 = function() {sendSerial('custom_url_clean', "ready >", flist)};
-   f1();
+   var tsKey = $("#tsKey").val();
+   var res = ss.split("\n").filter(function(val) {return val});
+   res = res.concat(urlsAppendThingSpeak());
+   var cb = function(path, idx) { return 'custom_url_add "' + idx + '","' + path + '"'};
+   res = res.map(cb);
+   if (tsKey) res = ['prop_set "tsKey" "' + tsKey + '"'].concat(res);
+   res = ['custom_url_clean'].concat(res);
+   var flist = createFunctionLinkedList(res, "ready >");
+   //var f1 = function() {sendSerial('custom_url_clean', "ready >", flist)};
+  // var storeTSCfg = makeStoreTSCfg(f1);
+   flist();
    /*
    var cfgiot = function() { sendSerial("cfggen" + (ss ? (" " + ss) : ""), "DONE", reconnect) };
    var proxy =  function() { sendSerial("proxy", "GOT IP", cfgiot) }
@@ -385,7 +402,7 @@ function onbtnAutoConnect() {
   // f1();
 //   var callMqttValue= function() {sendSerial("cfg_mqval " + $("#mqttValue").val(), "DONE", reconnect); }
    var callMqttSetup = function() {
-     sendSerial('mqtt_setup "' + $("#mqttHost").val()     + '","' + $("#mqttPort").val() + '","' 
+     sendSerial('mqtt_setup "' + $("#mqttHost").val()     + '","' + $("#mqttPort").val() + '","'
                                + $("#mqttClientId").val() + '","' + $("#mqttUser").val() + '","'
                                + $("#mqttPass").val()     + '"', "ready >", callMqttMsgAdd); }
    var callMqttMsgClean = function() {sendSerial('mqtt_msg_clean', "ready >", callMqttSetup)};
@@ -484,7 +501,7 @@ function onResetESP() {
 }
 
 function loadPropertiesFromESP() {
-  sendSerial("prop_list", "---vESPrinoCFG_end---", onPropListDone); 
+  sendSerial("prop_list", "---vESPrinoCFG_end---", onPropListDone);
 }
 
 function onPropListDone(data) {
@@ -508,7 +525,14 @@ var espMapping = {
   "wifi.ssid":"#ssid",
   "wifi.p1" : "#pass",
   "custom_url_arr" : "#customURL",
-  "mqtt_msg_arr" : "#mqttValue"
+  "mqtt_msg_arr" : "#mqttValue",
+  "mqtt.server" : "#mqttHost",
+  "mqtt.port"   :"#mqttPort",
+  "mqtt.client" :"#mqttClientId",
+  "mqtt.user"   :"#mqttUser",
+  "mqtt.pass"   :"#mqttPass",
+  "mqtt.topic"  :"#mqttTopic",
+  "send.interval": "#upd_int"
 }
 
 function combineLines(obj, prefix) {
@@ -518,7 +542,7 @@ function combineLines(obj, prefix) {
     whole += obj[prefix + i] + "\n";
     delete obj[prefix + i];
   }
-  
+
   whole && (obj[prefix] = whole);
 }
 
@@ -535,16 +559,17 @@ function processConfigurationFromESP(data) {
   }
   combineLines(obj, "custom_url_arr");
   combineLines(obj, "mqtt_msg_arr");
-  
+
   cleanAllInputs();
   Object.keys(obj).forEach(function(key) {
-     $(espMapping[key]).val(obj[key]);
+     if ($("#" + key).length) $("#" + key).val(obj[key]);
+     else $(espMapping[key]).val(obj[key]);
   });
-  
+
   //lines.forEach(handleCfgLine);
 }
 function mapInUI(key, value) {
-  
+
 }
 
 function cleanAllInputs() {
@@ -577,4 +602,17 @@ function endNOPTimer() {
   clearInterval(nopInterval);
 }
 //onSetMQTT();
-onbtnAutoConnect();
+if (chrome.serial) onbtnAutoConnect();
+
+$(".select_dataid").each(ttt);
+function ttt() {
+  var sel = $(this).attr("default");
+  $(this).html(function() {return "<div class='form-group'><label>" + $(this).attr("label") + "</label>\
+                    <select class='form-control'><option></option><option>CO2</option><option>TEMP</option><option>HUM</option><option>PRES</option><option>ALT</option><option>ALIGHT</option></select>\
+                  </div>" });
+
+
+  $(this).find("select").val(sel);
+  }
+//$(".vladi1 select option:selected").text()
+//$("#ts_fields option").filter(":selected").map(function() {return $(this).text()})
