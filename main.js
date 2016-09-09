@@ -212,6 +212,7 @@ function onSerialString() {
   if (serialString.indexOf(onOKString) > -1) {
     var ss = onOK;
     onOK = null;
+    console.log("ss is: " + ss);
     ss && ss(collectedSerialData);
   }
   serialString = "";
@@ -347,7 +348,7 @@ function onbtnAutoConnect() {
  function createFunctionLinkedList(arr, onOKStr, lastFunc) {
    for (var i=arr.length-1; i >= 0; i--) {
      lastFunc = (function(cmd, nextFunc) {
-       return function() {sendSerial(cmd, onOKStr, nextFunc)};
+       return function() {sendSerial(cmd, onOKStr, nextFunc};
      })(arr[i], lastFunc);
    }
    return lastFunc;
@@ -376,7 +377,7 @@ function onbtnAutoConnect() {
    res = res.map(cb);
    if (tsKey) res = ['prop_set "tsKey" "' + tsKey + '"'].concat(res);
    res = ['custom_url_clean'].concat(res);
-   var flist = createFunctionLinkedList(res, "ready >");
+   var flist = createFunctionLinkedList(res, "ready >", function() {});
    //var f1 = function() {sendSerial('custom_url_clean', "ready >", flist)};
   // var storeTSCfg = makeStoreTSCfg(f1);
    flist();
@@ -539,7 +540,7 @@ function combineLines(obj, prefix) {
   var whole = "";
   for (var i=0; i < 10; i++) {
     if (!obj[prefix + i]) break;
-    whole += obj[prefix + i] + "\n";
+    if (!obj[prefix + i].startsWith("#")) whole += obj[prefix + i] + "\n";
     delete obj[prefix + i];
   }
 
