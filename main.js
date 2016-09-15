@@ -4,7 +4,7 @@ document.getElementById('brgMin') .addEventListener('click', onBrgMinus);
 document.getElementById('co2Plus').addEventListener('click', onCo2Plus);
 document.getElementById('co2Min') .addEventListener('click', onCo2Minus);
 document.getElementById('setWifi').addEventListener('click', onSetWifi);
-document.getElementById('tsBtn').addEventListener('click', onSetTs);
+document.getElementById('tsBtn').addEventListener('click', onBtnCustom);
 $("#btnAutoConnect").click(onbtnAutoConnect);
 $("#btnSerialSend").click(onSerialSend);
 $("#ssid").change(onSSIDChange);
@@ -348,7 +348,7 @@ function onbtnAutoConnect() {
  function createFunctionLinkedList(arr, onOKStr, lastFunc) {
    for (var i=arr.length-1; i >= 0; i--) {
      lastFunc = (function(cmd, nextFunc) {
-       return function() {sendSerial(cmd, onOKStr, nextFunc};
+       return function() {sendSerial(cmd, onOKStr, nextFunc)};
      })(arr[i], lastFunc);
    }
    return lastFunc;
@@ -358,7 +358,7 @@ function onbtnAutoConnect() {
    var tsKey = $("#tsKey").val();
    if (!tsKey) return res;
    var tsFields = $("#ts_fields option").filter(":selected").map(function() {return $(this).text()});
-   var url = "#http://api.thingspeak.com/update?api_key=tsKey";
+   var url = "#http://api.thingspeak.com/update?key=" + tsKey;
    for (var i=1; i<=tsFields.length; i++) {
      if (!tsFields[i-1]) continue;
      url += "&field" + i + "=%" + tsFields[i-1] + "%";
@@ -421,7 +421,7 @@ function onbtnAutoConnect() {
  }
 
  function onBtnTestCfg() {
-   sendSerial("test");
+   sendSerial("sendNow");
  }
 
  var brg = 50;
