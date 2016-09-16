@@ -294,7 +294,7 @@ function onbtnAutoConnect() {
  var collectedSerialData = "";
 
  function sendSerial(str, _onOKString, _onOK) {
-   log("sending: " + str);
+   //log("sending: " + str);
    collectedSerialData = "";
    if (_onOK) {
      onOKString = _onOKString || ">";
@@ -396,18 +396,15 @@ function onbtnAutoConnect() {
 
  function onSetMQTT() {
    log("set mqtt, value= " + $("#mqttValue").val());
-   var ss = $("#mqttValue").val();
-   var res = ss.split("\n");
-   var cb = function(idx, path) { return 'mqtt_msg_add "' + idx + '"' + path};
-   var callMqttMsgAdd = createFunctionLinkedList(res, cb);
-  // f1();
-//   var callMqttValue= function() {sendSerial("cfg_mqval " + $("#mqttValue").val(), "DONE", reconnect); }
-   var callMqttSetup = function() {
-     sendSerial('mqtt_setup "' + $("#mqttHost").val()     + '","' + $("#mqttPort").val() + '","'
+   var callMqttSetup = 'mqtt_setup "' + $("#mqttHost").val()     + '","' + $("#mqttPort").val() + '","'
                                + $("#mqttClientId").val() + '","' + $("#mqttUser").val() + '","'
-                               + $("#mqttPass").val()     + '"', "ready >", callMqttMsgAdd); }
-   var callMqttMsgClean = function() {sendSerial('mqtt_msg_clean', "ready >", callMqttSetup)};
-   callMqttMsgClean();
+                               + $("#mqttPass").val()     + '"';
+   var cb = function(path, idx) { return 'mqtt_msg_add "' + idx + '"' + path};
+   var res = $("#mqttValue").val().split("\n").filter(function(val) {return val});
+   res = res.map(cb);
+   res = [callMqttSetup, 'mqtt_msg_clean'].concat(res);
+   var flist = createFunctionLinkedList(res, "ready >", function() {});
+   flist();
 //   var sap   =  function() { sendSerial("sap 1", proxy, null); }
 //   var proxy =  function() { sendSerial("proxy", "GOT IP", setMqttCore); }
 
@@ -609,8 +606,10 @@ $(".select_dataid").each(ttt);
 function ttt() {
   var sel = $(this).attr("default");
   $(this).html(function() {return "<div class='form-group'><label>" + $(this).attr("label") + "</label>\
-                    <select class='form-control'><option></option><option>CO2</option><option>TEMP</option><option>HUM</option><option>PRES</option><option>ALT</option><option>ALIGHT</option></select>\
-                  </div>" });
+                    <select class='form-control'>\
+                      <option></option><option>CO2</option><option>TEMP</option><option>HUM</option><option>PRES</option>\
+                      <option>ALT</option><option>PM25</option><option>PM10</option><option>ALIGHT</option>\
+                    </select></div>" });
 
 
   $(this).find("select").val(sel);
