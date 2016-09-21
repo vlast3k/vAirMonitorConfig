@@ -567,7 +567,7 @@ function processConfigurationFromESP(data) {
      else $(espMapping[key]).val(obj[key]);
   });
 
-  if (!obj["rf.enabled"] || obj["rf.enabled"] == "false") $("#rfEnable").prop("checked", false);
+  if (!obj["rf.enabled"] || obj["rf.enabled"].startsWith("false")) $("#rfEnable").prop("checked", false);
   else $("#rfEnable").prop("checked", true);
   onRFEnableChange();
   //lines.forEach(handleCfgLine);
