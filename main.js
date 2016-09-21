@@ -25,6 +25,8 @@ $("#resetESP").click(onResetESP);
 $("#bttnSetAction").click(onBttnSetAction);
 $("#rfidSetAction").click(onRFIDSetAction);
 $("#cmdSetAction").click(onCMDSetAction);
+$("#rfEnable").change(onRFEnableChange);
+$("#setRF").click(onSetRF);
 
 
 
@@ -560,10 +562,14 @@ function processConfigurationFromESP(data) {
 
   cleanAllInputs();
   Object.keys(obj).forEach(function(key) {
-     if ($("#" + key).length) $("#" + key).val(obj[key]);
+     var el = $("[id='" + key + "']");
+     if (el.length) el.val(obj[key]);
      else $(espMapping[key]).val(obj[key]);
   });
 
+  if (!obj["rf.enabled"] || obj["rf.enabled"] == "false") $("#rfEnable").prop("checked", false);
+  else $("#rfEnable").prop("checked", true);
+  onRFEnableChange();
   //lines.forEach(handleCfgLine);
 }
 function mapInUI(key, value) {
@@ -616,3 +622,29 @@ function ttt() {
   }
 //$(".vladi1 select option:selected").text()
 //$("#ts_fields option").filter(":selected").map(function() {return $(this).text()})
+
+function onRFEnableChange() {
+  if ($("#rfEnable").is(':checked')) {
+    $("#rf_fields :input").removeAttr("disabled");
+  } else {
+    $('#rf_fields :input').attr("disabled","true");
+  }
+
+}
+
+$(".select_rfid").each(makeRfid);
+function makeRfid() {
+  var sel = $(this).attr("label");
+  $(this).html(function() {return '<div class="form-group"><label>' + sel + '&nbsp;</label><input type="text" id="rf.' + sel + '"/></div>'; });
+}
+
+function onSetRF() {
+  var cmdList = $(".select_rfid :input").map(function() {return 'prop_set "' + $(this).attr("id") + '","' + ($(this).val() || -1) + '"'});
+  cmdList = cmdList.get();
+  var xx = ["a"];
+  xx = xx.concat(cmdList);
+  cmdList = ['prop_set "rf.enabled","' + $("#rfEnable").is(":checked") + '"'].concat(cmdList);
+  var flist = createFunctionLinkedList(cmdList, "ready >", function() {});
+  flist();
+
+}
