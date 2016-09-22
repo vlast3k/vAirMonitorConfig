@@ -358,7 +358,7 @@ function onbtnAutoConnect() {
 
  function urlsAppendThingSpeak() {
    var tsKey = $("#tsKey").val();
-   if (!tsKey) return res;
+   if (!tsKey) return [];
    var tsFields = $("#ts_fields option").filter(":selected").map(function() {return $(this).text()});
    var url = "#http://api.thingspeak.com/update?key=" + tsKey;
    for (var i=1; i<=tsFields.length; i++) {
@@ -491,7 +491,12 @@ function onSetWifi() {
   var ssid = document.getElementById('ssid').value;
   var pass = document.getElementById('pass').value;
   var sapPass = document.getElementById('sapPass').value;
-  chrome.serial.send(connectionId, str2ab("wifi \"" + ssid + "\",\""+ pass + "\"" + (sapPass?",\"" + sapPass + "\"":"") + "\n"), onSend);
+  //chrome.serial.send(connectionId, str2ab("wifi \"" + ssid + "\",\""+ pass + "\"" + (sapPass?",\"" + sapPass + "\"":"") + "\n"), onSend);
+  sendSerial("wifi \"" + ssid + "\",\""+ pass + "\"" + (sapPass?",\"" + sapPass + "\"":""), "GOT IP", onSetWifiConnected);
+}
+
+function onSetWifiConnected() {
+  sendSerial("fupd");
 }
 
 function onResetESP() {
