@@ -1,6 +1,6 @@
 {
   "name": "vThings - Dual Sensor Configuration Utility",
-  "version": "6.1",
+  "version": "6.2",
   "manifest_version": 2,
   "permissions": ["serial", "storage"],
   "minimum_chrome_version": "23",
