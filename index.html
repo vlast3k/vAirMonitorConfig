@@ -38,6 +38,7 @@
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#setupWifi" aria-controls="setupWifi" role="tab" data-toggle="tab">WiFi</a></li>
         <li role="presentation"> <a href="#repThingSpeak" aria-controls="repThingSpeak" role="tab" data-toggle="tab">ThingSpeak</a></li>
+        <li role="presentation"> <a href="#repUbidots" aria-controls="repUbidots" role="tab" data-toggle="tab">Ubidots</a></li>
         <!-- <li role="presentation">               <a href="#repUbidots"    aria-controls="repUbidots"    role="tab" data-toggle="tab">Ubidots</a></li>
     <li role="presentation">               <a href="#repSAPIOT"     aria-controls="repSAPIOT"     role="tab" data-toggle="tab">SAP HCP IoT</a></li> -->
         <li role="presentation"> <a href="#repCustomHTTP" aria-controls="repCustomHTTP" role="tab" data-toggle="tab">Custom HTTP</a></li>
@@ -127,9 +128,43 @@
               </div>
             </div>
           </div>
-
         </div>
         <div role="tabpanel" class="tab-pane" id="repUbidots">
+          <div class="panel panel-default ">
+            <div class="panel-body">
+              <div class="row" >
+                <div class="col-xs-8 form-inline">
+                  <label for="ubiToken">Token</label>
+                  <input type="text" class="form-control" id="ubiToken">
+                  &nbsp;&nbsp;&nbsp;
+                  <label for="ubiDSLabel">DataSource <u>Label</u></label>
+                  <input type="text" class="form-control" id="ubiDSLabel">
+                </div>
+              </div>
+
+              <br/>
+              <div id="ubi_fields">
+                <div class="row">
+                  <div class="labelAndInput2" prefix="ubi" label="CO2" placeholder="Variable Label"></div>
+                  <div class="labelAndInput2" prefix="ubi" label="TEMP" placeholder="Variable Label"></div>
+                  <div class="labelAndInput2" prefix="ubi" label="HUM" placeholder="Variable Label"></div>
+                  <div class="labelAndInput2" prefix="ubi" label="PRES" placeholder="Variable Label"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="ubi" label="PM25" placeholder="Variable Label"></div>
+                  <div class="labelAndInput2" prefix="ubi" label="PM10" placeholder="Variable Label"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="ubiSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div role="tabpanel" class="tab-pane" id="repUbidots">
           <div class="panel panel-default ">
             <div class="panel-body">
               <div class="row">
@@ -148,7 +183,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div role="tabpanel" class="tab-pane" id="repSAPIOT">
           <div class="panel panel-default ">
             <div class="panel-body">

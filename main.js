@@ -5,6 +5,7 @@ document.getElementById('co2Plus').addEventListener('click', onCo2Plus);
 document.getElementById('co2Min') .addEventListener('click', onCo2Minus);
 document.getElementById('setWifi').addEventListener('click', onSetWifi);
 document.getElementById('tsBtn').addEventListener('click', onBtnCustom);
+$("#ubiSaveBtn").click(onBtnCustom);
 $("#btnAutoConnect").click(onbtnAutoConnect);
 $("#btnSerialSend").click(onSerialSend);
 $("#ssid").change(onSSIDChange);
@@ -28,7 +29,10 @@ $("#cmdSetAction").click(onCMDSetAction);
 $("#rfEnable").change(onRFEnableChange);
 $("#setRF").click(onSetRF);
 
-
+String.prototype.format = function () {
+  var args = arguments;
+  return this.replace(/\{(\d+)\}/g, function (m, n) { return args[n]; });
+};
 
 function onBttnSetAction() {
   var selTabId = $('#veButtonTabContent').find('.tab-pane.active').attr("id");
@@ -370,15 +374,55 @@ function onbtnAutoConnect() {
    return url;
  }
 
+ function readUBIPayload() {
+   var vars = {};
+   $("#ubi_fields :input").filter(".lbi").each(function() {if($(this).val()) vars[$(this).val()] = '%' + $(this).attr("data-label") + '%'});
+   return JSON.stringify(vars).replace(/"%/g,'%').replace(/%"/g,'%');
+ }
+
+ function processUbidotsURLConfig() {
+   var ubiToken = $("#ubiToken").val();
+   var ubiDSLabel = $("#ubiDSLabel").val();
+   if (!ubiToken || !ubiDSLabel) return[];
+   //var pay = readUBIPayload();
+   var res={};
+   res.method = "POST";
+   res.url = "http://things.ubidots.com/api/v1.6/devices/" + ubiDSLabel + "?token=" + ubiToken;
+   res.ct  = "application/json";
+   res.pay = readUBIPayload();
+   return ["#" + JSON.stringify(res)];
+ }
+
+ function processUbidotsStoreConfig() {
+   var store = {};
+   store.ubiToken = $("#ubiToken").val();
+   store.ubiDSLabel = $("#ubiDSLabel").val();
+   store.values ={};
+   $("#ubi_fields :input").filter(".lbi").each(function() {store.values[$(this).attr("data-label")] = $(this).val()});
+   return "prop_jset \"ubi.cfg\"" + JSON.stringify(store);
+ }
+
+ function processTSStoreConfig() {
+   return ['prop_set "tsKey" "' + $("#tsKey").val() + '"'];
+ }
+
  function onBtnCustom() {
    var ss = $("#customURL").val();
-   var tsKey = $("#tsKey").val();
    var res = ss.split("\n").filter(function(val) {return val});
+   res = res.concat(processUbidotsURLConfig());
    res = res.concat(urlsAppendThingSpeak());
-   var cb = function(path, idx) { return 'custom_url_add "' + idx + '","' + path + '"'};
+   var cb = function(path, idx) {
+     if (path.indexOf('\"') > -1) {
+       return 'custom_url_jadd "' + idx + '"' + path;
+     } else {
+       return 'custom_url_add "' + idx + '","' + path + '"'
+     }
+
+   };
    res = res.map(cb);
-   if (tsKey) res = ['prop_set "tsKey" "' + tsKey + '"'].concat(res);
    res = ['custom_url_clean'].concat(res);
+   res = res.concat(processTSStoreConfig());
+   res = res.concat(processUbidotsStoreConfig());
    var flist = createFunctionLinkedList(res, "ready >", function() {});
    //var f1 = function() {sendSerial('custom_url_clean', "ready >", flist)};
   // var storeTSCfg = makeStoreTSCfg(f1);
@@ -575,7 +619,19 @@ function processConfigurationFromESP(data) {
   if (!obj["rf.enabled"] || obj["rf.enabled"].startsWith("false")) $("#rfEnable").prop("checked", false);
   else $("#rfEnable").prop("checked", true);
   onRFEnableChange();
+  applyUbiDotsConfig(obj);
   //lines.forEach(handleCfgLine);
+}
+
+function applyUbiDotsConfig(obj) {
+  //u//bi.cfg={"ubiToken":"QE6KXlZsqWAffjPwM8lVqGzMfJMPri","ubiDSLabel":"test123","values":{"CO2":"var1","TEMP":"var2","HUM":"asd","PRES":"","PM25":"","PM10":"","undefined":""}}
+  if (!obj["ubi.cfg"]) return;
+  var par = JSON.parse(obj["ubi.cfg"]);
+  if (par) {
+    $("#ubiToken")  .val(par.ubiToken);
+    $("#ubiDSLabel").val(par.ubiDSLabel);
+    Object.keys(par.values).forEach(function(key) {$("#ubi" + key ).val(par.values[key])});
+  }
 }
 function mapInUI(key, value) {
 
@@ -642,6 +698,15 @@ function makeRfid() {
   var sel = $(this).attr("label");
   $(this).html(function() {return '<div class="form-group"><label>' + sel + '&nbsp;</label><input type="text" id="rf.' + sel + '"/></div>'; });
 }
+
+$(".labelAndInput2").each(function() {
+  var base = '<div class="col-xs-3 form-inline">\
+    <label for="lbi{0}">%{0}%</label>\
+    <input type="text" class="lbi form-control" data-label="{0}" id="{2}{0}" placeholder="{1}">\
+  </div>';
+  $(this).html(base.format($(this).attr("label"), $(this).attr("placeholder"), $(this).attr("prefix")));
+})
+
 
 function onSetRF() {
   var cmdList = $(".select_rfid :input").map(function() {return 'prop_set "' + $(this).attr("id") + '","' + ($(this).val() || -1) + '"'});
