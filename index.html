@@ -39,6 +39,7 @@
         <li role="presentation" class="active"><a href="#setupWifi" aria-controls="setupWifi" role="tab" data-toggle="tab">WiFi</a></li>
         <li role="presentation"> <a href="#repThingSpeak" aria-controls="repThingSpeak" role="tab" data-toggle="tab">ThingSpeak</a></li>
         <li role="presentation"> <a href="#repUbidots" aria-controls="repUbidots" role="tab" data-toggle="tab">Ubidots</a></li>
+        <li role="presentation"> <a href="#repBeebotte" aria-controls="repBeebotte" role="tab" data-toggle="tab">Beebotte</a></li>
         <!-- <li role="presentation">               <a href="#repUbidots"    aria-controls="repUbidots"    role="tab" data-toggle="tab">Ubidots</a></li>
     <li role="presentation">               <a href="#repSAPIOT"     aria-controls="repSAPIOT"     role="tab" data-toggle="tab">SAP HCP IoT</a></li> -->
         <li role="presentation"> <a href="#repCustomHTTP" aria-controls="repCustomHTTP" role="tab" data-toggle="tab">Custom HTTP</a></li>
@@ -158,6 +159,40 @@
                 <br>
                 <div class="row">
                   <button id="ubiSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="repBeebotte">
+          <div class="panel panel-default ">
+            <div class="panel-body">
+              <div class="row" >
+                <div class="col-xs-8 form-inline">
+                  <label for="beeChannel">Channel Name</label>
+                  <input type="text" class="form-control" id="beeChannel">
+                  &nbsp;&nbsp;&nbsp;
+                  <label for="beeToken">Channel Token</label>
+                  <input type="text" class="form-control" id="beeToken">
+                </div>
+              </div>
+
+              <br/>
+              <div id="bee_fields">
+                <div class="row">
+                  <div class="labelAndInput2" prefix="bee" label="CO2" placeholder="Resource Name"></div>
+                  <div class="labelAndInput2" prefix="bee" label="TEMP" placeholder="Resource Name"></div>
+                  <div class="labelAndInput2" prefix="bee" label="HUM" placeholder="Resource Name"></div>
+                  <div class="labelAndInput2" prefix="bee" label="PRES" placeholder="Resource Name"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="bee" label="PM25" placeholder="Resource Name"></div>
+                  <div class="labelAndInput2" prefix="bee" label="PM10" placeholder="Resource Name"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="beeSaveBtn" type="submit" class="btn btn-default">	Save	</button>
                 </div>
               </div>
             </div>

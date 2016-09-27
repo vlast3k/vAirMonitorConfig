@@ -6,6 +6,7 @@ document.getElementById('co2Min') .addEventListener('click', onCo2Minus);
 document.getElementById('setWifi').addEventListener('click', onSetWifi);
 document.getElementById('tsBtn').addEventListener('click', onBtnCustom);
 $("#ubiSaveBtn").click(onBtnCustom);
+$("#beeSaveBtn").click(onSetMQTT);
 $("#btnAutoConnect").click(onbtnAutoConnect);
 $("#btnSerialSend").click(onSerialSend);
 $("#ssid").change(onSSIDChange);
@@ -440,7 +441,34 @@ function onbtnAutoConnect() {
     */
  }
 
+ function processBeebotteConfig() {
+   var channel = $("#beeChannel").val();
+   if (!channel) return;
+   $("#mqttHost").val("mqtt.beebotte.com");
+   $("#mqttPort").val("1883");
+   $("#mqttUser").val("token:" + $("#beeToken").val());
+   var msgs = "";
+   $("#bee_fields :input").filter(".lbi").each(function() {
+     if (!$(this).val()) return;
+     msgs += "{0}/{1}:{\"data\":%{2}%,\"write\":true,\"ispublic\":true}\n"
+            .format(channel, $(this).val(), $(this).attr("data-label"));
+          });
+   $("#mqttValue").val(msgs);
+
+ }
+
+ function processBeebotteStoreConfig() {
+   var store = {};
+   store.beeChannel = $("#beeChannel").val();
+   store.beeToken = $("#beeToken").val();
+   store.values ={};
+   $("#ubi_fields :input").filter(".lbi").each(function() {store.values[$(this).attr("data-label")] = $(this).val()});
+   return "prop_jset \"bee.cfg\"" + JSON.stringify(store);
+ }
+
+
  function onSetMQTT() {
+   processBeebotteConfig();
    log("set mqtt, value= " + $("#mqttValue").val());
    var callMqttSetup = 'mqtt_setup "' + $("#mqttHost").val()     + '","' + $("#mqttPort").val() + '","'
                                + $("#mqttClientId").val() + '","' + $("#mqttUser").val() + '","'
@@ -449,6 +477,7 @@ function onbtnAutoConnect() {
    var res = $("#mqttValue").val().split("\n").filter(function(val) {return val});
    res = res.map(cb);
    res = [callMqttSetup, 'mqtt_msg_clean'].concat(res);
+   res = res.concat(processBeebotteStoreConfig());
    var flist = createFunctionLinkedList(res, "ready >", function() {});
    flist();
 //   var sap   =  function() { sendSerial("sap 1", proxy, null); }
@@ -620,6 +649,7 @@ function processConfigurationFromESP(data) {
   else $("#rfEnable").prop("checked", true);
   onRFEnableChange();
   applyUbiDotsConfig(obj);
+  applyBeebotteConfig(obj);
   //lines.forEach(handleCfgLine);
 }
 
@@ -633,6 +663,19 @@ function applyUbiDotsConfig(obj) {
     Object.keys(par.values).forEach(function(key) {$("#ubi" + key ).val(par.values[key])});
   }
 }
+
+function applyBeebotteConfig(obj) {
+  //u//bi.cfg={"ubiToken":"QE6KXlZsqWAffjPwM8lVqGzMfJMPri","ubiDSLabel":"test123","values":{"CO2":"var1","TEMP":"var2","HUM":"asd","PRES":"","PM25":"","PM10":"","undefined":""}}
+  if (!obj["bee.cfg"]) return;
+  var par = JSON.parse(obj["bee.cfg"]);
+  if (par) {
+    $("#beeToken")  .val(par.beeToken);
+    $("#beeChannel").val(par.beeChannel);
+    Object.keys(par.values).forEach(function(key) {$("#bee" + key ).val(par.values[key])});
+  }
+}
+
+
 function mapInUI(key, value) {
 
 }
