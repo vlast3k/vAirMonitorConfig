@@ -86,8 +86,9 @@ $('#sel1').change(function(){
  function log(msg, skipNL) {
    var buffer = document.querySelector('#buffer');
    buffer.value += msg + (skipNL?"":"\n");
-   buffer.scrollTop = buffer.scrollHeight;
+   if ($("#cbPauseSerialUpdate").is(':checked') == false) buffer.scrollTop = buffer.scrollHeight;
  }
+
 
 var inputSelector = ":input[type='text'][id!='serial'][id!='pass'][id!='sapPass']";
 $(inputSelector).change(function(event) {
@@ -434,7 +435,7 @@ function onbtnAutoConnect() {
    return msgs;
  }
 
- function processPimaURLConfig() {
+ function processPimaticURLConfig() {
    var host = $("#pimaHost").val();
    if (!host) return [];
    var port = $("#pimaPort").val() || "80";
@@ -446,11 +447,11 @@ function onbtnAutoConnect() {
      if (!$(this).val()) return;
      var entry = {};
      entry.method = "PATCH";
-     res.url = "http://{0}:{1}@{2}:{3}/api/variables/{4}".format(user, pass, host, port, $(this).val());
-     res.ct  = "application/json";
-     res.pay = '{"type": "value", "valueOrExpression": %' + $(this).attr("data-label") + '%}' ;
+     entry.url = "http://{0}:{1}@{2}:{3}/api/variables/{4}".format(user, pass, host, port, $(this).val());
+     entry.ct  = "application/json";
+     entry.pay = '{"type": "value", "valueOrExpression": %' + $(this).attr("data-label") + '%}' ;
 
-     msgs = msgs.concat("#" + JSON.stringify(res));
+     msgs = msgs.concat("#" + JSON.stringify(entry));
     });
    return msgs;
  }
@@ -462,7 +463,7 @@ function onbtnAutoConnect() {
    var pay="";
    $("#emon_fields :input").filter(".lbi").each(function() {
      if (!$(this).val()) return;
-     pay += "{0}:%{1}".format($(this).val(), $(this).attr("data-label"));
+     pay += "{0}:%{1}%".format($(this).val(), $(this).attr("data-label"));
    });
    if (!pay) return [];
    return "#http://emoncms.org/input/post.json?json={" + pay + "}&apikey=" + key;
@@ -539,7 +540,7 @@ function onbtnAutoConnect() {
 
  function processBeebotteConfig() {
    var channel = $("#beeChannel").val();
-   if (!channel) return;
+   if (!channel) return ;
    $("#mqttHost").val("mqtt.beebotte.com");
    $("#mqttPort").val("1883");
    $("#mqttUser").val("token:" + $("#beeToken").val());
