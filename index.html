@@ -215,6 +215,7 @@
 
               <br/>
               <div id="dz_fields">
+                <!-- https://www.domoticz.com/wiki/Domoticz_API/JSON_URL's#Air_quality -->
                 <div class="row form-inline">
                   <div class="col-xs-2 text-right">
                     <label for="dzCO2">CO2</label>
@@ -226,20 +227,38 @@
                 </div>
                 <div class="row form-inline">
                   <div class="col-xs-2 text-right">
-                    <label for="dzTemp">Temp / Humidity / Pressure</label>
+                    <label for="dzTH">Temp / Humidity</label>
                   </div>
                   <div class="col-xs-10">
-                    <input type="text" class="form-control" id="dzTemp" placeholder="IDX">
+                    <input type="text" class="form-control" id="dzTH" placeholder="IDX">
+                    (Temp/Humidity/Pressure device (svalue=TEMP;HUM;0))
+                  </div>
+                </div>
+                <div class="row form-inline">
+                  <div class="col-xs-2 text-right">
+                    <label for="dzTHB">Temp / Humidity / Pressure</label>
+                  </div>
+                  <div class="col-xs-10">
+                    <input type="text" class="form-control" id="dzTHB" placeholder="IDX">
                     (Temp/Humidity/Pressure device (svalue=TEMP;HUM;0;BAR;0))
                   </div>
                 </div>
                 <div class="row form-inline">
                   <div class="col-xs-2  text-right">
-                    <label for="dzDust">Dust</label>
+                    <label for="dzDust25">Dust PM2.5</label>
                   </div>
                   <div class="col-xs-10">
-                    <input type="text" class="form-control" id="dzDust" placeholder="IDX">
-                    (Dust device (svalue=PM2.5;PM10))
+                    <input type="text" class="form-control" id="dzDust25" placeholder="IDX">
+                    (Air Quality Device (nvalue=PM2.5))
+                  </div>
+                </div>
+                <div class="row form-inline">
+                  <div class="col-xs-2  text-right">
+                    <label for="dzDust10">Dust PM10</label>
+                  </div>
+                  <div class="col-xs-10">
+                    <input type="text" class="form-control" id="dzDust10" placeholder="IDX">
+                     (Air Quality Device (nvalue=PM10))
                   </div>
                 </div>
                 <br>
@@ -306,7 +325,7 @@
                   <div class="form-group">
                     <!--<div class="col-xs-6">-->
                     <label for="customURL">URLs to invoke</label>
-                    <br>Each line is sent as a separate GET request
+                    <br>Each line is sent as a separate GET request. Lines starting with '#' are managed on other places
                     <p><a href="https://github.com/vlast3k/vESPrino/wiki/Custom-HTTP" target="_new">More Information about Custom HTTP Setup</a>
                       <br><a href="https://github.com/vlast3k/vESPrino/wiki/Placeholders" target="_new">More Information about Placeholders</a>
                       <br><a href="https://github.com/vlast3k/vESPrino/wiki/Examples" target="_new">Examples for some popular services</a>

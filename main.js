@@ -395,6 +395,21 @@ function onbtnAutoConnect() {
    return ["#" + JSON.stringify(res)];
  }
 
+ function processDomoticzURLConfig() {
+   var dzHost =  $("#dzHost").val();
+   if (!dzHost) return[];
+   var dzPort =  $("#dzHttpPort").val();
+
+   var urls = [];
+   ///json.htm?type=command&param=udevice&idx=IDX&nvalue=PPM
+   if ( $("#dzCO2").val())    urls = urls.concat("#http://{0}:{1}/json.htm?type=command&param=udevice&idx={2}&nvalue=%CO2%".format(dzHost, dzPort, $("#dzCO2").val()));
+   if ( $("#dzTH").val())     urls = urls.concat("#http://{0}:{1}/json.htm?type=command&param=udevice&idx={2}&nvalue=0&svalue=%TEMP%;%HUM%;0".format(dzHost, dzPort, $("#dzTH").val()));
+   if ( $("#dzTHB").val())    urls = urls.concat("#http://{0}:{1}/json.htm?type=command&param=udevice&idx={2}&nvalue=0&svalue=%TEMP%;%HUM%;0;%PRES%;0".format(dzHost, dzPort, $("#dzTHB").val()));
+   if ( $("#dzDust25").val()) urls = urls.concat("#http://{0}:{1}/json.htm?type=command&param=udevice&idx={2}&nvalue=%CO2%".format(dzHost, dzPort, $("#dzDust25").val()));
+   if ( $("#dzDust10").val()) urls = urls.concat("#http://{0}:{1}/json.htm?type=command&param=udevice&idx={2}&nvalue=%CO2%".format(dzHost, dzPort, $("#dzDust10").val()));
+   return urls;
+ }
+
  function processUbidotsStoreConfig() {
    var store = {};
    store.ubiToken = $("#ubiToken").val();
@@ -404,15 +419,26 @@ function onbtnAutoConnect() {
    return "prop_jset \"ubi.cfg\"" + JSON.stringify(store);
  }
 
+ function processDomoticzStoreConfig() {
+   var store = {};
+   store.dzHost = $("#dzHost").val();
+   store.dzHttpPort = $("#dzHttpPort").val();
+   store.values ={};
+   $("#dz_fields input").each(function() {store.values[$(this).attr("id")] = $(this).val()});
+   return "prop_jset \"dz.cfg\"" + JSON.stringify(store);
+ }
+
  function processTSStoreConfig() {
    return ['prop_set "tsKey" "' + $("#tsKey").val() + '"'];
  }
 
  function onBtnCustom() {
    var ss = $("#customURL").val();
-   var res = ss.split("\n").filter(function(val) {return val});
+   var res = ss.split("\n").filter(function(val) {return (val && val.charAt(0) != '#') ? true:false});
    res = res.concat(processUbidotsURLConfig());
+   res = res.concat(processDomoticzURLConfig());
    res = res.concat(urlsAppendThingSpeak());
+   $("#customURL").val(res.join("\n"));
    var cb = function(path, idx) {
      if (path.indexOf('\"') > -1) {
        return 'custom_url_jadd "' + idx + '"' + path;
@@ -425,6 +451,7 @@ function onbtnAutoConnect() {
    res = ['custom_url_clean'].concat(res);
    res = res.concat(processTSStoreConfig());
    res = res.concat(processUbidotsStoreConfig());
+   res = res.concat(processDomoticzStoreConfig());
    var flist = createFunctionLinkedList(res, "ready >", function() {});
    //var f1 = function() {sendSerial('custom_url_clean', "ready >", flist)};
   // var storeTSCfg = makeStoreTSCfg(f1);
@@ -618,7 +645,7 @@ function combineLines(obj, prefix) {
   var whole = "";
   for (var i=0; i < 10; i++) {
     if (!obj[prefix + i]) break;
-    if (!obj[prefix + i].startsWith("#")) whole += obj[prefix + i] + "\n";
+    whole += obj[prefix + i] + "\n";
     delete obj[prefix + i];
   }
 
@@ -651,6 +678,7 @@ function processConfigurationFromESP(data) {
   onRFEnableChange();
   applyUbiDotsConfig(obj);
   applyBeebotteConfig(obj);
+  applyDomoticzConfig(obj);
   //lines.forEach(handleCfgLine);
 }
 
@@ -673,6 +701,17 @@ function applyBeebotteConfig(obj) {
     $("#beeToken")  .val(par.beeToken);
     $("#beeChannel").val(par.beeChannel);
     Object.keys(par.values).forEach(function(key) {$("#bee" + key ).val(par.values[key])});
+  }
+}
+
+function applyDomoticzConfig(obj) {
+  //u//bi.cfg={"ubiToken":"QE6KXlZsqWAffjPwM8lVqGzMfJMPri","ubiDSLabel":"test123","values":{"CO2":"var1","TEMP":"var2","HUM":"asd","PRES":"","PM25":"","PM10":"","undefined":""}}
+  if (!obj["dz.cfg"]) return;
+  var par = JSON.parse(obj["dz.cfg"]);
+  if (par) {
+    $("#dzHost")  .val(par.dzHost);
+    $("#dzHttpPort").val(par.dzHttpPort);
+    Object.keys(par.values).forEach(function(key) {$(key).val(par.values[key])});
   }
 }
 
