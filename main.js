@@ -10,6 +10,8 @@ $("#dzSaveBtn").click(onBtnCustom);
 $("#pimaSaveBtn").click(onBtnCustom);
 $("#jeeSaveBtn").click(onBtnCustom);
 $("#emonSaveBtn").click(onBtnCustom);
+$("#dgaSaveBtn").click(onBtnCustom);
+
 $("#beeSaveBtn").click(onSetMQTT);
 $("#ohSaveBtn").click(onSetMQTT);
 $("#btnAutoConnect").click(onbtnAutoConnect);
@@ -450,6 +452,20 @@ function onbtnAutoConnect() {
    return msgs;
  }
 
+ function processDomotiGaURLConfig() {
+   var host = $("#dgaHost").val();
+   if (!host) return [];
+   var port = $("#dgaPort").val() || "80";
+   var msgs = [];
+
+   $("#dga_fields :input").filter(".lbi").each(function() {
+     if (!$(this).val()) return;
+     msgs = msgs.concat("#http://{0}:{1}/json?method=value.set&device_id={2}&value=%{3}%"
+            .format(host, port, $(this).val(), $(this).attr("data-label")));
+          });
+   return msgs;
+ }
+
  function processEmonCMSURLConfig() {
    var key = $("#emonKey").val();
    if (!key) return [];
@@ -506,6 +522,7 @@ function onbtnAutoConnect() {
    res = res.concat(processJeedomURLConfig());
    res = res.concat(processPimaticURLConfig());
    res = res.concat(processEmonCMSURLConfig());
+   res = res.concat(processDomotiGaURLConfig());
    $("#customURL").val(res.join("\n"));
    var cb = function(path, idx) {
      if (path.indexOf('\"') > -1) {
@@ -523,6 +540,7 @@ function onbtnAutoConnect() {
    res = res.concat(processGenericIDConfig("repJeedom", "jee.cfg"));
    res = res.concat(processGenericIDConfig("repPimatic", "pima.cfg"));
    res = res.concat(processGenericIDConfig("repEmon", "emon.cfg"));
+   res = res.concat(processGenericIDConfig("repDomotiGa", "dga.cfg"));
    var flist = createFunctionLinkedList(res, "ready >", function() {});
    //var f1 = function() {sendSerial('custom_url_clean', "ready >", flist)};
   // var storeTSCfg = makeStoreTSCfg(f1);
@@ -779,6 +797,7 @@ function processConfigurationFromESP(data) {
   applyGenericJSONConfig(obj["jee.cfg"]);
   applyGenericJSONConfig(obj["pima.cfg"]);
   applyGenericJSONConfig(obj["emon.cfg"]);
+  applyGenericJSONConfig(obj["dga.cfg"]);
   //lines.forEach(handleCfgLine);
 }
 
