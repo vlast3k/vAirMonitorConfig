@@ -11,6 +11,7 @@ $("#pimaSaveBtn").click(onBtnCustom);
 $("#jeeSaveBtn").click(onBtnCustom);
 $("#emonSaveBtn").click(onBtnCustom);
 $("#dgaSaveBtn").click(onBtnCustom);
+$("#dwSaveBtn").click(onBtnCustom);
 
 $("#beeSaveBtn").click(onSetMQTT);
 $("#ohSaveBtn").click(onSetMQTT);
@@ -483,6 +484,19 @@ function onbtnAutoConnect() {
    return msgs;
  }
 
+ function processDweetURLConfig() {
+   var key = $("#dwThing").val();
+   if (!key) return [];
+   var pay="";
+   $("#dw_fields :input").filter(".lbi").each(function() {
+     if (!$(this).val()) return;
+     pay += "{0}=%{1}%&".format($(this).val(), $(this).attr("data-label"));
+   });
+   if (!pay) return [];
+   return "#http://dweet.io/dweet/for/" + key + "?" + pay;
+ }
+
+
   function processGenericIDConfig(rootTag, cfgName) {
      var store = {};
      $("#" + rootTag + " input[id]").each(function() {store[$(this).attr("id")] = $(this).val()});
@@ -503,6 +517,7 @@ function onbtnAutoConnect() {
    res = res.concat(processPimaticURLConfig());
    res = res.concat(processEmonCMSURLConfig());
    res = res.concat(processDomotiGaURLConfig());
+   res = res.concat(processDweetURLConfig());
    $("#customURL").val(res.join("\n"));
    var cb = function(path, idx) {
      if (path.indexOf('\"') > -1) {
@@ -521,6 +536,7 @@ function onbtnAutoConnect() {
    res = res.concat(processGenericIDConfig("repPimatic", "pima.cfg"));
    res = res.concat(processGenericIDConfig("repEmon", "emon.cfg"));
    res = res.concat(processGenericIDConfig("repDomotiGa", "dga.cfg"));
+   res = res.concat(processGenericIDConfig("repDweet", "dw.cfg"));
    var flist = createFunctionLinkedList(res, "ready >", function() {});
    //var f1 = function() {sendSerial('custom_url_clean', "ready >", flist)};
   // var storeTSCfg = makeStoreTSCfg(f1);
@@ -758,6 +774,7 @@ function processConfigurationFromESP(data) {
   applyGenericJSONConfig(obj["pima.cfg"]);
   applyGenericJSONConfig(obj["emon.cfg"]);
   applyGenericJSONConfig(obj["dga.cfg"]);
+  applyGenericJSONConfig(obj["dw.cfg"]);
   //lines.forEach(handleCfgLine);
 }
 
