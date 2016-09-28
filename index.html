@@ -47,6 +47,7 @@
         <li role="presentation"> <a href="#repPimatic" aria-controls="repPimatic" role="tab" data-toggle="tab">Pimatic</a></li>
         <li role="presentation"> <a href="#repEmon" aria-controls="repEmon" role="tab" data-toggle="tab">EmonCMS</a></li>
         <li role="presentation"> <a href="#repDweet" aria-controls="repDweet" role="tab" data-toggle="tab">Dweet.io</a></li>
+        <li role="presentation"> <a href="#repHomeseer" aria-controls="repHomeseer" role="tab" data-toggle="tab">Homeseer</a></li>
         <!-- <li role="presentation">               <a href="#repUbidots"    aria-controls="repUbidots"    role="tab" data-toggle="tab">Ubidots</a></li>
     <li role="presentation">               <a href="#repSAPIOT"     aria-controls="repSAPIOT"     role="tab" data-toggle="tab">SAP HCP IoT</a></li> -->
         <li role="presentation"> <a href="#repCustomHTTP" aria-controls="repCustomHTTP" role="tab" data-toggle="tab">Custom HTTP</a></li>
@@ -506,6 +507,42 @@
           </div>
         </div>
 
+        <div role="tabpanel" class="tab-pane" id="repHomeseer">
+          <div class="panel panel-default ">
+            <div class="panel-body">
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="hsHost">Host</label>
+                  <input type="text" class="form-control" id="hsHost">
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="hsPort">Port</label>
+                  <input type="text" class="form-control" id="hsPort">
+                </div>
+              </div>
+              <br/>
+              <div id="hs_fields">
+                <div class="row">
+                  <div class="labelAndInput2" prefix="hs" label="CO2" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="hs" label="TEMP" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="hs" label="HUM" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="hs" label="PRES" placeholder="IDX"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="hs" label="PM25" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="hs" label="PM10" placeholder="IDX"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="hsSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
 

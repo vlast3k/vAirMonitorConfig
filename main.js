@@ -12,6 +12,8 @@ $("#jeeSaveBtn").click(onBtnCustom);
 $("#emonSaveBtn").click(onBtnCustom);
 $("#dgaSaveBtn").click(onBtnCustom);
 $("#dwSaveBtn").click(onBtnCustom);
+$("#hsSaveBtn").click(onBtnCustom);
+
 
 $("#beeSaveBtn").click(onSetMQTT);
 $("#ohSaveBtn").click(onSetMQTT);
@@ -470,6 +472,8 @@ function onbtnAutoConnect() {
    return "#http://emoncms.org/input/post.json?json={" + pay + "}&apikey=" + key;
  }
 
+ http://192.168.1.xxx/JSON?request=controldevicebyvalue&ref=1234&value=%s
+
  function processDomotiGaURLConfig() {
    var host = $("#dgaHost").val();
    if (!host) return [];
@@ -496,12 +500,38 @@ function onbtnAutoConnect() {
    return "#http://dweet.io/dweet/for/" + key + "?" + pay;
  }
 
+ function processHomeseerURLConfig() {
+   var host = $("#hsHost").val();
+   if (!host) return [];
+   var port = $("#hsPort").val() || "80";
+   var msgs = [];
+   http://192.168.1.xxx/JSON?request=controldevicebyvalue&ref=1234&value=%s
+
+   $("#hs_fields :input").filter(".lbi").each(function() {
+     if (!$(this).val()) return;
+     msgs = msgs.concat("#http://{0}:{1}/JSON?request=controldevicebyvalue&ref={2}&value=%{3}%"
+            .format(host, port, $(this).val(), $(this).attr("data-label")));
+          });
+   return msgs;
+ }
+
+
+ function containsChanges(rootTag) {
+   if (!$("#" + rootTag).length) return[];
+   return Object.keys(changedFields).filter(function(key) { return $("#" + key) && $.contains($("#" + rootTag).get(0), $("#" + key).get(0))});
+ }
+
+ function cleanChanges(rootTag) {
+   containsChanges(rootTag).forEach(function(key) {delete changedFields[key]});
+ }
 
   function processGenericIDConfig(rootTag, cfgName) {
+     if (!containsChanges(rootTag).length) return;
      var store = {};
      $("#" + rootTag + " input[id]").each(function() {store[$(this).attr("id")] = $(this).val()});
+     cleanChanges(rootTag);
      return "prop_jset \"" + cfgName + "\"" + JSON.stringify(store);
-   }
+  }
 
  function processTSStoreConfig() {
    return ['prop_set "tsKey" "' + $("#tsKey").val() + '"'];
@@ -518,6 +548,7 @@ function onbtnAutoConnect() {
    res = res.concat(processEmonCMSURLConfig());
    res = res.concat(processDomotiGaURLConfig());
    res = res.concat(processDweetURLConfig());
+   res = res.concat(processHomeseerURLConfig());
    $("#customURL").val(res.join("\n"));
    var cb = function(path, idx) {
      if (path.indexOf('\"') > -1) {
@@ -537,6 +568,7 @@ function onbtnAutoConnect() {
    res = res.concat(processGenericIDConfig("repEmon", "emon.cfg"));
    res = res.concat(processGenericIDConfig("repDomotiGa", "dga.cfg"));
    res = res.concat(processGenericIDConfig("repDweet", "dw.cfg"));
+   res = res.concat(processGenericIDConfig("repHomeseer", "hs.cfg"));
    var flist = createFunctionLinkedList(res, "ready >", function() {});
    //var f1 = function() {sendSerial('custom_url_clean', "ready >", flist)};
   // var storeTSCfg = makeStoreTSCfg(f1);
@@ -775,6 +807,7 @@ function processConfigurationFromESP(data) {
   applyGenericJSONConfig(obj["emon.cfg"]);
   applyGenericJSONConfig(obj["dga.cfg"]);
   applyGenericJSONConfig(obj["dw.cfg"]);
+  applyGenericJSONConfig(obj["hs.cfg"]);
   //lines.forEach(handleCfgLine);
 }
 
@@ -823,11 +856,11 @@ if (chrome.serial) onbtnAutoConnect();
 $(".select_dataid").each(ttt);
 function ttt() {
   var sel = $(this).attr("default");
-  $(this).html(function() {return "<div class='form-group'><label>" + $(this).attr("label") + "</label>\
-                    <select class='form-control'>\
+  $(this).html(function() {return "<div class='form-group'><label>{0}</label>\
+                    <select class='form-control' id='tsf{0}'>\
                       <option></option><option>CO2</option><option>TEMP</option><option>HUM</option><option>PRES</option>\
                       <option>ALT</option><option>PM25</option><option>PM10</option><option>ALIGHT</option>\
-                    </select></div>" });
+                    </select></div>".format($(this).attr("label") ) });
 
 
   $(this).find("select").val(sel);
@@ -869,3 +902,6 @@ function onSetRF() {
   flist();
 
 }
+
+var changedFields ={};
+$(":input").click(function() {changedFields[$(this).attr("id")] = true});
