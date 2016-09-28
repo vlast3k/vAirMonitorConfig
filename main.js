@@ -368,7 +368,7 @@ function onbtnAutoConnect() {
    return lastFunc;
  }
 
- function urlsAppendThingSpeak() {
+ function processThingSpeakURLConfig() {
    var tsKey = $("#tsKey").val();
    if (!tsKey) return [];
    var tsFields = $("#ts_fields option").filter(":selected").map(function() {return $(this).text()});
@@ -434,22 +434,38 @@ function onbtnAutoConnect() {
    return msgs;
  }
 
- function processJeedomURLConfig() {
-   var host = $("#jeeHost").val();
+ function processPimaURLConfig() {
+   var host = $("#pimaHost").val();
    if (!host) return [];
-   var port = $("#jeePort").val() || "80";
-   var key  = $("#jeeKey").val();
-   var path = $("#jeePath").val();
+   var port = $("#pimaPort").val() || "80";
+   var pass  = $("#pimaPass").val();
+   var user = $("#pimaUser").val();
 
-   if (path && path.charAt(0) == '/') path.substring(1);
-   if (path && path.charAt(path.length-1) != '/') path += '/';
    var msgs = [];
-   $("#jee_fields :input").filter(".lbi").each(function() {
+   $("#pima_fields :input").filter(".lbi").each(function() {
      if (!$(this).val()) return;
-     msgs = msgs.concat("#http://{0}:{1}/{2}core/api/jeeApi.php?apikey={3}&type=virtual&id={4}&value=%{5}%"
-            .format(host, port, path, key, $(this).val(), $(this).attr("data-label")));
-          });
+     var entry = {};
+     entry.method = "PATCH";
+     res.url = "http://{0}:{1}@{2}:{3}/api/variables/{4}".format(user, pass, host, port, $(this).val());
+     res.ct  = "application/json";
+     res.pay = '{"type": "value", "valueOrExpression": %' + $(this).attr("data-label") + '%}' ;
+
+     msgs = msgs.concat("#" + JSON.stringify(res));
+    });
    return msgs;
+ }
+
+
+ function processEmonCMSURLConfig() {
+   var key = $("#emonKey").val();
+   if (!key) return [];
+   var pay="";
+   $("#emon_fields :input").filter(".lbi").each(function() {
+     if (!$(this).val()) return;
+     pay += "{0}:%{1}".format($(this).val(), $(this).attr("data-label"));
+   });
+   if (!pay) return [];
+   return "#http://emoncms.org/input/post.json?json={" + pay + "}&apikey=" + key;
  }
 
  function processDomotiGaURLConfig() {
@@ -466,43 +482,6 @@ function onbtnAutoConnect() {
    return msgs;
  }
 
- function processEmonCMSURLConfig() {
-   var key = $("#emonKey").val();
-   if (!key) return [];
-   var pay="";
-   $("#emon_fields :input").filter(".lbi").each(function() {
-     if (!$(this).val()) return;
-     pay += "{0}:%{1}".format($(this).val(), $(this).attr("data-label"));
-   });
-   if (!pay) return [];
-   return "#http://emoncms.org/input/post.json?json={" + pay + "}&apikey=" + key;
-
- }
-
- function processUbidotsStoreConfig() {
-   var store = {};
-   store.ubiToken = $("#ubiToken").val();
-   store.ubiDSLabel = $("#ubiDSLabel").val();
-   store.values ={};
-   $("#ubi_fields :input").filter(".lbi").each(function() {store.values[$(this).attr("data-label")] = $(this).val()});
-   return "prop_jset \"ubi.cfg\"" + JSON.stringify(store);
- }
-
-
- function processDomoticzStoreConfig() {
-   var store = {};
-   store.dzHost = $("#dzHost").val();
-   store.dzHttpPort = $("#dzHttpPort").val();
-   store.values ={};
-   $("#dz_fields input").each(function() {store.values[$(this).attr("id")] = $(this).val()});
-   return "prop_jset \"dz.cfg\"" + JSON.stringify(store);
- }
-
-  // function processJeedomConfig() {
-  //   var store = {};
-  //   $("#repJeedom input[id]").each(function() {store[$(this).attr("id")] = $(this).val()});
-  //   return "prop_jset \"jee.cfg\"" + JSON.stringify(store);
-  // }
   function processGenericIDConfig(rootTag, cfgName) {
      var store = {};
      $("#" + rootTag + " input[id]").each(function() {store[$(this).attr("id")] = $(this).val()});
@@ -516,9 +495,9 @@ function onbtnAutoConnect() {
  function onBtnCustom() {
    var ss = $("#customURL").val();
    var res = ss.split("\n").filter(function(val) {return (val && val.charAt(0) != '#') ? true:false});
+   res = res.concat(processThingSpeakURLConfig());
    res = res.concat(processUbidotsURLConfig());
    res = res.concat(processDomoticzURLConfig());
-   res = res.concat(urlsAppendThingSpeak());
    res = res.concat(processJeedomURLConfig());
    res = res.concat(processPimaticURLConfig());
    res = res.concat(processEmonCMSURLConfig());
@@ -535,8 +514,8 @@ function onbtnAutoConnect() {
    res = res.map(cb);
    res = ['custom_url_clean'].concat(res);
    res = res.concat(processTSStoreConfig());
-   res = res.concat(processUbidotsStoreConfig());
-   res = res.concat(processDomoticzStoreConfig());
+   res = res.concat(processGenericIDConfig("repUbidots", "ubi.cfg"));
+   res = res.concat(processGenericIDConfig("repDomoticz", "dz.cfg"));
    res = res.concat(processGenericIDConfig("repJeedom", "jee.cfg"));
    res = res.concat(processGenericIDConfig("repPimatic", "pima.cfg"));
    res = res.concat(processGenericIDConfig("repEmon", "emon.cfg"));
@@ -587,25 +566,6 @@ function onbtnAutoConnect() {
    $("#mqttValue").val(msgs);
  }
 
- function processBeebotteStoreConfig() {
-   var store = {};
-   store.beeChannel = $("#beeChannel").val();
-   store.beeToken = $("#beeToken").val();
-   store.values ={};
-   $("#bee_fields :input").filter(".lbi").each(function() {store.values[$(this).attr("data-label")] = $(this).val()});
-   return "prop_jset \"bee.cfg\"" + JSON.stringify(store);
- }
-
- function processOpenHABStoreConfig() {
-   var store = {};
-   store.ohHost = $("#ohHost").val();
-   store.ohPort = $("#ohPort").val();
-   store.values ={};
-   $("#oh_fields :input").filter(".lbi").each(function() {store.values[$(this).attr("data-label")] = $(this).val()});
-   return "prop_jset \"oh.cfg\"" + JSON.stringify(store);
- }
-
-
  function onSetMQTT() {
    processBeebotteConfig();
    processOpenHABConfig();
@@ -617,8 +577,8 @@ function onbtnAutoConnect() {
    var res = $("#mqttValue").val().split("\n").filter(function(val) {return val});
    res = res.map(cb);
    res = [callMqttSetup, 'mqtt_msg_clean'].concat(res);
-   res = res.concat(processBeebotteStoreConfig());
-   res = res.concat(processOpenHABStoreConfig());
+   res = res.concat(processGenericIDConfig("repBeebotte", "bee.cfg"));
+   res = res.concat(processGenericIDConfig("repOpenHab", "oh.cfg"));
    var flist = createFunctionLinkedList(res, "ready >", function() {});
    flist();
 //   var sap   =  function() { sendSerial("sap 1", proxy, null); }
@@ -789,11 +749,10 @@ function processConfigurationFromESP(data) {
   if (!obj["rf.enabled"] || obj["rf.enabled"].startsWith("false")) $("#rfEnable").prop("checked", false);
   else $("#rfEnable").prop("checked", true);
   onRFEnableChange();
-  applyUbiDotsConfig(obj);
-  applyBeebotteConfig(obj);
-  applyDomoticzConfig(obj);
-  applyOpenHABConfig(obj);
-  applyJeedomConfig(obj);
+  applyGenericJSONConfig(obj["ubi.cfg"]);
+  applyGenericJSONConfig(obj["bee.cfg"]);
+  applyGenericJSONConfig(obj["dz.cfg"]);
+  applyGenericJSONConfig(obj["oh.cfg"]);
   applyGenericJSONConfig(obj["jee.cfg"]);
   applyGenericJSONConfig(obj["pima.cfg"]);
   applyGenericJSONConfig(obj["emon.cfg"]);
@@ -801,55 +760,11 @@ function processConfigurationFromESP(data) {
   //lines.forEach(handleCfgLine);
 }
 
-function applyUbiDotsConfig(obj) {
-  //u//bi.cfg={"ubiToken":"QE6KXlZsqWAffjPwM8lVqGzMfJMPri","ubiDSLabel":"test123","values":{"CO2":"var1","TEMP":"var2","HUM":"asd","PRES":"","PM25":"","PM10":"","undefined":""}}
-  if (!obj["ubi.cfg"]) return;
-  var par = JSON.parse(obj["ubi.cfg"]);
-  if (par) {
-    $("#ubiToken")  .val(par.ubiToken);
-    $("#ubiDSLabel").val(par.ubiDSLabel);
-    Object.keys(par.values).forEach(function(key) {$("#ubi" + key ).val(par.values[key])});
-  }
-}
 
 function applyGenericJSONConfig(json) {
   var p = JSON.parse(json || "{}");
   p && Object.keys(p).forEach(function(key) {$("#" + key ).val(p[key])});
 }
-
-function applyBeebotteConfig(obj) {
-  //u//bi.cfg={"ubiToken":"QE6KXlZsqWAffjPwM8lVqGzMfJMPri","ubiDSLabel":"test123","values":{"CO2":"var1","TEMP":"var2","HUM":"asd","PRES":"","PM25":"","PM10":"","undefined":""}}
-  if (!obj["bee.cfg"]) return;
-  var par = JSON.parse(obj["bee.cfg"]);
-  if (par) {
-    $("#beeToken")  .val(par.beeToken);
-    $("#beeChannel").val(par.beeChannel);
-    Object.keys(par.values).forEach(function(key) {$("#bee" + key ).val(par.values[key])});
-  }
-}
-
-function applyOpenHABConfig(obj) {
-  //u//bi.cfg={"ubiToken":"QE6KXlZsqWAffjPwM8lVqGzMfJMPri","ubiDSLabel":"test123","values":{"CO2":"var1","TEMP":"var2","HUM":"asd","PRES":"","PM25":"","PM10":"","undefined":""}}
-  if (!obj["oh.cfg"]) return;
-  var par = JSON.parse(obj["oh.cfg"]);
-  if (par) {
-    $("#ohHost").val(par.ohHost);
-    $("#ohPort").val(par.ohPort);
-    Object.keys(par.values).forEach(function(key) {$("#oh" + key ).val(par.values[key])});
-  }
-}
-
-function applyDomoticzConfig(obj) {
-  //u//bi.cfg={"ubiToken":"QE6KXlZsqWAffjPwM8lVqGzMfJMPri","ubiDSLabel":"test123","values":{"CO2":"var1","TEMP":"var2","HUM":"asd","PRES":"","PM25":"","PM10":"","undefined":""}}
-  if (!obj["dz.cfg"]) return;
-  var par = JSON.parse(obj["dz.cfg"]);
-  if (par) {
-    $("#dzHost")  .val(par.dzHost);
-    $("#dzHttpPort").val(par.dzHttpPort);
-    Object.keys(par.values).forEach(function(key) {$(key).val(par.values[key])});
-  }
-}
-
 
 function mapInUI(key, value) {
 
