@@ -42,6 +42,7 @@
         <li role="presentation"> <a href="#repBeebotte" aria-controls="repBeebotte" role="tab" data-toggle="tab">Beebotte</a></li>
         <li role="presentation"> <a href="#repDomoticz" aria-controls="repDomoticz" role="tab" data-toggle="tab">Domoticz</a></li>
         <li role="presentation"> <a href="#repOpenHab" aria-controls="repOpenHab" role="tab" data-toggle="tab">OpenHab / FHEM</a></li>
+        <li role="presentation"> <a href="#repJeedom" aria-controls="repJeedom" role="tab" data-toggle="tab">Jeedom</a></li>
         <!-- <li role="presentation">               <a href="#repUbidots"    aria-controls="repUbidots"    role="tab" data-toggle="tab">Ubidots</a></li>
     <li role="presentation">               <a href="#repSAPIOT"     aria-controls="repSAPIOT"     role="tab" data-toggle="tab">SAP HCP IoT</a></li> -->
         <li role="presentation"> <a href="#repCustomHTTP" aria-controls="repCustomHTTP" role="tab" data-toggle="tab">Custom HTTP</a></li>
@@ -166,6 +167,7 @@
             </div>
           </div>
         </div>
+
         <div role="tabpanel" class="tab-pane" id="repBeebotte">
           <div class="panel panel-default ">
             <div class="panel-body">
@@ -305,6 +307,57 @@
             </div>
           </div>
         </div>
+        <div role="tabpanel" class="tab-pane" id="repJeedom">
+          <div class="panel panel-default ">
+            <div class="panel-body">
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="jeeHost">Host</label>
+                  <input type="text" class="form-control" id="jeeHost">
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="jeePort">Port</label>
+                  <input type="text" class="form-control" id="jeePort">
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="jeeKey">API Key</label>
+                  <input type="text" class="form-control" id="jeeKey">
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="jeePath">Install Path</label>
+                  <input type="text" class="form-control" id="jeePath">
+                  In case different from default (e.g. jeedom )
+                </div>
+              </div>
+              <br/>
+              <div id="jee_fields">
+                <div class="row">
+                  <div class="labelAndInput2" prefix="jee" label="CO2" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="jee" label="TEMP" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="jee" label="HUM" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="jee" label="PRES" placeholder="IDX"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="jee" label="PM25" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="jee" label="PM10" placeholder="IDX"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="jeeSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
 
         <!-- <div role="tabpanel" class="tab-pane" id="repUbidots">
           <div class="panel panel-default ">

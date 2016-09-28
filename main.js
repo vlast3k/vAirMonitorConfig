@@ -411,6 +411,24 @@ function onbtnAutoConnect() {
    return urls;
  }
 
+ function processJeedomURLConfig() {
+   var host = $("#jeeHost").val();
+   if (!host) return [];
+   var port = $("#jeePort").val() || "80";
+   var key  = $("#jeeKey").val();
+   var path = $("#jeePath").val();
+
+   if (path && path.charAt(0) == '/') path.substring(1);
+   if (path && path.charAt(path.length-1) != '/') path += '/';
+   var msgs = [];
+   $("#jee_fields :input").filter(".lbi").each(function() {
+     if (!$(this).val()) return;
+     msgs = msgs.concat("#http://{0}:{1}/{2}core/api/jeeApi.php?apikey={3}&type=virtual&id={4}&value=%{5}%"
+            .format(host, port, path, key, $(this).val(), $(this).attr("data-label")));
+          });
+   return msgs;
+ }
+
  function processUbidotsStoreConfig() {
    var store = {};
    store.ubiToken = $("#ubiToken").val();
@@ -420,6 +438,7 @@ function onbtnAutoConnect() {
    return "prop_jset \"ubi.cfg\"" + JSON.stringify(store);
  }
 
+
  function processDomoticzStoreConfig() {
    var store = {};
    store.dzHost = $("#dzHost").val();
@@ -428,6 +447,17 @@ function onbtnAutoConnect() {
    $("#dz_fields input").each(function() {store.values[$(this).attr("id")] = $(this).val()});
    return "prop_jset \"dz.cfg\"" + JSON.stringify(store);
  }
+
+  // function processJeedomConfig() {
+  //   var store = {};
+  //   $("#repJeedom input[id]").each(function() {store[$(this).attr("id")] = $(this).val()});
+  //   return "prop_jset \"jee.cfg\"" + JSON.stringify(store);
+  // }
+  function processGenericIDConfig(rootTag, cfgName) {
+     var store = {};
+     $("#" + rootTag + " input[id]").each(function() {store[$(this).attr("id")] = $(this).val()});
+     return "prop_jset \"" + cfgName + "\"" + JSON.stringify(store);
+   }
 
  function processTSStoreConfig() {
    return ['prop_set "tsKey" "' + $("#tsKey").val() + '"'];
@@ -439,6 +469,7 @@ function onbtnAutoConnect() {
    res = res.concat(processUbidotsURLConfig());
    res = res.concat(processDomoticzURLConfig());
    res = res.concat(urlsAppendThingSpeak());
+   res = res.concat(processJeedomURLConfig());
    $("#customURL").val(res.join("\n"));
    var cb = function(path, idx) {
      if (path.indexOf('\"') > -1) {
@@ -453,6 +484,7 @@ function onbtnAutoConnect() {
    res = res.concat(processTSStoreConfig());
    res = res.concat(processUbidotsStoreConfig());
    res = res.concat(processDomoticzStoreConfig());
+   res = res.concat(processGenericIDConfig("repJeedom", "jee.cfg"));
    var flist = createFunctionLinkedList(res, "ready >", function() {});
    //var f1 = function() {sendSerial('custom_url_clean', "ready >", flist)};
   // var storeTSCfg = makeStoreTSCfg(f1);
@@ -705,6 +737,8 @@ function processConfigurationFromESP(data) {
   applyBeebotteConfig(obj);
   applyDomoticzConfig(obj);
   applyOpenHABConfig(obj);
+  applyJeedomConfig(obj);
+  applyGenericJSONConfig(obj["jee.cfg"]);
   //lines.forEach(handleCfgLine);
 }
 
@@ -717,6 +751,11 @@ function applyUbiDotsConfig(obj) {
     $("#ubiDSLabel").val(par.ubiDSLabel);
     Object.keys(par.values).forEach(function(key) {$("#ubi" + key ).val(par.values[key])});
   }
+}
+
+function applyGenericJSONConfig(json) {
+  var p = JSON.parse(json || "{}");
+  p && Object.keys(p).forEach(function(key) {$("#" + key ).val(p[key])});
 }
 
 function applyBeebotteConfig(obj) {
