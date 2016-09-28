@@ -40,6 +40,7 @@
         <li role="presentation"> <a href="#repThingSpeak" aria-controls="repThingSpeak" role="tab" data-toggle="tab">ThingSpeak</a></li>
         <li role="presentation"> <a href="#repUbidots" aria-controls="repUbidots" role="tab" data-toggle="tab">Ubidots</a></li>
         <li role="presentation"> <a href="#repBeebotte" aria-controls="repBeebotte" role="tab" data-toggle="tab">Beebotte</a></li>
+        <li role="presentation"> <a href="#repDomoticz" aria-controls="repDomoticz" role="tab" data-toggle="tab">Domoticz</a></li>
         <!-- <li role="presentation">               <a href="#repUbidots"    aria-controls="repUbidots"    role="tab" data-toggle="tab">Ubidots</a></li>
     <li role="presentation">               <a href="#repSAPIOT"     aria-controls="repSAPIOT"     role="tab" data-toggle="tab">SAP HCP IoT</a></li> -->
         <li role="presentation"> <a href="#repCustomHTTP" aria-controls="repCustomHTTP" role="tab" data-toggle="tab">Custom HTTP</a></li>
@@ -193,6 +194,57 @@
                 <br>
                 <div class="row">
                   <button id="beeSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="repDomoticz">
+          <div class="panel panel-default ">
+            <div class="panel-body">
+              <div class="row" >
+                <div class="col-xs-8 form-inline">
+                  <label for="dzHost">Domoticz Host</label>
+                  <input type="text" class="form-control" id="dzHost" placeholder="192.168.1.42">
+                  &nbsp;&nbsp;&nbsp;
+                  <label for="dzHttpPort">Domoticz HTTP Port</label>
+                  <input type="text" class="form-control" id="dzHttpPort">
+                </div>
+              </div>
+
+              <br/>
+              <div id="dz_fields">
+                <div class="row form-inline">
+                  <div class="col-xs-2 text-right">
+                    <label for="dzCO2">CO2</label>
+                  </div>
+                  <div class="col-xs-10">
+                    <input type="text" class="form-control" id="dzCO2" placeholder="IDX">
+                    (Air Quality device (nvalue=ppm))
+                  </div>
+                </div>
+                <div class="row form-inline">
+                  <div class="col-xs-2 text-right">
+                    <label for="dzTemp">Temp / Humidity / Pressure</label>
+                  </div>
+                  <div class="col-xs-10">
+                    <input type="text" class="form-control" id="dzTemp" placeholder="IDX">
+                    (Temp/Humidity/Pressure device (svalue=TEMP;HUM;0;BAR;0))
+                  </div>
+                </div>
+                <div class="row form-inline">
+                  <div class="col-xs-2  text-right">
+                    <label for="dzDust">Dust</label>
+                  </div>
+                  <div class="col-xs-10">
+                    <input type="text" class="form-control" id="dzDust" placeholder="IDX">
+                    (Dust device (svalue=PM2.5;PM10))
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="dzSaveBtn" type="submit" class="btn btn-default">	Save	</button>
                 </div>
               </div>
             </div>

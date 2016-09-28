@@ -6,6 +6,7 @@ document.getElementById('co2Min') .addEventListener('click', onCo2Minus);
 document.getElementById('setWifi').addEventListener('click', onSetWifi);
 document.getElementById('tsBtn').addEventListener('click', onBtnCustom);
 $("#ubiSaveBtn").click(onBtnCustom);
+$("#dzSaveBtn").click(onBtnCustom);
 $("#beeSaveBtn").click(onSetMQTT);
 $("#btnAutoConnect").click(onbtnAutoConnect);
 $("#btnSerialSend").click(onSerialSend);
