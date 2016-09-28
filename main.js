@@ -473,7 +473,7 @@ function onbtnAutoConnect() {
    $("#emon_fields :input").filter(".lbi").each(function() {
      if (!$(this).val()) return;
      pay += "{0}:%{1}".format($(this).val(), $(this).attr("data-label"));
-   }
+   });
    if (!pay) return [];
    return "#http://emoncms.org/input/post.json?json={" + pay + "}&apikey=" + key;
 
