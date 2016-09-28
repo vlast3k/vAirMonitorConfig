@@ -43,6 +43,7 @@
         <li role="presentation"> <a href="#repDomoticz" aria-controls="repDomoticz" role="tab" data-toggle="tab">Domoticz</a></li>
         <li role="presentation"> <a href="#repOpenHab" aria-controls="repOpenHab" role="tab" data-toggle="tab">OpenHab / FHEM</a></li>
         <li role="presentation"> <a href="#repJeedom" aria-controls="repJeedom" role="tab" data-toggle="tab">Jeedom</a></li>
+        <li role="presentation"> <a href="#repPimatic" aria-controls="repPimatic" role="tab" data-toggle="tab">Pimatic</a></li>
         <!-- <li role="presentation">               <a href="#repUbidots"    aria-controls="repUbidots"    role="tab" data-toggle="tab">Ubidots</a></li>
     <li role="presentation">               <a href="#repSAPIOT"     aria-controls="repSAPIOT"     role="tab" data-toggle="tab">SAP HCP IoT</a></li> -->
         <li role="presentation"> <a href="#repCustomHTTP" aria-controls="repCustomHTTP" role="tab" data-toggle="tab">Custom HTTP</a></li>
@@ -356,6 +357,55 @@
             </div>
           </div>
         </div>
+        <div role="tabpanel" class="tab-pane" id="repPimatic">
+          <div class="panel panel-default ">
+            <div class="panel-body">
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="pimaHost">Host</label>
+                  <input type="text" class="form-control" id="pimaHost">
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="pimaPort">Port</label>
+                  <input type="text" class="form-control" id="pimaPort">
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="pimaUser">User</label>
+                  <input type="text" class="form-control" id="pimaUser">
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="pimaPass">Pass</label>
+                  <input type="text" class="form-control" id="pimaPass">
+                </div>
+              </div>
+              <br/>
+              <div id="pima_fields">
+                <div class="row">
+                  <div class="labelAndInput2" prefix="pima" label="CO2" placeholder="variable"></div>
+                  <div class="labelAndInput2" prefix="pima" label="TEMP" placeholder="variable"></div>
+                  <div class="labelAndInput2" prefix="pima" label="HUM" placeholder="variable"></div>
+                  <div class="labelAndInput2" prefix="pima" label="PRES" placeholder="variable"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="pima" label="PM25" placeholder="variable"></div>
+                  <div class="labelAndInput2" prefix="pima" label="PM10" placeholder="variable"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="pimaSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
 
 
 

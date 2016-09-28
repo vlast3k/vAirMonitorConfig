@@ -7,6 +7,8 @@ document.getElementById('setWifi').addEventListener('click', onSetWifi);
 document.getElementById('tsBtn').addEventListener('click', onBtnCustom);
 $("#ubiSaveBtn").click(onBtnCustom);
 $("#dzSaveBtn").click(onBtnCustom);
+$("#pimaSaveBtn").click(onBtnCustom);
+$("#jeeSaveBtn").click(onBtnCustom);
 $("#beeSaveBtn").click(onSetMQTT);
 $("#ohSaveBtn").click(onSetMQTT);
 $("#btnAutoConnect").click(onbtnAutoConnect);
@@ -429,6 +431,34 @@ function onbtnAutoConnect() {
    return msgs;
  }
 
+ function processPimaURLConfig() {
+   var host = $("#pimaHost").val();
+   if (!host) return [];
+   var port = $("#pimaPort").val() || "80";
+   var pass  = $("#pimaPass").val();
+   var user = $("#pimaUser").val();
+
+  //  curl \
+  //    -X PATCH \
+  //    --header "Content-Type:application/json" \
+  //    --data '{"type": "value", "valueOrExpression": 1337}' \
+  //    --user "user:password" \
+  //    http://your-pimatic/api/variables/the-answer
+  //
+   var msgs = [];
+   $("#pima_fields :input").filter(".lbi").each(function() {
+     if (!$(this).val()) return;
+     var entry = {};
+     entry.method = "PATCH";
+     res.url = "http://{0}:{1}@{2}:{3}/api/variables/{4}".format(user, pass, host, port, $(this).val());
+     res.ct  = "application/json";
+     res.pay = '{"type": "value", "valueOrExpression": %' + $(this).attr("data-label") + '%}' ;
+
+     msgs = msgs.concat("#" + JSON.stringify(res));
+    });
+   return msgs;
+ }
+
  function processUbidotsStoreConfig() {
    var store = {};
    store.ubiToken = $("#ubiToken").val();
@@ -470,6 +500,7 @@ function onbtnAutoConnect() {
    res = res.concat(processDomoticzURLConfig());
    res = res.concat(urlsAppendThingSpeak());
    res = res.concat(processJeedomURLConfig());
+   res = res.concat(processPimaticURLConfig());
    $("#customURL").val(res.join("\n"));
    var cb = function(path, idx) {
      if (path.indexOf('\"') > -1) {
@@ -485,6 +516,7 @@ function onbtnAutoConnect() {
    res = res.concat(processUbidotsStoreConfig());
    res = res.concat(processDomoticzStoreConfig());
    res = res.concat(processGenericIDConfig("repJeedom", "jee.cfg"));
+   res = res.concat(processGenericIDConfig("pimaJeedom", "pima.cfg"));
    var flist = createFunctionLinkedList(res, "ready >", function() {});
    //var f1 = function() {sendSerial('custom_url_clean', "ready >", flist)};
   // var storeTSCfg = makeStoreTSCfg(f1);
@@ -739,6 +771,7 @@ function processConfigurationFromESP(data) {
   applyOpenHABConfig(obj);
   applyJeedomConfig(obj);
   applyGenericJSONConfig(obj["jee.cfg"]);
+  applyGenericJSONConfig(obj["pima.cfg"]);
   //lines.forEach(handleCfgLine);
 }
 
