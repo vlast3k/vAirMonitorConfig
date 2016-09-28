@@ -9,6 +9,7 @@ $("#ubiSaveBtn").click(onBtnCustom);
 $("#dzSaveBtn").click(onBtnCustom);
 $("#pimaSaveBtn").click(onBtnCustom);
 $("#jeeSaveBtn").click(onBtnCustom);
+$("#emonSaveBtn").click(onBtnCustom);
 $("#beeSaveBtn").click(onSetMQTT);
 $("#ohSaveBtn").click(onSetMQTT);
 $("#btnAutoConnect").click(onbtnAutoConnect);
@@ -431,32 +432,35 @@ function onbtnAutoConnect() {
    return msgs;
  }
 
- function processPimaURLConfig() {
-   var host = $("#pimaHost").val();
+ function processJeedomURLConfig() {
+   var host = $("#jeeHost").val();
    if (!host) return [];
-   var port = $("#pimaPort").val() || "80";
-   var pass  = $("#pimaPass").val();
-   var user = $("#pimaUser").val();
+   var port = $("#jeePort").val() || "80";
+   var key  = $("#jeeKey").val();
+   var path = $("#jeePath").val();
 
-  //  curl \
-  //    -X PATCH \
-  //    --header "Content-Type:application/json" \
-  //    --data '{"type": "value", "valueOrExpression": 1337}' \
-  //    --user "user:password" \
-  //    http://your-pimatic/api/variables/the-answer
-  //
+   if (path && path.charAt(0) == '/') path.substring(1);
+   if (path && path.charAt(path.length-1) != '/') path += '/';
    var msgs = [];
-   $("#pima_fields :input").filter(".lbi").each(function() {
+   $("#jee_fields :input").filter(".lbi").each(function() {
      if (!$(this).val()) return;
-     var entry = {};
-     entry.method = "PATCH";
-     res.url = "http://{0}:{1}@{2}:{3}/api/variables/{4}".format(user, pass, host, port, $(this).val());
-     res.ct  = "application/json";
-     res.pay = '{"type": "value", "valueOrExpression": %' + $(this).attr("data-label") + '%}' ;
-
-     msgs = msgs.concat("#" + JSON.stringify(res));
-    });
+     msgs = msgs.concat("#http://{0}:{1}/{2}core/api/jeeApi.php?apikey={3}&type=virtual&id={4}&value=%{5}%"
+            .format(host, port, path, key, $(this).val(), $(this).attr("data-label")));
+          });
    return msgs;
+ }
+
+ function processEmonCMSURLConfig() {
+   var key = $("#emonKey").val();
+   if (!key) return [];
+   var pay="";
+   $("#emon_fields :input").filter(".lbi").each(function() {
+     if (!$(this).val()) return;
+     pay += "{0}:%{1}".format($(this).val(), $(this).attr("data-label"));
+   }
+   if (!pay) return [];
+   return "#http://emoncms.org/input/post.json?json={" + pay + "}&apikey=" + key;
+
  }
 
  function processUbidotsStoreConfig() {
@@ -501,6 +505,7 @@ function onbtnAutoConnect() {
    res = res.concat(urlsAppendThingSpeak());
    res = res.concat(processJeedomURLConfig());
    res = res.concat(processPimaticURLConfig());
+   res = res.concat(processEmonCMSURLConfig());
    $("#customURL").val(res.join("\n"));
    var cb = function(path, idx) {
      if (path.indexOf('\"') > -1) {
@@ -516,7 +521,8 @@ function onbtnAutoConnect() {
    res = res.concat(processUbidotsStoreConfig());
    res = res.concat(processDomoticzStoreConfig());
    res = res.concat(processGenericIDConfig("repJeedom", "jee.cfg"));
-   res = res.concat(processGenericIDConfig("pimaJeedom", "pima.cfg"));
+   res = res.concat(processGenericIDConfig("repPimatic", "pima.cfg"));
+   res = res.concat(processGenericIDConfig("repEmon", "emon.cfg"));
    var flist = createFunctionLinkedList(res, "ready >", function() {});
    //var f1 = function() {sendSerial('custom_url_clean', "ready >", flist)};
   // var storeTSCfg = makeStoreTSCfg(f1);
@@ -772,6 +778,7 @@ function processConfigurationFromESP(data) {
   applyJeedomConfig(obj);
   applyGenericJSONConfig(obj["jee.cfg"]);
   applyGenericJSONConfig(obj["pima.cfg"]);
+  applyGenericJSONConfig(obj["emon.cfg"]);
   //lines.forEach(handleCfgLine);
 }
 
