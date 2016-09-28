@@ -41,6 +41,7 @@
         <li role="presentation"> <a href="#repUbidots" aria-controls="repUbidots" role="tab" data-toggle="tab">Ubidots</a></li>
         <li role="presentation"> <a href="#repBeebotte" aria-controls="repBeebotte" role="tab" data-toggle="tab">Beebotte</a></li>
         <li role="presentation"> <a href="#repDomoticz" aria-controls="repDomoticz" role="tab" data-toggle="tab">Domoticz</a></li>
+        <li role="presentation"> <a href="#repOpenHab" aria-controls="repOpenHab" role="tab" data-toggle="tab">OpenHab</a></li>
         <!-- <li role="presentation">               <a href="#repUbidots"    aria-controls="repUbidots"    role="tab" data-toggle="tab">Ubidots</a></li>
     <li role="presentation">               <a href="#repSAPIOT"     aria-controls="repSAPIOT"     role="tab" data-toggle="tab">SAP HCP IoT</a></li> -->
         <li role="presentation"> <a href="#repCustomHTTP" aria-controls="repCustomHTTP" role="tab" data-toggle="tab">Custom HTTP</a></li>
@@ -264,6 +265,41 @@
                 <br>
                 <div class="row">
                   <button id="dzSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="repOpenHab">
+          <div class="panel panel-default ">
+            <div class="panel-body">
+              <div class="row" >
+                <div class="col-xs-8 form-inline">
+                  <label for="ohHost">MQTT Server Host</label>
+                  <input type="text" class="form-control" id="ohHost">
+                  &nbsp;&nbsp;&nbsp;
+                  <label for="ohPort">MQTT Server Port</label>
+                  <input type="text" class="form-control" id="ohPort">
+                </div>
+              </div>
+
+              <br/>
+              <div id="oh_fields">
+                <div class="row">
+                  <div class="labelAndInput2" prefix="oh" label="CO2" placeholder="topic"></div>
+                  <div class="labelAndInput2" prefix="oh" label="TEMP" placeholder="topic"></div>
+                  <div class="labelAndInput2" prefix="oh" label="HUM" placeholder="topic"></div>
+                  <div class="labelAndInput2" prefix="oh" label="PRES" placeholder="topic"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="oh" label="PM25" placeholder="topic"></div>
+                  <div class="labelAndInput2" prefix="oh" label="PM10" placeholder="topic"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="ohSaveBtn" type="submit" class="btn btn-default">	Save	</button>
                 </div>
               </div>
             </div>

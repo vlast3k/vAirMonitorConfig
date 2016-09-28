@@ -8,6 +8,7 @@ document.getElementById('tsBtn').addEventListener('click', onBtnCustom);
 $("#ubiSaveBtn").click(onBtnCustom);
 $("#dzSaveBtn").click(onBtnCustom);
 $("#beeSaveBtn").click(onSetMQTT);
+$("#ohSaveBtn").click(onSetMQTT);
 $("#btnAutoConnect").click(onbtnAutoConnect);
 $("#btnSerialSend").click(onSerialSend);
 $("#ssid").change(onSSIDChange);
@@ -482,7 +483,20 @@ function onbtnAutoConnect() {
             .format(channel, $(this).val(), $(this).attr("data-label"));
           });
    $("#mqttValue").val(msgs);
+ }
 
+ function processOpenHABConfig() {
+   var host = $("#ohHost").val();
+   if (!host) return;
+   $("#mqttHost").val(host);
+   $("#mqttPort").val($("#ohPort").val());
+   $("#mqttUser").val("");
+   $("#mqttPass").val("");
+   var msgs = "";
+   $("#oh_fields :input").filter(".lbi").each(function() {
+     if (!$(this).val()) return;
+     msgs += "{0}:%{1}%\n".format($(this).val(), $(this).attr("data-label"));});
+   $("#mqttValue").val(msgs);
  }
 
  function processBeebotteStoreConfig() {
@@ -490,13 +504,23 @@ function onbtnAutoConnect() {
    store.beeChannel = $("#beeChannel").val();
    store.beeToken = $("#beeToken").val();
    store.values ={};
-   $("#ubi_fields :input").filter(".lbi").each(function() {store.values[$(this).attr("data-label")] = $(this).val()});
+   $("#bee_fields :input").filter(".lbi").each(function() {store.values[$(this).attr("data-label")] = $(this).val()});
    return "prop_jset \"bee.cfg\"" + JSON.stringify(store);
+ }
+
+ function processOpenHABStoreConfig() {
+   var store = {};
+   store.ohHost = $("#ohHost").val();
+   store.ohPort = $("#ohPort").val();
+   store.values ={};
+   $("#oh_fields :input").filter(".lbi").each(function() {store.values[$(this).attr("data-label")] = $(this).val()});
+   return "prop_jset \"oh.cfg\"" + JSON.stringify(store);
  }
 
 
  function onSetMQTT() {
    processBeebotteConfig();
+   processOpenHABConfig();
    log("set mqtt, value= " + $("#mqttValue").val());
    var callMqttSetup = 'mqtt_setup "' + $("#mqttHost").val()     + '","' + $("#mqttPort").val() + '","'
                                + $("#mqttClientId").val() + '","' + $("#mqttUser").val() + '","'
@@ -506,6 +530,7 @@ function onbtnAutoConnect() {
    res = res.map(cb);
    res = [callMqttSetup, 'mqtt_msg_clean'].concat(res);
    res = res.concat(processBeebotteStoreConfig());
+   res = res.concat(processOpenHABStoreConfig());
    var flist = createFunctionLinkedList(res, "ready >", function() {});
    flist();
 //   var sap   =  function() { sendSerial("sap 1", proxy, null); }
@@ -679,6 +704,7 @@ function processConfigurationFromESP(data) {
   applyUbiDotsConfig(obj);
   applyBeebotteConfig(obj);
   applyDomoticzConfig(obj);
+  applyOpenHABConfig(obj);
   //lines.forEach(handleCfgLine);
 }
 
@@ -701,6 +727,17 @@ function applyBeebotteConfig(obj) {
     $("#beeToken")  .val(par.beeToken);
     $("#beeChannel").val(par.beeChannel);
     Object.keys(par.values).forEach(function(key) {$("#bee" + key ).val(par.values[key])});
+  }
+}
+
+function applyOpenHABConfig(obj) {
+  //u//bi.cfg={"ubiToken":"QE6KXlZsqWAffjPwM8lVqGzMfJMPri","ubiDSLabel":"test123","values":{"CO2":"var1","TEMP":"var2","HUM":"asd","PRES":"","PM25":"","PM10":"","undefined":""}}
+  if (!obj["oh.cfg"]) return;
+  var par = JSON.parse(obj["oh.cfg"]);
+  if (par) {
+    $("#ohHost").val(par.ohHost);
+    $("#ohPort").val(par.ohPort);
+    Object.keys(par.values).forEach(function(key) {$("#oh" + key ).val(par.values[key])});
   }
 }
 
