@@ -526,7 +526,7 @@ function onbtnAutoConnect() {
  }
 
   function processGenericIDConfig(rootTag, cfgName) {
-     if (!containsChanges(rootTag).length) return;
+     if (!containsChanges(rootTag).length) return [];
      var store = {};
      $("#" + rootTag + " input[id]").each(function() {store[$(this).attr("id")] = $(this).val()});
      cleanChanges(rootTag);
