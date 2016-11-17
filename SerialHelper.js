@@ -83,6 +83,7 @@ var SerialHelper = (function () {
   return {
     addCommand : addCommand,
     onReceiveCallback: onReceiveCallback,
+    sendSequence: sendSequence,
     ab2str : ab2str,
     str2ab : str2ab
   }
