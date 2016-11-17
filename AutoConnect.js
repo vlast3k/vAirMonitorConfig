@@ -4,9 +4,9 @@ var AutoConnect = (function() {
     chrome.serial.onReceive.addListener(SerialHelper.onReceiveCallback);
     SerialHelper.startSequence();
     SerialHelper.addCommand({cmd:"nop", endOKstr: "ready >", timeout:40000});
-    SerialHelper.addCommand({cmd:"info", endOKstr: "ready >", onOK: loadPropertiesFromESP});
+    SerialHelper.addCommand({cmd:"info", endOKstr: "ready >", onOK: ConfigurationFromESP.load});
     SerialHelper.sendSequence();
-    startNOPTimer();
+    KeepESPAwake.start();
   }
 
   function onVAirFound(comPort) {
@@ -46,7 +46,7 @@ var AutoConnect = (function() {
   function reconnect() {
     if (connectionId) {
       chrome.serial.disconnect(connectionId, function() {
-        endNOPTimer();
+        KeepESPAwake.end();
         connectionId = null;
         chrome.serial.onReceive.removeListener(onReceiveCallback);
         document.getElementById('btnAutoConnect').className="btn btn-info";
@@ -59,7 +59,7 @@ var AutoConnect = (function() {
   function onbtnAutoConnect() {
     if (connectionId) {
       chrome.serial.disconnect(connectionId, function() {
-        endNOPTimer();
+        KeepESPAwake.end();
         connectionId = null;
         chrome.serial.onReceive.removeListener(onReceiveCallback);
         document.getElementById('btnAutoConnect').className="btn btn-info";
