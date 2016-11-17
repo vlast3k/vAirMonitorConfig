@@ -45,7 +45,7 @@ var SimpleCommands = (function() {
   }
 
   function onResetCal() {
-    SerialHelper.addCommand("rco"));
+    SerialHelper.addCommand("rco");
   }
 
   function onSetPPMBtn() {
@@ -61,7 +61,7 @@ var SimpleCommands = (function() {
   }
 
   function onDebug() {
-    SerialHelper.addCommand("debug"));
+    SerialHelper.addCommand("debug");
   }
 
   function onBtnTestCfg() {
@@ -80,6 +80,8 @@ var SimpleCommands = (function() {
     $("#setPPMBtn").click(onSetPPMBtn);
     $("#setColorsBtn").click(onSetColorsBtn);
     $("#setBRFBtn").click(onSetBRFBtn);
+    $("button.testCfgBtn").click(onBtnTestCfg);
+
   }
   return {
     init:init

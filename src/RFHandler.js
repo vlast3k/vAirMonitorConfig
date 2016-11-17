@@ -39,6 +39,7 @@ var RFHandler = (function() {
   }
 
   return {
-    init: init
+    init: init,
+    onRFEnableChange: onRFEnableChange
   }
 })();

@@ -7,25 +7,32 @@ var SerialHelper = (function () {
   var collectedSerialData = "";
   var currentSequence;
   var sequenceTerminateTimer;
+  var serialTimeout;
+  var iterationSerialData="";
+
 
   function startSequence() {
     currentSequence = Date.now();
   }
 
   function addCommand(cmd) {
+    console.log("cmd=" + cmd + ", type=" + typeof cmd);
     var cmdJ = cmd;
-    if (typeof cmd === 'string' || cmd instaceof String) {
+    if (typeof cmd === 'string') {
       cmdJ = {cmd:cmd};
     }
     cmdJ.sequence = currentSequence > -1 ? currentSequence : Date.now();
     cmdJ.timeout  = cmdJ.timeout || 1000;
     cmdJ.endOKstr = cmdJ.endOKstr || "ready >";
+    console.log(JSON.stringify(cmdJ));
     cmdQueue = cmdQueue.concat(cmdJ);
+    if (currentSequence == -1)    setTimeout(doSend, 0);
   }
 
   function sendSequence() {
     currentSequence = -1;
-    doSend();
+    setTimeout(doSend, 0);
+
   }
 
   function doSend() {
@@ -33,14 +40,21 @@ var SerialHelper = (function () {
     if (!cmdQueue.length) return;
     serialDataFromCurrentExecution = "";
     iterationSerialData = "";
-    chrome.serial.send(connectionId, str2ab(cmdQueue[0].cmd + "\n"), function() {});
+    console.log("sending command: " + JSON.stringify(cmdQueue[0]));
+    chrome.serial.send(AutoConnect.getConnectionId(), str2ab(cmdQueue[0].cmd + "\n"), function() {});
     sequenceTerminateTimer = setTimeout(onTerminateCurrentSequence, cmdQueue[0].timeout);
+    state = SENDING;
 
   }
 
   function onTerminateCurrentSequence() {
-    while (cmdQueue[0].currentSequence == currentSequence) cmdQueue.shift();
-    doPost();
+    while (cmdQueue[0].currentSequence == currentSequence) {
+      console.log("terminating: " + JSON.stringify(cmdQueue[0]));
+      cmdQueue.shift();
+      state = IDLE;
+    }
+    setTimeout(doSend, 0);
+
   }
 
   function onReceiveCallback(info) {
@@ -52,12 +66,13 @@ var SerialHelper = (function () {
   function processCurrentData() {
     serialDataFromCurrentExecution += iterationSerialData;
     log ("[" + iterationSerialData.trim() + "]"); // + "\n waiting for : " + onOKString);
-    if (serialDataFromCurrentExecution.indexOf(cmdQueue[0].endOKstr) > -1) {
+    if (cmdQueue.length && serialDataFromCurrentExecution.indexOf(cmdQueue[0].endOKstr) > -1) {
+      console.log("found:" +cmdQueue[0].endOKstr + ", in: " + serialDataFromCurrentExecution);
       clearTimeout(sequenceTerminateTimer);
       cmdQueue[0].onOK && cmdQueue[0].onOK(serialDataFromCurrentExecution);
       cmdQueue.shift();
       state = IDLE;
-      doSend();
+      setTimeout(doSend, 0);
     }
     iterationSerialData = "";
     if (serialDataFromCurrentExecution.length > 50000) serialDataFromCurrentExecution = "";
@@ -84,6 +99,7 @@ var SerialHelper = (function () {
     addCommand : addCommand,
     onReceiveCallback: onReceiveCallback,
     sendSequence: sendSequence,
+    startSequence: startSequence,
     ab2str : ab2str,
     str2ab : str2ab
   }

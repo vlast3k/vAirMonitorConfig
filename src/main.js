@@ -3,8 +3,6 @@
 $("#btnAutoConnect").click(AutoConnect.onbtnAutoConnect);
 $("#btnSerialSend").click(onSerialSend);
 $("#ssid").change(onSSIDChange);
-//$("#sapBtn").click(onBtnSAP);
-$("button.testCfgBtn").click(onBtnTestCfg);
 $("#ota").click(onBtnOTA);
 $("#resetESP").click(onResetESP);
 
@@ -13,10 +11,6 @@ $("#setWifi").click();
 // $("#bttnSetAction").click(onBttnSetAction);
 // $("#rfidSetAction").click(onRFIDSetAction);
 // $("#cmdSetAction").click(onCMDSetAction);
-
-
-ProcessMQTTandHTTP.init();
-
 var deviceType = null;
 
 String.prototype.format = function() {
@@ -112,6 +106,7 @@ function onResetESP() {
 
 function init() {
   initChromeStorageSync();
+  ProcessMQTTandHTTP.init();
   HTMLFieldsEnhancer.init();
   RFHandler.init();
   TreeNavigation.init("#tree");
@@ -140,3 +135,6 @@ var KeepESPAwake = (function() {
     end   : endNOPTimer
   }
 })()
+
+
+init();

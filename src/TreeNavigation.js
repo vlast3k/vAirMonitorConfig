@@ -100,6 +100,6 @@ var TreeNavigation = (function () {
   }
 
   return {
-    init:init;
+    init:init
   }
 })()

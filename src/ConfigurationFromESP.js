@@ -65,7 +65,7 @@ var ConfigurationFromESP = (function() {
 
     if (!obj["rf.enabled"] || obj["rf.enabled"].startsWith("false")) $("#rfEnable").prop("checked", false);
     else $("#rfEnable").prop("checked", true);
-    onRFEnableChange();
+    RFHandler.onRFEnableChange();
     applyGenericJSONConfig(obj["ubi.cfg"]);
     applyGenericJSONConfig(obj["bee.cfg"]);
     applyGenericJSONConfig(obj["dz.cfg"]);
@@ -98,7 +98,7 @@ var ConfigurationFromESP = (function() {
     processConfigurationFromESP(testCfgData);
   }
   return {
-    load : loadPropertiesFromESP;
+    load : loadPropertiesFromESP
   }
 
 })();
