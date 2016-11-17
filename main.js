@@ -40,51 +40,12 @@ $("#cmdSetAction").click(onCMDSetAction);
 $("#rfEnable").change(onRFEnableChange);
 $("#setRF").click(onSetRF);
 
+var deviceType = null;
+
 String.prototype.format = function () {
   var args = arguments;
   return this.replace(/\{(\d+)\}/g, function (m, n) { return args[n]; });
 };
-
-function onBttnSetAction() {
-  var selTabId = $('#veButtonTabContent').find('.tab-pane.active').attr("id");
-  if (selTabId == "bttnDweetio") {
-    sendSerial('vespBttnA "dw","' + $("#bttnDwFor").val() + '","' + ($("#bttnDwParams").val()) + '"', "OK >")
-  } else if (selTabId == "bttnIfttt") {
-    sendSerial('vespBttnA "if","' + $("#bttnIfEvent").val() + '","' + $("#bttnIfKey").val() + '"', "OK >")
-  } else if (selTabId == "bttnCustomhttp") {
-    sendSerial('vespBttn ' + $("#bttnCustomUrl").val(), "OK >")
-  }
-}
-
-function onRFIDSetAction() {
-  var selTabId = $('#veRFIDTabContent').find('.tab-pane.active').attr("id");
-  if (selTabId == "rfidDweetio") {
-    sendSerial('vespRFIDA "dw","' + $("#rfidDwFor").val() + '","' + ($("#rfidDwParams").val()) + '"', "OK >")
-  } else if (selTabId == "bttnIfttt") {
-    sendSerial('vespRFIDA "if","' + $("#rfidIfEvent").val() + '","' + $("#rfidIfKey").val() + '"', "OK >")
-  } else if (selTabId == "rfidCustomhttp") {
-    sendSerial('vespRFID ' + $("#rfidCustomUrl").val(), "OK >")
-  }
-}
-
-function onCMDSetAction() {
-  var selTabId = $('#veCMDTabContent').find('.tab-pane.active').attr("id");
-  if (selTabId == "cmdDweetio") {
-    sendSerial('vespDWCmd ' + $("#cmdDwFor").val(), "OK >")
-  }
-}
-
-//on change hide all divs linked to select and show only linked to selected option
-$('.mystaff_hide').addClass('collapse');
-$('#sel1').change(function(){
-    var selector = '#sel1_' + $(this).val();
-
-    //hide all elements
-    $('.mystaff_hide').collapse('hide');
-
-    //show only element connected to selected option
-    $(selector).collapse('show');
-});
 
  function log(msg, skipNL) {
    var buffer = document.querySelector('#buffer');
@@ -92,36 +53,23 @@ $('#sel1').change(function(){
    if ($("#cbPauseSerialUpdate").is(':checked') == false) buffer.scrollTop = buffer.scrollHeight;
  }
 
+function initChromeStorageSync() {
+  var inputSelector = ":input[type='text'][id!='serial'][id!='pass'][id!='sapPass']";
+  $(inputSelector).change(function(event) {
+    var obj = {};
+    obj[event.target.id] = event.target.value;
+    chrome.storage.sync.set(obj);
+  });
 
-var inputSelector = ":input[type='text'][id!='serial'][id!='pass'][id!='sapPass']";
-$(inputSelector).change(function(event) {
-  var obj = {};
-  obj[event.target.id] = event.target.value;
-  chrome.storage.sync.set(obj);
-});
-
-function loadAllSettings() {
   $(inputSelector).each(function() {
     var id = this.id;
-   // log(id);
-   if (chrome.storage)
-    chrome.storage.sync.get(this.id, function(value) {
-      $("#" + id).val(value[id])
-    })
+    if (chrome.storage) {
+       chrome.storage.sync.get(this.id, function(value) {
+          $("#" + id).val(value[id])
+       })
+     }
   })
 }
-
-
-loadAllSettings();
-setTimeout(onSSIDChange, 500);
-
-var stringReceived = '';
-var connectionId;
-var onOK;
-var serialString = "";
-var serialTimeout;
-var onOKString;
-
 
 function onSSIDChange() {
   if ($("#ssid").val() == "SAP-Guest") {
@@ -134,108 +82,53 @@ function onSSIDChange() {
   }
 }
 
-
 function onSerialSend() {
   if ($("#serial").val().startsWith("COM")) {
      deviceType = VTHING;
      onVAirFound($("#serial").val());
   } else {
-     sendSerial($("#serial").val());
+     SerialHelper.addCommand($("#serial").val());
   }
-  //chrome.serial.send(connectionId, str2ab($("#serial").val() +"\n"), onSend);
 }
 
-var VAIR = "vAir";
-var VTHING = "vThing - CO2";
-var VESPRINO_V1 = "vESPrino"
-var VTHING_H801    = "vThing - H8"
-var VTHING_STARTER = "sadsa"
-//var VESPRINO_V1    = "vESPrino v1"
 
-var deviceType = null;
-
-function findDevice(onDeviceFound, text, baud) {
-  var devices = {};
-  var findInterval = setInterval(function() { log(" . ", true);  }, 500);
-
-  function onIntDeviceFound(comPort, connId) {
-    clearInterval(findInterval);
-    clearTimeout(foundTimeout);
-    Object.keys(devices).forEach(function(_connId) {
-     chrome.serial.disconnect(+_connId, function() {});
-    });
-    chrome.serial.onReceive.removeListener(onRecvFindDev);
-    setTimeout(function() {onDeviceFound(comPort)}, 1000);
-  }
-
-  var foundTimeout = setTimeout(function() {
-    onIntDeviceFound(null);
-  }, 10000);
-
-  function onRecvFindDev(conn) {
-    var str = ab2str(conn.data);
-    log ("[" + ab2str(conn.data).trim() + "]");
-    devices[conn.connectionId].str += str;
-    var s = devices[conn.connectionId].str;
-    if (s.indexOf(VAIR) > -1)         deviceType = VAIR;
-    else if (s.indexOf(VTHING) > -1)  deviceType = VTHING;
-  //  else if (s.indexOf(VTHING_STARTER) > -1)  deviceType = VTHING_STARTER;
-    else if (s.indexOf(VTHING_H801) > -1)  deviceType = VTHING_H801;
-    else if (s.indexOf(VESPRINO_V1) > -1)  deviceType = VESPRINO_V1;
-    else return;
-    onIntDeviceFound(devices[conn.connectionId].path, conn.connectionId);
-  }
-
-
-  function onGetDevices(ports) {
-    chrome.serial.onReceive.addListener(onRecvFindDev);
-    ports.forEach(function(ppp) {
-      log("Trying : " + ppp.path + "\n");
-      chrome.serial.connect(ppp.path, {bitrate: baud}, function(data) {
-        function onRTSTimeout() {chrome.serial.setControlSignals(data.connectionId, {dtr:false, rts:false}, function() {}); }
-        function onCtrlSigSet() {setTimeout(onRTSTimeout, 1000);  }
-        if (!chrome.runtime.lastError && data) {
-          devices[data.connectionId] = {path:ppp.path, str:""};
-          chrome.serial.setControlSignals(data.connectionId, {dtr:false, rts:true}, onCtrlSigSet);
-        }
-      });
-    });
-  }
-  log (text, true);
-  chrome.serial.getDevices(onGetDevices);
-
-}
 
 function onConnect2(conn) {
   //log ("Connected to: " + JSON.stringify(conn));
   connectionId = conn.connectionId;
-  chrome.serial.onReceive.addListener(onReceiveCallback);
-  sendSerial("nop", "ready >", function() {
-    sendSerial("info", "ready >", loadPropertiesFromESP)
-  });
+  chrome.serial.onReceive.addListener(SerialHelper.onReceiveCallback);
+  SerialHelper.startSequence();
+  SerialHelper.addCommand({cmd:"nop", endOKstr: "ready >", timeout:40000});
+  SerialHelper.addCommand({cmd:"info", endOKstr: "ready >", onOK: loadPropertiesFromESP});
+  SerialHelper.sendSequence();
+  // sendSerial("nop", "ready >", function() {
+  //   sendSerial("info", "ready >", loadPropertiesFromESP)
+  // });
   startNOPTimer();
   //loadPropertiesFromESP();
-}
+ }
+//
+// var onReceiveCallback = function(info) {
+//   var str = ab2str(info.data);
+//   clearTimeout(serialTimeout);
+//   serialTimeout = setTimeout(onSerialString, 100);
+//   serialString += str;
+// };
+//
+// function onSerialString() {
+//   collectedSerialData += serialString;
+//   log ("[" + serialString.trim() + "]"); // + "\n waiting for : " + onOKString);
+//   if (serialString.indexOf(onOKString) > -1) {
+//     var ss = onOK;
+//     onOK = null;
+//     console.log("ss is: " + ss);
+//     ss && ss(collectedSerialData);
+//   }
+//   serialString = "";
+//   if (collectedSerialData.length > 10000) collectedSerialData = "";
+// }
 
-var onReceiveCallback = function(info) {
-  var str = ab2str(info.data);
-  clearTimeout(serialTimeout);
-  serialTimeout = setTimeout(onSerialString, 100);
-  serialString += str;
-};
 
-function onSerialString() {
-  collectedSerialData += serialString;
-  log ("[" + serialString.trim() + "]"); // + "\n waiting for : " + onOKString);
-  if (serialString.indexOf(onOKString) > -1) {
-    var ss = onOK;
-    onOK = null;
-    console.log("ss is: " + ss);
-    ss && ss(collectedSerialData);
-  }
-  serialString = "";
-  if (collectedSerialData.length > 10000) collectedSerialData = "";
-}
 
 
    function onVAirFound(comPort) {
@@ -272,6 +165,8 @@ function onSerialString() {
      }
 
    }
+
+
 
 
 function reconnect() {
@@ -947,3 +842,111 @@ $('#mainTabs a[href="#setupWifi"]').tab("show")
 $('#tree').on('nodeSelected', function(event, data) {
   $('#mainTabs a[href="' + data.href +'"]').tab("show")
 });
+
+initChromeStorageSync();
+setTimeout(onSSIDChange, 500);
+
+
+
+
+
+// function findDevice(onDeviceFound, text, baud) {
+//   var devices = {};
+//   var findInterval = setInterval(function() { log(" . ", true);  }, 500);
+//
+//   function onIntDeviceFound(comPort, connId) {
+//     clearInterval(findInterval);
+//     clearTimeout(foundTimeout);
+//     Object.keys(devices).forEach(function(_connId) {
+//      chrome.serial.disconnect(+_connId, function() {});
+//     });
+//     chrome.serial.onReceive.removeListener(onRecvFindDev);
+//     setTimeout(function() {onDeviceFound(comPort)}, 1000);
+//   }
+//
+//   var foundTimeout = setTimeout(function() {
+//     onIntDeviceFound(null);
+//   }, 10000);
+//
+//   function onRecvFindDev(conn) {
+//     var str = ab2str(conn.data);
+//     log ("[" + ab2str(conn.data).trim() + "]");
+//     devices[conn.connectionId].str += str;
+//     var s = devices[conn.connectionId].str;
+//     if (s.indexOf(VAIR) > -1)         deviceType = VAIR;
+//     else if (s.indexOf(VTHING) > -1)  deviceType = VTHING;
+//   //  else if (s.indexOf(VTHING_STARTER) > -1)  deviceType = VTHING_STARTER;
+//     else if (s.indexOf(VTHING_H801) > -1)  deviceType = VTHING_H801;
+//     else if (s.indexOf(VESPRINO_V1) > -1)  deviceType = VESPRINO_V1;
+//     else return;
+//     onIntDeviceFound(devices[conn.connectionId].path, conn.connectionId);
+//   }
+//
+//
+//   function onGetDevices(ports) {
+//     chrome.serial.onReceive.addListener(onRecvFindDev);
+//     ports.forEach(function(ppp) {
+//       log("Trying : " + ppp.path + "\n");
+//       chrome.serial.connect(ppp.path, {bitrate: baud}, function(data) {
+//         function onRTSTimeout() {chrome.serial.setControlSignals(data.connectionId, {dtr:false, rts:false}, function() {}); }
+//         function onCtrlSigSet() {setTimeout(onRTSTimeout, 1000);  }
+//         if (!chrome.runtime.lastError && data) {
+//           devices[data.connectionId] = {path:ppp.path, str:""};
+//           chrome.serial.setControlSignals(data.connectionId, {dtr:false, rts:true}, onCtrlSigSet);
+//         }
+//       });
+//     });
+//   }
+//   log (text, true);
+//   chrome.serial.getDevices(onGetDevices);
+//
+// }
+
+
+// function onBttnSetAction() {
+//   var selTabId = $('#veButtonTabContent').find('.tab-pane.active').attr("id");
+//   if (selTabId == "bttnDweetio") {
+//     sendSerial('vespBttnA "dw","' + $("#bttnDwFor").val() + '","' + ($("#bttnDwParams").val()) + '"', "OK >")
+//   } else if (selTabId == "bttnIfttt") {
+//     sendSerial('vespBttnA "if","' + $("#bttnIfEvent").val() + '","' + $("#bttnIfKey").val() + '"', "OK >")
+//   } else if (selTabId == "bttnCustomhttp") {
+//     sendSerial('vespBttn ' + $("#bttnCustomUrl").val(), "OK >")
+//   }
+// }
+//
+// function onRFIDSetAction() {
+//   var selTabId = $('#veRFIDTabContent').find('.tab-pane.active').attr("id");
+//   if (selTabId == "rfidDweetio") {
+//     sendSerial('vespRFIDA "dw","' + $("#rfidDwFor").val() + '","' + ($("#rfidDwParams").val()) + '"', "OK >")
+//   } else if (selTabId == "bttnIfttt") {
+//     sendSerial('vespRFIDA "if","' + $("#rfidIfEvent").val() + '","' + $("#rfidIfKey").val() + '"', "OK >")
+//   } else if (selTabId == "rfidCustomhttp") {
+//     sendSerial('vespRFID ' + $("#rfidCustomUrl").val(), "OK >")
+//   }
+// }
+//
+// function onCMDSetAction() {
+//   var selTabId = $('#veCMDTabContent').find('.tab-pane.active').attr("id");
+//   if (selTabId == "cmdDweetio") {
+//     sendSerial('vespDWCmd ' + $("#cmdDwFor").val(), "OK >")
+//   }
+// }
+
+// //on change hide all divs linked to select and show only linked to selected option
+// $('.mystaff_hide').addClass('collapse');
+// $('#sel1').change(function(){
+//     var selector = '#sel1_' + $(this).val();
+//
+//     //hide all elements
+//     $('.mystaff_hide').collapse('hide');
+//
+//     //show only element connected to selected option
+//     $(selector).collapse('show');
+// });
+
+// var VAIR = "vAir";
+// var VTHING = "vThing - CO2";
+// var VESPRINO_V1 = "vESPrino"
+// var VTHING_H801    = "vThing - H8"
+// var VTHING_STARTER = "sadsa"
+//var VESPRINO_V1    = "vESPrino v1"

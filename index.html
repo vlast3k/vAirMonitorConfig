@@ -48,536 +48,574 @@
           <!-- Tab panes -->
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="setupWifi">
-                  <div class="row">
-                    <div class="col-xs-2">
-                      <input id="btnAutoConnect" type="button" class="btn btn-info" value="Auto Connect">
-                    </div>
-                  </div>
-                  <br/>
-                  <br/>
+              <div class="row">
+                <div class="col-xs-2">
+                  <input id="btnAutoConnect" type="button" class="btn btn-info" value="Auto Connect">
+                </div>
+              </div>
 
-                  <div class="row">
-                    <div class="col-xs-12">
+
+              <div class="panel panel-default ">
+                <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="panel panel-default ">
+                    <div class="panel-body">
                       <form class="form-inline">
-                        <div class="form-group">
-                          <label for="ssid">SSID</label>
-                          <input type="text" class="form-control" id="ssid">
-                        </div>
-                        <div class="form-group">
-                          <label for="pass">Pass</label>
-                          <input type="text" class="form-control" id="pass">
-                        </div>
+                        <!-- <div class="form-group"> -->
+                        <label for="ssid">SSID</label>
+                        <input type="text" class="form-control" id="ssid">
+                        <!-- </div> -->
+                        <!-- <div class="form-group"> -->
+                        <label for="pass">Pass</label>
+                        <input type="text" class="form-control" id="pass">
+                        <!-- </div> -->
                         <div id="sap" class="form-group hidden">
                           <label for="sapPass">Pass</label>
                           <input type="text" class="form-control" id="sapPass">
                           <a href="https://emea-guestvoucher.wlan.sap.com/guest/auth_login.php?target=%2Fguest%2F" target="_new">get pass</a>
                         </div>
-                        <button id="setWifi" class="btn btn-default">
-                          Set Wifi
-                        </button>
                       </form>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="panel panel-default ">
+                    <div class="panel-body">
+                      <form class="form-inline">
+                        <label for="static_ip">Static IP</label>
+                        <input type="text" class="form-control" id="static_ip">
+                        <br/>
+                        <br/>
+                        <label for="gateway">Gateway</label>
+                        <input type="text" class="form-control" id="gateway">
+                        &nbsp;&nbsp;
+                        <label for="netmask">Subnet Mask</label>
+                        <input type="text" class="form-control" id="netmask">
+                        <br/>
+                        <br/>
+                        <label for="dns1">DNS 1</label>
+                        <input type="text" class="form-control" id="dns1">
+                        &nbsp;&nbsp;
+                        <label for="dns2">DNS 2</label>
+                        <input type="text" class="form-control" id="dns2">
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <button id="setWifi" class="btn btn-default">
+                    Set Wifi
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repThingSpeak">
-                  <div class="row">
-                    <div class="col-xs-12">
-                      <form class="form-inline">
-                        <div class="form-group">
-                          <label for="ts">ThingSpeak Write API Key</label>
-                          <input type="text" class="form-control" id="tsKey">
-                          <button id="tsBtn" type="submit" class="btn btn-default">	Save	</button>
-                        </div>
-                      </form>
+              <div class="row">
+                <div class="col-xs-12">
+                  <form class="form-inline">
+                    <div class="form-group">
+                      <label for="ts">ThingSpeak Write API Key</label>
+                      <input type="text" class="form-control" id="tsKey">
+                      <button id="tsBtn" type="submit" class="btn btn-default">	Save	</button>
                     </div>
+                  </form>
+                </div>
+              </div>
+              <br>
+              <div id="ts_fields">
+                <div class="row">
+                  <div class="col-xs-2">
+                    <div class="select_dataid" label="field1" default="CO2"></div>
                   </div>
-                  <br>
-                  <div id="ts_fields">
-                    <div class="row">
-                      <div class="col-xs-2">
-                        <div class="select_dataid" label="field1" default="CO2"></div>
-                      </div>
-                      <div class="col-xs-2">
-                        <div class="select_dataid" label="field2" default="TEMP"></div>
-                      </div>
-                      <div class="col-xs-2">
-                        <div class="select_dataid" label="field3" default="HUM"></div>
-                      </div>
-                      <div class="col-xs-2">
-                        <div class="select_dataid" label="field4" default="PRES"></div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-xs-2">
-                        <div class="select_dataid" label="field5"></div>
-                      </div>
-                      <div class="col-xs-2">
-                        <div class="select_dataid" label="field6"></div>
-                      </div>
-                      <div class="col-xs-2">
-                        <div class="select_dataid" label="field7"></div>
-                      </div>
-                      <div class="col-xs-2">
-                        <div class="select_dataid" label="field8"></div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <a href="https://thingspeak.com/channels" target="_new">Create Thingspeak channel</a>
-                    </div>
+                  <div class="col-xs-2">
+                    <div class="select_dataid" label="field2" default="TEMP"></div>
                   </div>
+                  <div class="col-xs-2">
+                    <div class="select_dataid" label="field3" default="HUM"></div>
+                  </div>
+                  <div class="col-xs-2">
+                    <div class="select_dataid" label="field4" default="PRES"></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-2">
+                    <div class="select_dataid" label="field5"></div>
+                  </div>
+                  <div class="col-xs-2">
+                    <div class="select_dataid" label="field6"></div>
+                  </div>
+                  <div class="col-xs-2">
+                    <div class="select_dataid" label="field7"></div>
+                  </div>
+                  <div class="col-xs-2">
+                    <div class="select_dataid" label="field8"></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <a href="https://thingspeak.com/channels" target="_new">Create Thingspeak channel</a>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repUbidots">
-                  <div class="row" >
-                    <div class="col-xs-12 form-inline">
-                      <label for="ubiToken">Token</label>
-                      <input type="text" class="form-control" id="ubiToken">
-                      &nbsp;&nbsp;&nbsp;
-                      <label for="ubiDSLabel">DataSource <u>Label</u></label>
-                      <input type="text" class="form-control" id="ubiDSLabel">
-                    </div>
-                  </div>
+              <div class="row" >
+                <div class="col-xs-12 form-inline">
+                  <label for="ubiToken">Token</label>
+                  <input type="text" class="form-control" id="ubiToken">
+                  &nbsp;&nbsp;&nbsp;
+                  <label for="ubiDSLabel">DataSource <u>Label</u></label>
+                  <input type="text" class="form-control" id="ubiDSLabel">
+                </div>
+              </div>
 
-                  <br/>
-                  <div id="ubi_fields">
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="ubi" label="CO2" placeholder="Variable Label"></div>
-                      <div class="labelAndInput2" prefix="ubi" label="TEMP" placeholder="Variable Label"></div>
-                      <div class="labelAndInput2" prefix="ubi" label="HUM" placeholder="Variable Label"></div>
-                      <div class="labelAndInput2" prefix="ubi" label="PRES" placeholder="Variable Label"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="ubi" label="PM25" placeholder="Variable Label"></div>
-                      <div class="labelAndInput2" prefix="ubi" label="PM10" placeholder="Variable Label"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <button id="ubiSaveBtn" type="submit" class="btn btn-default">	Save	</button>
-                    </div>
-                  </div>
+              <br/>
+              <div id="ubi_fields">
+                <div class="row">
+                  <div class="labelAndInput2" prefix="ubi" label="CO2" placeholder="Variable Label"></div>
+                  <div class="labelAndInput2" prefix="ubi" label="TEMP" placeholder="Variable Label"></div>
+                  <div class="labelAndInput2" prefix="ubi" label="HUM" placeholder="Variable Label"></div>
+                  <div class="labelAndInput2" prefix="ubi" label="PRES" placeholder="Variable Label"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="ubi" label="PM25" placeholder="Variable Label"></div>
+                  <div class="labelAndInput2" prefix="ubi" label="PM10" placeholder="Variable Label"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="ubiSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repBeebotte">
-                  <div class="row" >
-                    <div class="col-xs-12 form-inline">
-                      <label for="beeChannel">Channel Name</label>
-                      <input type="text" class="form-control" id="beeChannel">
-                      &nbsp;&nbsp;&nbsp;
-                      <label for="beeToken">Channel Token</label>
-                      <input type="text" class="form-control" id="beeToken">
-                    </div>
-                  </div>
+              <div class="row" >
+                <div class="col-xs-12 form-inline">
+                  <label for="beeChannel">Channel Name</label>
+                  <input type="text" class="form-control" id="beeChannel">
+                  &nbsp;&nbsp;&nbsp;
+                  <label for="beeToken">Channel Token</label>
+                  <input type="text" class="form-control" id="beeToken">
+                </div>
+              </div>
 
-                  <br/>
-                  <div id="bee_fields">
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="bee" label="CO2" placeholder="Resource Name"></div>
-                      <div class="labelAndInput2" prefix="bee" label="TEMP" placeholder="Resource Name"></div>
-                      <div class="labelAndInput2" prefix="bee" label="HUM" placeholder="Resource Name"></div>
-                      <div class="labelAndInput2" prefix="bee" label="PRES" placeholder="Resource Name"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="bee" label="PM25" placeholder="Resource Name"></div>
-                      <div class="labelAndInput2" prefix="bee" label="PM10" placeholder="Resource Name"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <button id="beeSaveBtn" type="submit" class="btn btn-default">	Save	</button>
-                    </div>
-                  </div>
+              <br/>
+              <div id="bee_fields">
+                <div class="row">
+                  <div class="labelAndInput2" prefix="bee" label="CO2" placeholder="Resource Name"></div>
+                  <div class="labelAndInput2" prefix="bee" label="TEMP" placeholder="Resource Name"></div>
+                  <div class="labelAndInput2" prefix="bee" label="HUM" placeholder="Resource Name"></div>
+                  <div class="labelAndInput2" prefix="bee" label="PRES" placeholder="Resource Name"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="bee" label="PM25" placeholder="Resource Name"></div>
+                  <div class="labelAndInput2" prefix="bee" label="PM10" placeholder="Resource Name"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="beeSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repDomoticz">
-                  <div class="row" >
-                    <div class="col-xs-12 form-inline">
-                      <label for="dzHost">Domoticz Host</label>
-                      <input type="text" class="form-control" id="dzHost" placeholder="192.168.1.42">
-                      &nbsp;&nbsp;&nbsp;
-                      <label for="dzHttpPort">Domoticz HTTP Port</label>
-                      <input type="text" class="form-control" id="dzHttpPort">
-                    </div>
-                  </div>
+              <div class="row" >
+                <div class="col-xs-12 form-inline">
+                  <label for="dzHost">Domoticz Host</label>
+                  <input type="text" class="form-control" id="dzHost" placeholder="192.168.1.42">
+                  &nbsp;&nbsp;&nbsp;
+                  <label for="dzHttpPort">Domoticz HTTP Port</label>
+                  <input type="text" class="form-control" id="dzHttpPort">
+                </div>
+              </div>
 
-                  <br/>
-                  <div id="dz_fields">
-                    <!-- https://www.domoticz.com/wiki/Domoticz_API/JSON_URL's#Air_quality -->
-                    <div class="row form-inline">
-                      <div class="col-xs-2 text-right">
-                        <label for="dzCO2">CO2</label>
-                      </div>
-                      <div class="col-xs-10">
-                        <input type="text" class="form-control" id="dzCO2" placeholder="IDX">
-                        (Air Quality device (nvalue=ppm))
-                      </div>
-                    </div>
-                    <div class="row form-inline">
-                      <div class="col-xs-2 text-right">
-                        <label for="dzTH">Temp / Humidity</label>
-                      </div>
-                      <div class="col-xs-10">
-                        <input type="text" class="form-control" id="dzTH" placeholder="IDX">
-                        (Temp/Humidity/Pressure device (svalue=TEMP;HUM;0))
-                      </div>
-                    </div>
-                    <div class="row form-inline">
-                      <div class="col-xs-2 text-right">
-                        <label for="dzTHB">Temp / Humidity / Pressure</label>
-                      </div>
-                      <div class="col-xs-10">
-                        <input type="text" class="form-control" id="dzTHB" placeholder="IDX">
-                        (Temp/Humidity/Pressure device (svalue=TEMP;HUM;0;BAR;0))
-                      </div>
-                    </div>
-                    <div class="row form-inline">
-                      <div class="col-xs-2  text-right">
-                        <label for="dzDust25">Dust PM2.5</label>
-                      </div>
-                      <div class="col-xs-10">
-                        <input type="text" class="form-control" id="dzDust25" placeholder="IDX">
-                        (Air Quality Device (nvalue=PM2.5))
-                      </div>
-                    </div>
-                    <div class="row form-inline">
-                      <div class="col-xs-2  text-right">
-                        <label for="dzDust10">Dust PM10</label>
-                      </div>
-                      <div class="col-xs-10">
-                        <input type="text" class="form-control" id="dzDust10" placeholder="IDX">
-                        (Air Quality Device (nvalue=PM10))
-                      </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <button id="dzSaveBtn" type="submit" class="btn btn-default">	Save	</button>
-                    </div>
+              <br/>
+              <div id="dz_fields">
+                <!-- https://www.domoticz.com/wiki/Domoticz_API/JSON_URL's#Air_quality -->
+                <div class="row form-inline">
+                  <div class="col-xs-2 text-right">
+                    <label for="dzCO2">CO2</label>
                   </div>
+                  <div class="col-xs-10">
+                    <input type="text" class="form-control" id="dzCO2" placeholder="IDX">
+                    (Air Quality device (nvalue=ppm))
+                  </div>
+                </div>
+                <div class="row form-inline">
+                  <div class="col-xs-2 text-right">
+                    <label for="dzTH">Temp / Humidity</label>
+                  </div>
+                  <div class="col-xs-10">
+                    <input type="text" class="form-control" id="dzTH" placeholder="IDX">
+                    (Temp/Humidity/Pressure device (svalue=TEMP;HUM;0))
+                  </div>
+                </div>
+                <div class="row form-inline">
+                  <div class="col-xs-2 text-right">
+                    <label for="dzTHB">Temp / Humidity / Pressure</label>
+                  </div>
+                  <div class="col-xs-10">
+                    <input type="text" class="form-control" id="dzTHB" placeholder="IDX">
+                    (Temp/Humidity/Pressure device (svalue=TEMP;HUM;0;BAR;0))
+                  </div>
+                </div>
+                <div class="row form-inline">
+                  <div class="col-xs-2  text-right">
+                    <label for="dzDust25">Dust PM2.5</label>
+                  </div>
+                  <div class="col-xs-10">
+                    <input type="text" class="form-control" id="dzDust25" placeholder="IDX">
+                    (Air Quality Device (nvalue=PM2.5))
+                  </div>
+                </div>
+                <div class="row form-inline">
+                  <div class="col-xs-2  text-right">
+                    <label for="dzDust10">Dust PM10</label>
+                  </div>
+                  <div class="col-xs-10">
+                    <input type="text" class="form-control" id="dzDust10" placeholder="IDX">
+                    (Air Quality Device (nvalue=PM10))
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="dzSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repOpenHab">
-                  <div class="row" >
-                    <div class="col-xs-12 form-inline">
-                      <label for="ohHost">MQTT Server Host</label>
-                      <input type="text" class="form-control" id="ohHost">
-                      &nbsp;&nbsp;&nbsp;
-                      <label for="ohPort">MQTT Server Port</label>
-                      <input type="text" class="form-control" id="ohPort">
-                    </div>
-                  </div>
+              <div class="row" >
+                <div class="col-xs-12 form-inline">
+                  <label for="ohHost">MQTT Server Host</label>
+                  <input type="text" class="form-control" id="ohHost">
+                  &nbsp;&nbsp;&nbsp;
+                  <label for="ohPort">MQTT Server Port</label>
+                  <input type="text" class="form-control" id="ohPort">
+                </div>
+              </div>
 
-                  <br/>
-                  <div id="oh_fields">
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="oh" label="CO2" placeholder="topic"></div>
-                      <div class="labelAndInput2" prefix="oh" label="TEMP" placeholder="topic"></div>
-                      <div class="labelAndInput2" prefix="oh" label="HUM" placeholder="topic"></div>
-                      <div class="labelAndInput2" prefix="oh" label="PRES" placeholder="topic"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="oh" label="PM25" placeholder="topic"></div>
-                      <div class="labelAndInput2" prefix="oh" label="PM10" placeholder="topic"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <button id="ohSaveBtn" type="submit" class="btn btn-default">	Save	</button>
-                    </div>
-                  </div>
+              <br/>
+              <div id="oh_fields">
+                <div class="row">
+                  <div class="labelAndInput2" prefix="oh" label="CO2" placeholder="topic"></div>
+                  <div class="labelAndInput2" prefix="oh" label="TEMP" placeholder="topic"></div>
+                  <div class="labelAndInput2" prefix="oh" label="HUM" placeholder="topic"></div>
+                  <div class="labelAndInput2" prefix="oh" label="PRES" placeholder="topic"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="oh" label="PM25" placeholder="topic"></div>
+                  <div class="labelAndInput2" prefix="oh" label="PM10" placeholder="topic"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="ohSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repJeedom">
-                  <div class="row" >
-                    <div class="col-xs-4 form-inline">
-                      <label for="jeeHost">Host</label>
-                      <input type="text" class="form-control" id="jeeHost">
-                    </div>
-                  </div>
-                  <div class="row" >
-                    <div class="col-xs-4 form-inline">
-                      <label for="jeePort">Port</label>
-                      <input type="text" class="form-control" id="jeePort">
-                    </div>
-                  </div>
-                  <div class="row" >
-                    <div class="col-xs-4 form-inline">
-                      <label for="jeeKey">API Key</label>
-                      <input type="text" class="form-control" id="jeeKey">
-                    </div>
-                  </div>
-                  <div class="row" >
-                    <div class="col-xs-10 form-inline">
-                      <label for="jeePath">Install Path</label>
-                      <input type="text" class="form-control" id="jeePath">
-                      In case different from default (e.g. jeedom )
-                    </div>
-                  </div>
-                  <br/>
-                  <div id="jee_fields">
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="jee" label="CO2" placeholder="IDX"></div>
-                      <div class="labelAndInput2" prefix="jee" label="TEMP" placeholder="IDX"></div>
-                      <div class="labelAndInput2" prefix="jee" label="HUM" placeholder="IDX"></div>
-                      <div class="labelAndInput2" prefix="jee" label="PRES" placeholder="IDX"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="jee" label="PM25" placeholder="IDX"></div>
-                      <div class="labelAndInput2" prefix="jee" label="PM10" placeholder="IDX"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <button id="jeeSaveBtn" type="submit" class="btn btn-default">	Save	</button>
-                    </div>
-                  </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="jeeHost">Host</label>
+                  <input type="text" class="form-control" id="jeeHost">
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="jeePort">Port</label>
+                  <input type="text" class="form-control" id="jeePort">
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="jeeKey">API Key</label>
+                  <input type="text" class="form-control" id="jeeKey">
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-10 form-inline">
+                  <label for="jeePath">Install Path</label>
+                  <input type="text" class="form-control" id="jeePath">
+                  In case different from default (e.g. jeedom )
+                </div>
+              </div>
+              <br/>
+              <div id="jee_fields">
+                <div class="row">
+                  <div class="labelAndInput2" prefix="jee" label="CO2" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="jee" label="TEMP" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="jee" label="HUM" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="jee" label="PRES" placeholder="IDX"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="jee" label="PM25" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="jee" label="PM10" placeholder="IDX"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="jeeSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repPimatic">
-                  <div class="row" >
-                    <div class="col-xs-4 form-inline">
-                      <label for="pimaHost">Host</label>
-                      <input type="text" class="form-control" id="pimaHost">
-                    </div>
-                  </div>
-                  <div class="row" >
-                    <div class="col-xs-4 form-inline">
-                      <label for="pimaPort">Port</label>
-                      <input type="text" class="form-control" id="pimaPort">
-                    </div>
-                  </div>
-                  <div class="row" >
-                    <div class="col-xs-4 form-inline">
-                      <label for="pimaUser">User</label>
-                      <input type="text" class="form-control" id="pimaUser">
-                    </div>
-                  </div>
-                  <div class="row" >
-                    <div class="col-xs-4 form-inline">
-                      <label for="pimaPass">Pass</label>
-                      <input type="text" class="form-control" id="pimaPass">
-                    </div>
-                  </div>
-                  <br/>
-                  <div id="pima_fields">
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="pima" label="CO2" placeholder="variable"></div>
-                      <div class="labelAndInput2" prefix="pima" label="TEMP" placeholder="variable"></div>
-                      <div class="labelAndInput2" prefix="pima" label="HUM" placeholder="variable"></div>
-                      <div class="labelAndInput2" prefix="pima" label="PRES" placeholder="variable"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="pima" label="PM25" placeholder="variable"></div>
-                      <div class="labelAndInput2" prefix="pima" label="PM10" placeholder="variable"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <button id="pimaSaveBtn" type="submit" class="btn btn-default">	Save	</button>
-                    </div>
-                  </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="pimaHost">Host</label>
+                  <input type="text" class="form-control" id="pimaHost">
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="pimaPort">Port</label>
+                  <input type="text" class="form-control" id="pimaPort">
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="pimaUser">User</label>
+                  <input type="text" class="form-control" id="pimaUser">
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="pimaPass">Pass</label>
+                  <input type="text" class="form-control" id="pimaPass">
+                </div>
+              </div>
+              <br/>
+              <div id="pima_fields">
+                <div class="row">
+                  <div class="labelAndInput2" prefix="pima" label="CO2" placeholder="variable"></div>
+                  <div class="labelAndInput2" prefix="pima" label="TEMP" placeholder="variable"></div>
+                  <div class="labelAndInput2" prefix="pima" label="HUM" placeholder="variable"></div>
+                  <div class="labelAndInput2" prefix="pima" label="PRES" placeholder="variable"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="pima" label="PM25" placeholder="variable"></div>
+                  <div class="labelAndInput2" prefix="pima" label="PM10" placeholder="variable"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="pimaSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repEmon">
-                  <div class="row" >
-                    <div class="col-xs-4 form-inline">
-                      <label for="pimaHost">EmonCMS APIKey</label>
-                      <input type="text" class="form-control" id="emonKey">
-                    </div>
-                  </div>
-                  <br/>
-                  <div id="emon_fields">
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="emon" label="CO2" placeholder="Input Key"></div>
-                      <div class="labelAndInput2" prefix="emon" label="TEMP" placeholder="Input Key"></div>
-                      <div class="labelAndInput2" prefix="emon" label="HUM" placeholder="Input Key"></div>
-                      <div class="labelAndInput2" prefix="emon" label="PRES" placeholder="Input Key"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="emon" label="PM25" placeholder="Input Key"></div>
-                      <div class="labelAndInput2" prefix="emon" label="PM10" placeholder="Input Key"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <button id="emonSaveBtn" type="submit" class="btn btn-default">	Save	</button>
-                    </div>
-                  </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="pimaHost">EmonCMS APIKey</label>
+                  <input type="text" class="form-control" id="emonKey">
+                </div>
+              </div>
+              <br/>
+              <div id="emon_fields">
+                <div class="row">
+                  <div class="labelAndInput2" prefix="emon" label="CO2" placeholder="Input Key"></div>
+                  <div class="labelAndInput2" prefix="emon" label="TEMP" placeholder="Input Key"></div>
+                  <div class="labelAndInput2" prefix="emon" label="HUM" placeholder="Input Key"></div>
+                  <div class="labelAndInput2" prefix="emon" label="PRES" placeholder="Input Key"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="emon" label="PM25" placeholder="Input Key"></div>
+                  <div class="labelAndInput2" prefix="emon" label="PM10" placeholder="Input Key"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="emonSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repDweet">
-                  <div class="row" >
-                    <div class="col-xs-4 form-inline">
-                      <label for="dwThing">dweet.io Thing</label>
-                      <input type="text" class="form-control" id="dwThing">
-                    </div>
-                  </div>
-                  <br/>
-                  <div id="dw_fields">
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="dw" label="CO2" placeholder="Parameter Name"></div>
-                      <div class="labelAndInput2" prefix="dw" label="TEMP" placeholder="Parameter Name"></div>
-                      <div class="labelAndInput2" prefix="dw" label="HUM" placeholder="Parameter Name"></div>
-                      <div class="labelAndInput2" prefix="dw" label="PRES" placeholder="Parameter Name"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="dw" label="PM25" placeholder="Parameter Name"></div>
-                      <div class="labelAndInput2" prefix="dw" label="PM10" placeholder="Parameter Name"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <button id="dwSaveBtn" type="submit" class="btn btn-default">	Save	</button>
-                    </div>
-                  </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="dwThing">dweet.io Thing</label>
+                  <input type="text" class="form-control" id="dwThing">
+                </div>
+              </div>
+              <br/>
+              <div id="dw_fields">
+                <div class="row">
+                  <div class="labelAndInput2" prefix="dw" label="CO2" placeholder="Parameter Name"></div>
+                  <div class="labelAndInput2" prefix="dw" label="TEMP" placeholder="Parameter Name"></div>
+                  <div class="labelAndInput2" prefix="dw" label="HUM" placeholder="Parameter Name"></div>
+                  <div class="labelAndInput2" prefix="dw" label="PRES" placeholder="Parameter Name"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="dw" label="PM25" placeholder="Parameter Name"></div>
+                  <div class="labelAndInput2" prefix="dw" label="PM10" placeholder="Parameter Name"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="dwSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repDomotiGa">
-                  <div class="row" >
-                    <div class="col-xs-4 form-inline">
-                      <label for="dgaHost">Host</label>
-                      <input type="text" class="form-control" id="dgaHost">
-                    </div>
-                  </div>
-                  <div class="row" >
-                    <div class="col-xs-4 form-inline">
-                      <label for="dgaPort">Port</label>
-                      <input type="text" class="form-control" id="dgaPort">
-                    </div>
-                  </div>
-                  <br/>
-                  <div id="dga_fields">
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="dga" label="CO2" placeholder="IDX"></div>
-                      <div class="labelAndInput2" prefix="dga" label="TEMP" placeholder="IDX"></div>
-                      <div class="labelAndInput2" prefix="dga" label="HUM" placeholder="IDX"></div>
-                      <div class="labelAndInput2" prefix="dga" label="PRES" placeholder="IDX"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="dga" label="PM25" placeholder="IDX"></div>
-                      <div class="labelAndInput2" prefix="dga" label="PM10" placeholder="IDX"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <button id="dgaSaveBtn" type="submit" class="btn btn-default">	Save	</button>
-                    </div>
-                  </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="dgaHost">Host</label>
+                  <input type="text" class="form-control" id="dgaHost">
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="dgaPort">Port</label>
+                  <input type="text" class="form-control" id="dgaPort">
+                </div>
+              </div>
+              <br/>
+              <div id="dga_fields">
+                <div class="row">
+                  <div class="labelAndInput2" prefix="dga" label="CO2" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="dga" label="TEMP" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="dga" label="HUM" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="dga" label="PRES" placeholder="IDX"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="dga" label="PM25" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="dga" label="PM10" placeholder="IDX"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="dgaSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repHomeseer">
-                  <div class="row" >
-                    <div class="col-xs-4 form-inline">
-                      <label for="hsHost">Host</label>
-                      <input type="text" class="form-control" id="hsHost">
-                    </div>
-                  </div>
-                  <div class="row" >
-                    <div class="col-xs-4 form-inline">
-                      <label for="hsPort">Port</label>
-                      <input type="text" class="form-control" id="hsPort">
-                    </div>
-                  </div>
-                  <br/>
-                  <div id="hs_fields">
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="hs" label="CO2" placeholder="IDX"></div>
-                      <div class="labelAndInput2" prefix="hs" label="TEMP" placeholder="IDX"></div>
-                      <div class="labelAndInput2" prefix="hs" label="HUM" placeholder="IDX"></div>
-                      <div class="labelAndInput2" prefix="hs" label="PRES" placeholder="IDX"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <div class="labelAndInput2" prefix="hs" label="PM25" placeholder="IDX"></div>
-                      <div class="labelAndInput2" prefix="hs" label="PM10" placeholder="IDX"></div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <button id="hsSaveBtn" type="submit" class="btn btn-default">	Save	</button>
-                    </div>
-                  </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="hsHost">Host</label>
+                  <input type="text" class="form-control" id="hsHost">
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-4 form-inline">
+                  <label for="hsPort">Port</label>
+                  <input type="text" class="form-control" id="hsPort">
+                </div>
+              </div>
+              <br/>
+              <div id="hs_fields">
+                <div class="row">
+                  <div class="labelAndInput2" prefix="hs" label="CO2" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="hs" label="TEMP" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="hs" label="HUM" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="hs" label="PRES" placeholder="IDX"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="hs" label="PM25" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="hs" label="PM10" placeholder="IDX"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <button id="hsSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repSAPIOT">
-                  <div class="row">
-                    <div class="col-xs-12">
-                      <div class="form-group">
-                        <label for="sapHost">SAP HCP IOT Host:</label>
-                        <input type="text" class="form-control" id="sapHost">
-                        <label for="sapDeviceId">Device Id:</label>
-                        <input type="text" class="form-control" id="sapDeviceId">
-                        <label for="sapToken">Token:</label>
-                        <input type="text" class="form-control" id="sapToken">
-                        <label for="sapMessageId">Message ID (Temperature):</label>
-                        <input type="text" class="form-control" id="sapMessageId">
-                        <!--<label for="sapVarName">Var Name:</label>-->
-                        <!--<input type="text" class="form-control" id="sapVarName">-->
-                        <label for="sapBtnMessageId">Message ID (Button):</label>
-                        <input type="text" class="form-control" id="sapBtnMessageId">
-                        <button id="sapBtn" type="submit" class="btn btn-default"> Set 	</button>
-                      </div>
-                      <a href="http://scn.sap.com/community/developer-center/cloud-platform/blog/2015/06/09/using-the-sap-hcp-iot-services" target="_new">More Info</a>
-                    </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="form-group">
+                    <label for="sapHost">SAP HCP IOT Host:</label>
+                    <input type="text" class="form-control" id="sapHost">
+                    <label for="sapDeviceId">Device Id:</label>
+                    <input type="text" class="form-control" id="sapDeviceId">
+                    <label for="sapToken">Token:</label>
+                    <input type="text" class="form-control" id="sapToken">
+                    <label for="sapMessageId">Message ID (Temperature):</label>
+                    <input type="text" class="form-control" id="sapMessageId">
+                    <!--<label for="sapVarName">Var Name:</label>-->
+                    <!--<input type="text" class="form-control" id="sapVarName">-->
+                    <label for="sapBtnMessageId">Message ID (Button):</label>
+                    <input type="text" class="form-control" id="sapBtnMessageId">
+                    <button id="sapBtn" type="submit" class="btn btn-default"> Set 	</button>
                   </div>
+                  <a href="http://scn.sap.com/community/developer-center/cloud-platform/blog/2015/06/09/using-the-sap-hcp-iot-services" target="_new">More Info</a>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repCustomHTTP">
-                  <div class="row">
-                    <div class="col-xs-12">
-                      <!--<form class="form-inline">-->
-                      <div class="form-group">
-                        <!--<div class="col-xs-6">-->
-                        <label for="customURL">URLs to invoke</label>
-                        <br>Each line is sent as a separate GET request. Lines starting with '#' are managed on other places
-                        <p/><a href="https://github.com/vlast3k/vESPrino/wiki/Custom-HTTP" target="_new">More Information about Custom HTTP Setup</a>
-                        <br><a href="https://github.com/vlast3k/vESPrino/wiki/Placeholders" target="_new">More Information about Placeholders</a>
-                        <br><a href="https://github.com/vlast3k/vESPrino/wiki/Examples" target="_new">Examples for some popular services</a>
+              <div class="row">
+                <div class="col-xs-12">
+                  <!--<form class="form-inline">-->
+                  <div class="form-group">
+                    <!--<div class="col-xs-6">-->
+                    <label for="customURL">URLs to invoke</label>
+                    <br>Each line is sent as a separate GET request. Lines starting with '#' are managed on other places
+                    <p/><a href="https://github.com/vlast3k/vESPrino/wiki/Custom-HTTP" target="_new">More Information about Custom HTTP Setup</a>
+                    <br><a href="https://github.com/vlast3k/vESPrino/wiki/Placeholders" target="_new">More Information about Placeholders</a>
+                    <br><a href="https://github.com/vlast3k/vESPrino/wiki/Examples" target="_new">Examples for some popular services</a>
 
-                        <!--<input type="text" class="form-control" id="customURL">-->
-                        <textarea class="form-control" rows="5" id="customURL"></textarea>
-                        <!--</div>-->
-                        <p></p>
-                        <button id="customBtn" type="submit" class="btn btn-default">	Set URL	</button>
-                      </div>
-                      <!--</form>-->
-                      Example: <i>http://192.168.123:2234/myService?co2=<strong>%CO2%</strong>&id=vAir </i>
-                      <p/> %CO2% will be replaced with the actual CO2 ppm value. Other placeholders are TEMP, HUM, PRES, PM25, PM10
-                    </div>
+                    <!--<input type="text" class="form-control" id="customURL">-->
+                    <textarea class="form-control" rows="5" id="customURL"></textarea>
+                    <!--</div>-->
+                    <p></p>
+                    <button id="customBtn" type="submit" class="btn btn-default">	Set URL	</button>
                   </div>
+                  <!--</form>-->
+                  Example: <i>http://192.168.123:2234/myService?co2=<strong>%CO2%</strong>&id=vAir </i>
+                  <p/> %CO2% will be replaced with the actual CO2 ppm value. Other placeholders are TEMP, HUM, PRES, PM25, PM10
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repCustomMQTT">
-                  <div class="row">
-                    <div class="col-xs-8">
-                      <label for="mqttHost">Host</label>
-                      <input type="text" class="form-control" id="mqttHost">
-                    </div>
-                    <div class="col-xs-4">
-                      <label for="mqttPort">Port</label>
-                      <input type="text" class="form-control" id="mqttPort">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-xs-6">
-                      <label for="mqttUser">User</label>
-                      <input type="text" class="form-control" id="mqttUser">
-                    </div>
-                    <div class="col-xs-6">
-                      <label for="mqttPass">Pass</label>
-                      <input type="text" class="form-control" id="mqttPass">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-xs-6">
-                      <label for="mqttClientId">Client ID</label>
-                      <input type="text" class="form-control" id="mqttClientId">
-                    </div>
-                    <div class="col-xs-6">
-                      <label for="mqttTopic">Topic</label>
-                      <input type="text" class="form-control" id="mqttTopic">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <label for="mqttValue">Messages</label>
-                      <br>Each line is sent as a separate MQTT Message. Format is <i><b>[topic]:[message]</b></i> (e.g: <i><b>data/in:{temp:%TEMP%}</b></i> )
-                      <p><a href="https://github.com/vlast3k/vESPrino/wiki/MQTT-Configuration" target="_new">More Information about MQTT Setup</a></p>
-                      <br><a href="https://github.com/vlast3k/vESPrino/wiki/Placeholders" target="_new">More Information about Placeholders</a>
-                      <br><a href="https://github.com/vlast3k/vESPrino/wiki/Examples" target="_new">Examples for some popular services</a>
+              <div class="row">
+                <div class="col-xs-8">
+                  <label for="mqttHost">Host</label>
+                  <input type="text" class="form-control" id="mqttHost">
+                </div>
+                <div class="col-xs-4">
+                  <label for="mqttPort">Port</label>
+                  <input type="text" class="form-control" id="mqttPort">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6">
+                  <label for="mqttUser">User</label>
+                  <input type="text" class="form-control" id="mqttUser">
+                </div>
+                <div class="col-xs-6">
+                  <label for="mqttPass">Pass</label>
+                  <input type="text" class="form-control" id="mqttPass">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6">
+                  <label for="mqttClientId">Client ID</label>
+                  <input type="text" class="form-control" id="mqttClientId">
+                </div>
+                <div class="col-xs-6">
+                  <label for="mqttTopic">Topic</label>
+                  <input type="text" class="form-control" id="mqttTopic">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <label for="mqttValue">Messages</label>
+                  <br>Each line is sent as a separate MQTT Message. Format is <i><b>[topic]:[message]</b></i> (e.g: <i><b>data/in:{temp:%TEMP%}</b></i> )
+                  <p><a href="https://github.com/vlast3k/vESPrino/wiki/MQTT-Configuration" target="_new">More Information about MQTT Setup</a></p>
+                  <br><a href="https://github.com/vlast3k/vESPrino/wiki/Placeholders" target="_new">More Information about Placeholders</a>
+                  <br><a href="https://github.com/vlast3k/vESPrino/wiki/Examples" target="_new">Examples for some popular services</a>
 
-                      <textarea class="form-control" rows="3" id="mqttValue"></textarea>
-                      <!--<input type="text" class="form-control" id="mqttValue" value="dass">-->
-                      <button id="setMQTT" type="submit" class="btn btn-default">	Set MQTT	</button>
-                    </div>
-                    <p></p>
-                    SSL is not yet supported for MQTT. (e.g. {"data":%CO2%,"write":true,"ispublic":true} for Beebotte)
-                  </div>
+                  <textarea class="form-control" rows="3" id="mqttValue"></textarea>
+                  <!--<input type="text" class="form-control" id="mqttValue" value="dass">-->
+                  <button id="setMQTT" type="submit" class="btn btn-default">	Set MQTT	</button>
+                </div>
+                <p></p>
+                SSL is not yet supported for MQTT. (e.g. {"data":%CO2%,"write":true,"ispublic":true} for Beebotte)
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="vESPrino_tab">
               <div class="panel panel-default ">
@@ -762,111 +800,111 @@
               </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="settings">
-                  <div class="row">
-                    <div class="col-xs-12">
-                      <form class="form-inline">
-                        <div class="form-group">
-                          <label for="upd_int">Update Interval (sec)</label>
-                          <input type="text" class="form-control" id="upd_int">
-                        </div>
-                        <button id="updIntButton" class="btn btn-default">
-                          Set
-                        </button> (default is 120 sec)
-                        <p/>
+              <div class="row">
+                <div class="col-xs-12">
+                  <form class="form-inline">
+                    <div class="form-group">
+                      <label for="upd_int">Update Interval (sec)</label>
+                      <input type="text" class="form-control" id="upd_int">
+                    </div>
+                    <button id="updIntButton" class="btn btn-default">
+                      Set
+                    </button> (default is 120 sec)
+                    <p/>
 
-                      </form>
+                  </form>
+
+                </div>
+              </div>
+              <p></p>
+              <div class="row">
+                <div class="col-xs-12">
+                  <form class="form-inline">
+                    <div class="form-group hidden" id="otherSettingsVair">
+                      <label for="setBRF">Set LED Brightness Factor (0.1 - 10, default 1)</label>
+                      <input type="text" class="form-control" id="setBRF">
+                      <button id="setBRFBtn" type="submit" class="btn btn-default">	Set	</button> Override the LED brightness factor. If the leds are too dim put a value > 1, if they are too bright
+                      < 1 <br/>
+                      <label for="setPPM">Set Current PPM</label>
+                      <input type="text" class="form-control" id="setPPM">
+                      <button id="setPPMBtn" type="submit" class="btn btn-default">	Set	</button> Override calibration data and preset CO2 Value (make sure that the device has warmed up for 15 minutes)
+                      <p/>
+                      <label for="setColors">Set Color Thresholds</label>
+                      <input type="text" class="form-control" id="setColors">
+                      <button id="setColorsBtn" type="submit" class="btn btn-default">	Set	</button> Set the threshold for each CO2 Level as 5 ppm values. E.g. default is: 700 1000 1300 1600 1900
+                      <p/>
+                      <p/>
+                      <button id="resetCal" type="submit" class="btn btn-default">Reset Calibration</button>
+                      <button id="resetAll" type="submit" class="btn btn-default">Factory Reset</button>
+                      <p/>
+                      <button id="ota" type="submit" class="btn btn-default">Update WiFi Firmware</button>
 
                     </div>
-                  </div>
-                  <p></p>
-                  <div class="row">
-                    <div class="col-xs-12">
-                      <form class="form-inline">
-                        <div class="form-group hidden" id="otherSettingsVair">
-                          <label for="setBRF">Set LED Brightness Factor (0.1 - 10, default 1)</label>
-                          <input type="text" class="form-control" id="setBRF">
-                          <button id="setBRFBtn" type="submit" class="btn btn-default">	Set	</button> Override the LED brightness factor. If the leds are too dim put a value > 1, if they are too bright
-                          < 1 <br/>
-                          <label for="setPPM">Set Current PPM</label>
-                          <input type="text" class="form-control" id="setPPM">
-                          <button id="setPPMBtn" type="submit" class="btn btn-default">	Set	</button> Override calibration data and preset CO2 Value (make sure that the device has warmed up for 15 minutes)
-                          <p/>
-                          <label for="setColors">Set Color Thresholds</label>
-                          <input type="text" class="form-control" id="setColors">
-                          <button id="setColorsBtn" type="submit" class="btn btn-default">	Set	</button> Set the threshold for each CO2 Level as 5 ppm values. E.g. default is: 700 1000 1300 1600 1900
-                          <p/>
-                          <p/>
-                          <button id="resetCal" type="submit" class="btn btn-default">Reset Calibration</button>
-                          <button id="resetAll" type="submit" class="btn btn-default">Factory Reset</button>
-                          <p/>
-                          <button id="ota" type="submit" class="btn btn-default">Update WiFi Firmware</button>
-
-                        </div>
-                        <div class="form-group hidden" id="otherSettingsVthing">
-                          <button id="resetCal" type="submit" class="btn btn-default">Re-Calibrate</button>
-                          <button id="resetAll" type="submit" class="btn btn-default">Factory Reset</button>
-                          <p></p>
-                          <button id="ota" type="submit" class="btn btn-default">Update WiFi Firmware</button>
-                        </div>
-                      </form>
+                    <div class="form-group hidden" id="otherSettingsVthing">
+                      <button id="resetCal" type="submit" class="btn btn-default">Re-Calibrate</button>
+                      <button id="resetAll" type="submit" class="btn btn-default">Factory Reset</button>
+                      <p></p>
+                      <button id="ota" type="submit" class="btn btn-default">Update WiFi Firmware</button>
                     </div>
-                  </div>
+                  </form>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repRF">
-                  <div class="row">
-                    <div class="col-xs-12">
-                      <form class="form-inline">
-                        <div class="checkbox">
-                          <label>
-                            <input id="rfEnable" type="checkbox"> Enable RF
-                          </label>
-                        </div>
-                      </form>
+              <div class="row">
+                <div class="col-xs-12">
+                  <form class="form-inline">
+                    <div class="checkbox">
+                      <label>
+                        <input id="rfEnable" type="checkbox"> Enable RF
+                      </label>
                     </div>
-                  </div>
-                  <div class="panel panel-default" id="rf_panel">
-                    <div class="panel-body">
-                      <div id="rf_fields">
-                        <div class="row">
-                          <div class="col-xs-2">
-                            <div class="select_rfid" label="CO2"></div>
-                          </div>
-                          <div class="col-xs-2">
-                            <div class="select_rfid" label="TEMP"></div>
-                          </div>
-                          <div class="col-xs-2">
-                            <div class="select_rfid" label="HUM"></div>
-                          </div>
-                          <div class="col-xs-2">
-                            <div class="select_rfid" label="PRES"></div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-xs-2">
-                            <div class="select_rfid" label="PM25"></div>
-                          </div>
-                          <div class="col-xs-2">
-                            <div class="select_rfid" label="PM10"></div>
-                          </div>
-                          <div class="col-xs-2">
-                            <div class="select_rfid" label="GEN"></div>
-                          </div>
-                        </div>
-
+                  </form>
+                </div>
+              </div>
+              <div class="panel panel-default" id="rf_panel">
+                <div class="panel-body">
+                  <div id="rf_fields">
+                    <div class="row">
+                      <div class="col-xs-2">
+                        <div class="select_rfid" label="CO2"></div>
+                      </div>
+                      <div class="col-xs-2">
+                        <div class="select_rfid" label="TEMP"></div>
+                      </div>
+                      <div class="col-xs-2">
+                        <div class="select_rfid" label="HUM"></div>
+                      </div>
+                      <div class="col-xs-2">
+                        <div class="select_rfid" label="PRES"></div>
                       </div>
                     </div>
+                    <div class="row">
+                      <div class="col-xs-2">
+                        <div class="select_rfid" label="PM25"></div>
+                      </div>
+                      <div class="col-xs-2">
+                        <div class="select_rfid" label="PM10"></div>
+                      </div>
+                      <div class="col-xs-2">
+                        <div class="select_rfid" label="GEN"></div>
+                      </div>
+                    </div>
+
                   </div>
-                  <div class="form-group" id="otherSettingsVthing">
-                    <button id="setRF" type="submit" class="btn btn-default">Save RF Config</button>
-                  </div>
+                </div>
+              </div>
+              <div class="form-group" id="otherSettingsVthing">
+                <button id="setRF" type="submit" class="btn btn-default">Save RF Config</button>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repAbout">
-                  <a href="http://vair-monitor.com" target="_new">Home Page</a>
-                  <br>
-                  <a href="https://github.com/vlast3k/simple-co2-monitor-fw/wiki" target="_new">Install USB Driver</a>
-                  <br>
-                  <a href="https://www.facebook.com/vairmonitor" target="_new">Like the Facebook Page</a>, <a href="https://twitter.com/vAirMon" target="_new">Follow the Twitter</a> or <a href="https://github.com/vlast3k/simple-co2-monitor-fw/wiki/Version-History"
-                  target="_new">Watch the Github Page</a>, to get notified when there is a new version
+              <a href="http://vair-monitor.com" target="_new">Home Page</a>
+              <br>
+              <a href="https://github.com/vlast3k/simple-co2-monitor-fw/wiki" target="_new">Install USB Driver</a>
+              <br>
+              <a href="https://www.facebook.com/vairmonitor" target="_new">Like the Facebook Page</a>, <a href="https://twitter.com/vAirMon" target="_new">Follow the Twitter</a> or <a href="https://github.com/vlast3k/simple-co2-monitor-fw/wiki/Version-History"
+              target="_new">Watch the Github Page</a>, to get notified when there is a new version
             </div>
           </div>
         </div>
@@ -928,6 +966,9 @@
   <script src="utils.js"></script>
   <script src="slider/js/bootstrap-slider.js"></script>
   <script src="js/bootstrap-treeview.min.js"></script>
+  <script src="Constants.js"></script>
+  <script src="SerialHelper.js"></script>
+  <script src="DeviceFinder.js"></script>
   <script src="main.js"></script>
 </body>
 
