@@ -17,7 +17,7 @@ $("#hsSaveBtn").click(onBtnCustom);
 
 $("#beeSaveBtn").click(onSetMQTT);
 $("#ohSaveBtn").click(onSetMQTT);
-$("#btnAutoConnect").click(onbtnAutoConnect);
+$("#btnAutoConnect").click(AutoConnect.onbtnAutoConnect);
 $("#btnSerialSend").click(onSerialSend);
 $("#ssid").change(onSSIDChange);
 $("#sapBtn").click(onBtnSAP);
@@ -91,78 +91,6 @@ function onSerialSend() {
   }
 }
 
-function onConnect2(conn) {
-  connectionId = conn.connectionId;
-  chrome.serial.onReceive.addListener(SerialHelper.onReceiveCallback);
-  SerialHelper.startSequence();
-  SerialHelper.addCommand({cmd:"nop", endOKstr: "ready >", timeout:40000});
-  SerialHelper.addCommand({cmd:"info", endOKstr: "ready >", onOK: loadPropertiesFromESP});
-  SerialHelper.sendSequence();
-  startNOPTimer();
-}
-
-function onVAirFound(comPort) {
-  if (!comPort) {
-    document.getElementById('btnAutoConnect').className="btn btn-danger";
-    document.getElementById('btnAutoConnect').value ="Not Found";
-  } else {
-    log ("\n" + deviceType  + " found on : " + comPort);
-    chrome.serial.connect(comPort, {bitrate: 9600}, onConnect2);
-    document.getElementById('btnAutoConnect').className="btn btn-success";
-    document.getElementById('btnAutoConnect').value ="Connected";
-    if (deviceType == VTHING) {
-      $("#otherSettingsVthing").removeClass("hidden");
-      $("#panelTS").removeClass("hidden");
-      $("#panelUBI").removeClass("hidden");
-      $("#panelSAP").removeClass("hidden");
-      $("#panelCustom").removeClass("hidden");
-      $("#panelMQTT").removeClass("hidden");
-    } else if (deviceType == VAIR) {
-      $("#otherSettingsVair").removeClass("hidden");
-      $("#panelTS").removeClass("hidden");
-      $("#panelUBI").removeClass("hidden");
-      $("#panelSAP").removeClass("hidden");
-      $("#panelCustom").removeClass("hidden");
-      $("#panelMQTT").removeClass("hidden");
-    } else if (deviceType == VTHING_STARTER) {
-      $("#panelSAP").removeClass("hidden");
-    } else if (deviceType == VTHING_H801) {
-      $("#panelCustom").removeClass("hidden");
-      $("#panelMQTT").removeClass("hidden");
-    } else if (deviceType == VESPRINO_V1) {
-      $("#vESPrino_tab").removeClass("hidden");
-    }
-  }
-}
-
-function reconnect() {
-  if (connectionId) {
-    chrome.serial.disconnect(connectionId, function() {
-      endNOPTimer();
-      connectionId = null;
-      chrome.serial.onReceive.removeListener(onReceiveCallback);
-      document.getElementById('btnAutoConnect').className="btn btn-info";
-      document.getElementById('btnAutoConnect').value ="Auto Connect";
-      onbtnAutoConnect();
-    })
-  }
-}
-
-function onbtnAutoConnect() {
-  if (connectionId) {
-    chrome.serial.disconnect(connectionId, function() {
-      endNOPTimer();
-      connectionId = null;
-      chrome.serial.onReceive.removeListener(onReceiveCallback);
-      document.getElementById('btnAutoConnect').className="btn btn-info";
-      document.getElementById('btnAutoConnect').value ="Auto Connect";
-    })
-  } else {
-    document.getElementById('btnAutoConnect').className="btn btn-warning";
-    document.getElementById('btnAutoConnect').value ="Searching...";
-    findDevice(onVAirFound, "Searching for v.Air ", 9600);
-  }
-}
 
 function onSetTs() {
   chrome.serial.send(connectionId, str2ab("tskey " + document.getElementById('tsKey').value + "\n"), onSend);
@@ -196,7 +124,7 @@ function alertConfigStored() {
 function onBtnSAP() {
 
   var cfgiot2 = function() { sendSerial("cfgiot2 \"" + $("#sapToken").val() + "\",\"" + $("#sapBtnMessageId").val()  + "\"",
-  ">", (deviceType == VTHING_STARTER)? alertConfigStored :  onbtnAutoConnect)};
+  ">", (deviceType == VTHING_STARTER)? alertConfigStored :  AutoConnect.onbtnAutoConnect)};
   var cfgiot1 = function() { sendSerial("cfgiot1 \"" + $("#sapHost").val()     + "\",\""+ $("#sapDeviceId").val() + "\",\""
   //                                 + $("#sapMessageId").val() + "\",\""+ $("#sapVarName").val()  + "\"",
   + $("#sapMessageId").val() + "\",\"temp\"",
@@ -212,7 +140,7 @@ function onBtnSAP() {
 }
 
 function onBtnOTA() {
-  var otacmd = function() { sendSerial("otah", "GOT IP", reconnect) };
+  var otacmd = function() { sendSerial("otah", "GOT IP", AutoConnect.reconnect) };
 
   if (deviceType == VAIR) {
     sendSerial("proxy", "GOT IP", otacmd)
@@ -710,7 +638,6 @@ function processOpenHABConfig() {
     clearInterval(nopInterval);
   }
   //onSetMQTT();
-  if (chrome.serial) onbtnAutoConnect();
 
   $(".select_dataid").each(ttt);
   function ttt() {
@@ -809,6 +736,7 @@ function processOpenHABConfig() {
 
   initChromeStorageSync();
   setTimeout(onSSIDChange, 500);
+  if (chrome.serial) AutoConnect.onbtnAutoConnect();
 
 
 
