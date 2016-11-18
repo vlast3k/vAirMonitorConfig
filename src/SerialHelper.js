@@ -16,7 +16,13 @@ var SerialHelper = (function () {
   }
 
   function addCommand(cmd) {
-    console.log("cmd=" + cmd + ", type=" + typeof cmd);
+    if (!cmd) return;
+    console.log("cmd=" + cmd + ", type=" + (typeof cmd) + ", arr: " + Array.isArray(cmd) );
+    if (Array.isArray(cmd)) {
+      cmd.forEach(function(el) {addCommand(el)});
+      return;
+    }
+    //console.log("cmd=" + cmd + ", type=" + (typeof cmd) + ", arr: " + Array.isArray(cmd) );
     var cmdJ = cmd;
     if (typeof cmd === 'string') {
       cmdJ = {cmd:cmd};
