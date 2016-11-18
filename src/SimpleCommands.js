@@ -65,7 +65,7 @@ var SimpleCommands = (function() {
   }
 
   function onBtnTestCfg() {
-    sendSerial("sendNow");
+    SerialHelper.addCommand("sendNow");
   }
 
   function init() {

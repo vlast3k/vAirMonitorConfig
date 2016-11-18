@@ -49,7 +49,7 @@ var AutoConnect = (function() {
       chrome.serial.disconnect(connectionId, function() {
         KeepESPAwake.end();
         connectionId = null;
-        chrome.serial.onReceive.removeListener(onReceiveCallback);
+        chrome.serial.onReceive.removeListener(SerialHelper.onReceiveCallback);
         document.getElementById('btnAutoConnect').className="btn btn-info";
         document.getElementById('btnAutoConnect').value ="Auto Connect";
         onbtnAutoConnect();
@@ -62,7 +62,7 @@ var AutoConnect = (function() {
       chrome.serial.disconnect(connectionId, function() {
         KeepESPAwake.end();
         connectionId = null;
-        chrome.serial.onReceive.removeListener(onReceiveCallback);
+        chrome.serial.onReceive.removeListener(SerialHelper.onReceiveCallback);
         document.getElementById('btnAutoConnect').className="btn btn-info";
         document.getElementById('btnAutoConnect').value ="Auto Connect";
       })
@@ -76,7 +76,7 @@ var AutoConnect = (function() {
   function getConnectionId() {
     return connectionId;
   }
-  
+
   return {
     onbtnAutoConnect : onbtnAutoConnect,
     reconnect : reconnect,

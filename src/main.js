@@ -6,7 +6,7 @@ $("#ssid").change(onSSIDChange);
 $("#ota").click(onBtnOTA);
 $("#resetESP").click(onResetESP);
 
-$("#setWifi").click();
+$("#setWifi").click(onSetWifi);
 
 // $("#bttnSetAction").click(onBttnSetAction);
 // $("#rfidSetAction").click(onRFIDSetAction);
@@ -66,10 +66,10 @@ function onSerialSend() {
 
 function onBtnOTA() {
   var otacmd = function() {
-    sendSerial("otah", "GOT IP", AutoConnect.reconnect)
+    SerialHelper.addCommand({cmd:"otah", endOKstr:"GOT IP", onOK:AutoConnect.reconnect})
   };
   if (deviceType == VAIR) {
-    sendSerial("proxy", "GOT IP", otacmd)
+    SerialHelper.addCommand({cmd:"proxy", endOKstr:"GOT IP", onOK:otacmd})
   } else {
     otacmd();
   }
@@ -84,7 +84,7 @@ function onSetWifi() {
 }
 
 function onSetWifiConnected() {
-  sendSerial("fupd");
+  SerialHelper.addCommand("fupd");
 }
 
 function onResetESP() {
