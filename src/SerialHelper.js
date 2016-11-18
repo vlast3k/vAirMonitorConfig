@@ -28,7 +28,7 @@ var SerialHelper = (function () {
       cmdJ = {cmd:cmd};
     }
     cmdJ.sequence = currentSequence > -1 ? currentSequence : Date.now();
-    cmdJ.timeout  = cmdJ.timeout || 1000;
+    cmdJ.timeout  = cmdJ.timeout || 2000;
     cmdJ.endOKstr = cmdJ.endOKstr || "ready >";
     console.log(JSON.stringify(cmdJ));
     cmdQueue = cmdQueue.concat(cmdJ);
@@ -54,7 +54,8 @@ var SerialHelper = (function () {
   }
 
   function onTerminateCurrentSequence() {
-    while (cmdQueue[0].currentSequence == currentSequence) {
+    var cs = cmdQueue[0].currentSequence;
+    while (cmdQueue.length && cmdQueue[0].currentSequence == cs) {
       console.log("terminating: " + JSON.stringify(cmdQueue[0]));
       cmdQueue.shift();
       state = IDLE;
