@@ -68,6 +68,17 @@ var SimpleCommands = (function() {
     SerialHelper.addCommand("sendNow");
   }
 
+  function onPM2005Setup() {
+    if ($("#pm2005.qstart").val()) {
+      SerialHelper.addCommand("pm2005quiet " + $("#pm2005.qstart").val() + "," + $("#pm2005.qend").val() + "," + tz.offset);
+    }
+
+    if ($("#pm2005.int.active").val()) {
+      if (!$("#pm2005.int.quiet").val($("#pm2005.int.active").val()));
+      SerialHelper.addCommand("pm2005int " + $("#pm2005.int.active").val() + "," + $("#pm2005.int.quiet").val());
+    }
+  }
+
   function init() {
     $("#brgPlus").click(onBrgPlus);
     $("#brgMin").click(onBrgMinus);
@@ -81,6 +92,8 @@ var SimpleCommands = (function() {
     $("#setColorsBtn").click(onSetColorsBtn);
     $("#setBRFBtn").click(onSetBRFBtn);
     $("button.testCfgBtn").click(onBtnTestCfg);
+    $("#updPM2005btn").click(onPM2005Setup);
+
 
   }
   return {

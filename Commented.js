@@ -1,3 +1,185 @@
+<div role="tabpanel" class="tab-pane" id="vESPrino_tab">
+  <div class="panel panel-default ">
+    <div class="panel-body">
+      <ul class="nav nav-pills" role="tablist">
+        <li role="presentation" class="active"><a href="#veButton" aria-controls="veButton" role="tab" data-toggle="tab">Button</a></li>
+        <li role="presentation"> <a href="#veRFID" aria-controls="veRFID" role="tab" data-toggle="tab">RFID</a></li>
+        <li role="presentation"> <a href="#veCMD" aria-controls="veCMD" role="tab" data-toggle="tab">Inbound Commands</a></li>
+        <li role="presentation"> <a href="#veLightSensor" aria-controls="veLightSensor" role="tab" data-toggle="tab">Light Sensor</a></li>
+      </ul>
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="veButton">
+          <div class="panel panel-default ">
+            <div class="panel-body">
+
+              <ul class="nav nav-pills" role="tablist">
+                <li role="presentation" class="active"><a href="#bttnDweetio" aria-controls="bttnDweetio" role="tab" data-toggle="tab">dweet.io</a></li>
+                <li role="presentation"> <a href="#bttnIfttt" aria-controls="bttnIfttt" role="tab" data-toggle="tab">IFTTT</a></li>
+                <li role="presentation"> <a href="#bttnCustomhttp" aria-controls="bttnCustomhttp" role="tab" data-toggle="tab">Custom HTTP</a></li>
+              </ul>
+
+              <div class="tab-content" id="veButtonTabContent">
+                <div role="tabpanel" class="tab-pane active" id="bttnDweetio">
+                  <div class="panel panel-default ">
+                    <div class="panel-body">
+                      <form class="form-inline">
+                        <div class="form-group">
+                          <label>Dweet For</label>
+                          <input type="text" class="form-control" id="bttnDwFor"> &nbsp;&nbsp;&nbsp;&nbsp;
+                          <label>Dweet Params</label>
+                          <input type="text" class="form-control" id="bttnDwParams">
+
+                        </div>
+                      </form>
+
+                    </div>
+                  </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="bttnIfttt">
+                  <div class="panel panel-default ">
+                    <div class="panel-body">
+                      <form class="form-inline">
+                        <div class="form-group">
+                          <label>IFTTT Key</label>
+                          <input type="text" class="form-control" id="bttnIfKey"> &nbsp;&nbsp;&nbsp;&nbsp;
+                          <label>IFTTT Event</label>
+                          <input type="text" class="form-control" id="bttnIfEvent">
+
+                        </div>
+                      </form>
+                      <p></p>
+                      <a href="https://ifttt.com/maker" target="_new">Open IFTTT Maker channel to get your key</a>
+
+                    </div>
+                  </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="bttnCustomhttp">
+                  <div class="panel panel-default ">
+                    <div class="panel-body">
+                      <label>Custom HTTP URL</label>
+                      <input type="text" class="form-control" id="bttnCustomUrl">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button id="bttnSetAction" type="submit" class="btn btn-default ">
+                Set Button Action
+              </button>
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="veCMD">
+          <div class="panel panel-default ">
+            <div class="panel-body">
+              <ul class="nav nav-pills" role="tablist">
+                <li role="presentation" class="active"><a href="#cmdDweetio" aria-controls="rfidDweetio" role="tab" data-toggle="tab">dweet.io</a></li>
+              </ul>
+
+              <div class="tab-content" id="veCMDTabContent">
+                <div role="tabpanel" class="tab-pane active" id="cmdDweetio">
+                  <div class="panel panel-default ">
+                    <div class="panel-body">
+                      <form class="form-inline">
+                        <div class="form-group">
+                          <label>Dweet For</label>
+                          <input type="text" class="form-control" id="cmdDwFor">
+                        </div>
+                      </form>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p></p>
+              Supported commands:<br> led next (cycles through colors)<br> led {color} (where {color} is: red, pink, lila, violet, blue, mblue, cyan, green, yellow, orange<br> led {colorHex} (where {colorHex} is color in hex, e.g. 23AE5F<br> oled
+              {text} (display {text} on the OLED screen if attached<br>
+
+              <p></p>
+              <button id="cmdSetAction" type="submit" class="btn btn-default ">
+                Set Inbound Command Endpoint
+              </button>
+
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="veRFID">
+          <div class="panel panel-default ">
+            <div class="panel-body">
+              <ul class="nav nav-pills" role="tablist">
+                <li role="presentation" class="active"><a href="#rfidDweetio" aria-controls="rfidDweetio" role="tab" data-toggle="tab">dweet.io</a></li>
+                <li role="presentation"> <a href="#rfidIfttt" aria-controls="rfidIfttt" role="tab" data-toggle="tab">IFTTT</a></li>
+                <li role="presentation"> <a href="#rfidCustomhttp" aria-controls="rfidCustomhttp" role="tab" data-toggle="tab">Custom HTTP</a></li>
+              </ul>
+
+              <div class="tab-content" id="veRFIDTabContent">
+                <div role="tabpanel" class="tab-pane active" id="rfidDweetio">
+                  <div class="panel panel-default ">
+                    <div class="panel-body">
+                      <form class="form-inline">
+                        <div class="form-group">
+                          <label>Dweet For</label>
+                          <input type="text" class="form-control" id="rfidDwFor"> &nbsp;&nbsp;&nbsp;&nbsp;
+                          <label>Dweet Params</label>
+                          <input type="text" class="form-control" id="rfidDwParams">
+
+                        </div>
+                      </form>
+
+                    </div>
+                  </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="rfidIfttt">
+                  <div class="panel panel-default ">
+                    <div class="panel-body">
+                      <form class="form-inline">
+                        <div class="form-group">
+                          <label>IFTTT Key</label>
+                          <input type="text" class="form-control" id="rfidIfKey"> &nbsp;&nbsp;&nbsp;&nbsp;
+                          <label>IFTTT Event</label>
+                          <input type="text" class="form-control" id="rfidIfEvent">
+
+                        </div>
+                      </form>
+
+                    </div>
+                  </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="rfidCustomhttp">
+                  <div class="panel panel-default ">
+                    <div class="panel-body">
+                      <label>Custom HTTP URL</label>
+                      <input type="text" class="form-control" id="rfidCustomUrl">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p></p>
+              Use %s as placeholder for RFID card UID
+              <p></p>
+              <button id="rfidSetAction" type="submit" class="btn btn-default ">
+                Set RFID Action
+              </button>
+
+
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="veOLED">
+          <div class="panel panel-default ">
+            <div class="panel-body">
+            </div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="veLightSensor">
+          <div class="panel panel-default ">
+            <div class="panel-body">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

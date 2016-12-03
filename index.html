@@ -40,7 +40,7 @@
             <li role="presentation"> <a href="#repCustomHTTP" aria-controls="repCustomHTTP" role="tab" data-toggle="tab">Custom HTTP</a></li>
             <li role="presentation"> <a href="#repCustomMQTT" aria-controls="repCustomMQTT" role="tab" data-toggle="tab">Custom MQTT</a></li>
             <li role="presentation"> <a href="#repRF" aria-controls="repRF" role="tab" data-toggle="tab">RF 433/315</a></li>
-            <!-- <li role="presentation">               <a href="#vESPrino_tab" aria-controls="vESPrino" role="tab" data-toggle="tab">vESPrino Setup</a></li> -->
+            <li role="presentation"> <a href="#vESPrino" aria-controls="vESPrino" role="tab" data-toggle="tab">vESPrino Setup</a></li>
             <li role="presentation"> <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
             <li role="presentation"> <a href="#repAbout" aria-controls="repAbout" role="tab" data-toggle="tab">About</a></li>
           </ul>
@@ -82,7 +82,7 @@
               </div>
               <div class="row">
                 <div class="col-xs-12">
-                  <div class="panel panel-default hidden">
+                  <div class="panel panel-default">
                     <div class="panel-body">
                       <form class="form-inline">
                         <label for="static_ip">Static IP</label>
@@ -221,6 +221,7 @@
                 <br>
                 <div class="row">
                   <button id="beeSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                  <button id="beeSaveBtn3" type="submit" class="btn btn-default">	Save	</button>
                 </div>
               </div>
             </div>
@@ -565,7 +566,7 @@
                     <button id="customBtn" type="submit" class="btn btn-default">	Set URL	</button>
                   </div>
                   <!--</form>-->
-                  Example: <i>http://192.168.123:2234/myService?co2=<strong>%CO2%</strong>&id=vAir </i>
+                  Example: <i>http://192.168.123:2234/myService?co2=<strong>%CO2%</strong>&amp;id=vAir </i>
                   <p/> %CO2% will be replaced with the actual CO2 ppm value. Other placeholders are TEMP, HUM, PRES, PM25, PM10
                 </div>
               </div>
@@ -617,185 +618,19 @@
                 SSL is not yet supported for MQTT. (e.g. {"data":%CO2%,"write":true,"ispublic":true} for Beebotte)
               </div>
             </div>
-            <div role="tabpanel" class="tab-pane" id="vESPrino_tab">
-              <div class="panel panel-default ">
-                <div class="panel-body">
-                  <ul class="nav nav-pills" role="tablist">
-                    <li role="presentation" class="active"><a href="#veButton" aria-controls="veButton" role="tab" data-toggle="tab">Button</a></li>
-                    <li role="presentation"> <a href="#veRFID" aria-controls="veRFID" role="tab" data-toggle="tab">RFID</a></li>
-                    <li role="presentation"> <a href="#veCMD" aria-controls="veCMD" role="tab" data-toggle="tab">Inbound Commands</a></li>
-                    <li role="presentation"> <a href="#veLightSensor" aria-controls="veLightSensor" role="tab" data-toggle="tab">Light Sensor</a></li>
-                  </ul>
-                  <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="veButton">
-                      <div class="panel panel-default ">
-                        <div class="panel-body">
-
-                          <ul class="nav nav-pills" role="tablist">
-                            <li role="presentation" class="active"><a href="#bttnDweetio" aria-controls="bttnDweetio" role="tab" data-toggle="tab">dweet.io</a></li>
-                            <li role="presentation"> <a href="#bttnIfttt" aria-controls="bttnIfttt" role="tab" data-toggle="tab">IFTTT</a></li>
-                            <li role="presentation"> <a href="#bttnCustomhttp" aria-controls="bttnCustomhttp" role="tab" data-toggle="tab">Custom HTTP</a></li>
-                          </ul>
-
-                          <div class="tab-content" id="veButtonTabContent">
-                            <div role="tabpanel" class="tab-pane active" id="bttnDweetio">
-                              <div class="panel panel-default ">
-                                <div class="panel-body">
-                                  <form class="form-inline">
-                                    <div class="form-group">
-                                      <label>Dweet For</label>
-                                      <input type="text" class="form-control" id="bttnDwFor"> &nbsp;&nbsp;&nbsp;&nbsp;
-                                      <label>Dweet Params</label>
-                                      <input type="text" class="form-control" id="bttnDwParams">
-
-                                    </div>
-                                  </form>
-
-                                </div>
-                              </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="bttnIfttt">
-                              <div class="panel panel-default ">
-                                <div class="panel-body">
-                                  <form class="form-inline">
-                                    <div class="form-group">
-                                      <label>IFTTT Key</label>
-                                      <input type="text" class="form-control" id="bttnIfKey"> &nbsp;&nbsp;&nbsp;&nbsp;
-                                      <label>IFTTT Event</label>
-                                      <input type="text" class="form-control" id="bttnIfEvent">
-
-                                    </div>
-                                  </form>
-                                  <p></p>
-                                  <a href="https://ifttt.com/maker" target="_new">Open IFTTT Maker channel to get your key</a>
-
-                                </div>
-                              </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="bttnCustomhttp">
-                              <div class="panel panel-default ">
-                                <div class="panel-body">
-                                  <label>Custom HTTP URL</label>
-                                  <input type="text" class="form-control" id="bttnCustomUrl">
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <button id="bttnSetAction" type="submit" class="btn btn-default ">
-                            Set Button Action
-                          </button>
-                        </div>
-                      </div>
+            <div role="tabpanel" class="tab-pane" id="vESPrino">
+              <div class="row">
+                <div class="col-xs-12">
+                  <form class="form-inline">
+                    <div class="checkbox">
+                      <label>
+                        <input id="ws.autostart" class="directSerialSendBoolProp" type="checkbox"> Autostart WebServer
+                      </label>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="veCMD">
-                      <div class="panel panel-default ">
-                        <div class="panel-body">
-                          <ul class="nav nav-pills" role="tablist">
-                            <li role="presentation" class="active"><a href="#cmdDweetio" aria-controls="rfidDweetio" role="tab" data-toggle="tab">dweet.io</a></li>
-                          </ul>
-
-                          <div class="tab-content" id="veCMDTabContent">
-                            <div role="tabpanel" class="tab-pane active" id="cmdDweetio">
-                              <div class="panel panel-default ">
-                                <div class="panel-body">
-                                  <form class="form-inline">
-                                    <div class="form-group">
-                                      <label>Dweet For</label>
-                                      <input type="text" class="form-control" id="cmdDwFor">
-                                    </div>
-                                  </form>
-
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <p></p>
-                          Supported commands:<br> led next (cycles through colors)<br> led {color} (where {color} is: red, pink, lila, violet, blue, mblue, cyan, green, yellow, orange<br> led {colorHex} (where {colorHex} is color in hex, e.g. 23AE5F<br> oled
-                          {text} (display {text} on the OLED screen if attached<br>
-
-                          <p></p>
-                          <button id="cmdSetAction" type="submit" class="btn btn-default ">
-                            Set Inbound Command Endpoint
-                          </button>
-
-                        </div>
-                      </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="veRFID">
-                      <div class="panel panel-default ">
-                        <div class="panel-body">
-                          <ul class="nav nav-pills" role="tablist">
-                            <li role="presentation" class="active"><a href="#rfidDweetio" aria-controls="rfidDweetio" role="tab" data-toggle="tab">dweet.io</a></li>
-                            <li role="presentation"> <a href="#rfidIfttt" aria-controls="rfidIfttt" role="tab" data-toggle="tab">IFTTT</a></li>
-                            <li role="presentation"> <a href="#rfidCustomhttp" aria-controls="rfidCustomhttp" role="tab" data-toggle="tab">Custom HTTP</a></li>
-                          </ul>
-
-                          <div class="tab-content" id="veRFIDTabContent">
-                            <div role="tabpanel" class="tab-pane active" id="rfidDweetio">
-                              <div class="panel panel-default ">
-                                <div class="panel-body">
-                                  <form class="form-inline">
-                                    <div class="form-group">
-                                      <label>Dweet For</label>
-                                      <input type="text" class="form-control" id="rfidDwFor"> &nbsp;&nbsp;&nbsp;&nbsp;
-                                      <label>Dweet Params</label>
-                                      <input type="text" class="form-control" id="rfidDwParams">
-
-                                    </div>
-                                  </form>
-
-                                </div>
-                              </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="rfidIfttt">
-                              <div class="panel panel-default ">
-                                <div class="panel-body">
-                                  <form class="form-inline">
-                                    <div class="form-group">
-                                      <label>IFTTT Key</label>
-                                      <input type="text" class="form-control" id="rfidIfKey"> &nbsp;&nbsp;&nbsp;&nbsp;
-                                      <label>IFTTT Event</label>
-                                      <input type="text" class="form-control" id="rfidIfEvent">
-
-                                    </div>
-                                  </form>
-
-                                </div>
-                              </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="rfidCustomhttp">
-                              <div class="panel panel-default ">
-                                <div class="panel-body">
-                                  <label>Custom HTTP URL</label>
-                                  <input type="text" class="form-control" id="rfidCustomUrl">
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <p></p>
-                          Use %s as placeholder for RFID card UID
-                          <p></p>
-                          <button id="rfidSetAction" type="submit" class="btn btn-default ">
-                            Set RFID Action
-                          </button>
-
-
-                        </div>
-                      </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="veOLED">
-                      <div class="panel panel-default ">
-                        <div class="panel-body">
-                        </div>
-                      </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="veLightSensor">
-                      <div class="panel panel-default ">
-                        <div class="panel-body">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    <button class="btn btn-default directSerialSend" type="submit" data-send="start_webserver">
+                      Start Web Server
+                    </button>
+                  </form>
                 </div>
               </div>
             </div>
@@ -811,9 +646,71 @@
                       Set
                     </button> (default is 120 sec)
                     <p/>
-
                   </form>
-
+                </div>
+              </div>
+              <div class="row panel panel-default panel-body">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <form class="form-inline">
+                      <div class="checkbox">
+                        <label>
+                          <input id="debug" class="directSerialSendBoolProp" data-after="debugr" type="checkbox"> Debug Mode
+                        </label>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <p/>
+                <div class="row">
+                  <div class="col-xs-2">
+                    <button class="btn btn-default directSerialSend" type="submit"
+                            data-send="!restart" data-endokstr="Heap at start"
+                            data-onok="AutoConnect" data-onokfunc="commandsAfterStart"
+                            data-timeout=5000>
+                      Restart
+                    </button>
+                  </div>
+                  <div class="col-xs-3">
+                    <button class="btn btn-default directSerialSend" type="submit"
+                            data-send="!otah"
+                            data-endokstr="At setup end"
+                            data-onok="AutoConnect" data-onokfunc="commandsAfterStart"
+                            data-timeout=55000>
+                      Firmware Update
+                    </button>
+                  </div>
+                  <div class="col-xs-3">
+                    <button class="btn btn-default directSerialSend" type="submit"
+                            data-timeout="25000" data-confirm="true" data-send="!factory"
+                            data-endokstr="At setup end" data-onok="AutoConnect"
+                            data-onokfunc="commandsAfterStart" >
+                      Factory Reset...
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="row panel panel-default panel-body">
+                <div class="col-xs-12">
+                  <form class="form-inline">
+                    <div class="form-group">
+                      Dust Sensor Quiet Time (e.g. Start=18:00, End=7:00, TZ=180 (GMT+180 min). Interval is in minutes. &lt;300 = dynamic mode)<br/>
+                      <label for="pm2005.qstart">Start:</label>
+                      <input type="text" class="form-control" id="pm2005.qstart">
+                      <label for="pm2005.qend">End:</label>
+                      <input type="text" class="form-control" id="pm2005.qend">
+                      <label for="tz.offset">TZ:</label>
+                      <input type="text" class="form-control" id="tz.offset">
+                      <p/>
+                      <label for="pm2005.int.active">Interval Active:</label>
+                      <input type="text" class="form-control" id="pm2005.int.active">
+                      <label for="pm2005.int.quiet">Quiet:</label>
+                      <input type="text" class="form-control" id="pm2005.int.quiet">
+                      <button id="updPM2005btn" class="btn btn-default">
+                        Set
+                      </button>
+                    </div>
+                  </form>
                 </div>
               </div>
               <p></p>

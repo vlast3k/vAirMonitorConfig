@@ -7,7 +7,8 @@ $("#ota").click(onBtnOTA);
 $("#resetESP").click(onResetESP);
 
 $("#setWifi").click(onSetWifi);
-
+$(".directSerialSend").click(onSerialDataButton);
+$(".directSerialSendBoolProp").click(onDirectSerialSendBoolProp);
 // $("#bttnSetAction").click(onBttnSetAction);
 // $("#rfidSetAction").click(onRFIDSetAction);
 // $("#cmdSetAction").click(onCMDSetAction);
@@ -19,6 +20,25 @@ String.prototype.format = function() {
     return args[n];
   });
 };
+
+function onSerialDataButton(event) {
+  event.preventDefault();
+  var onok;
+  if ($(this).data("onok")) {
+    onok = window[$(this).data("onok")][$(this).data("onokfunc")];
+    console.log("serialDataButton: onok = " + onok);
+  }
+  SerialHelper.addCommand({cmd:$(this).data("send"), endOKstr: $(this).data("endokstr"), onOK: onok, timeout:$(this).data("timeout")})
+}
+
+function onDirectSerialSendBoolProp(event) {
+  //event.preventDefault();
+  //if ($(this).is(":checked")) {
+    SerialHelper.addCommand({cmd:"prop_set \"{0}\",\"{1}\"".format($(this).attr("id"), $(this).is(":checked")), timeout:$(this).data("timeout")})
+    if ($(this).data("after")) SerialHelper.addCommand($(this).data("after"));
+
+//  }
+}
 
 function log(msg, skipNL) {
   var buffer = document.querySelector('#buffer');
@@ -79,8 +99,19 @@ function onSetWifi() {
   var ssid = document.getElementById('ssid').value;
   var pass = document.getElementById('pass').value;
   var sapPass = document.getElementById('sapPass').value;
-  //chrome.serial.send(connectionId, str2ab("wifi \"" + ssid + "\",\""+ pass + "\"" + (sapPass?",\"" + sapPass + "\"":"") + "\n"), onSend);
+  var static_ip = $("static_ip").val();
+  var gw      = $("gateway").val();
+  var netmask = $("netmask").val();
+  var dns1    = $("dns1").val();
+  var dns2    = $("dns2").val();
+
+  if (static_ip && gw && netmask) {
+    dns1 = dns1 || gw;
+    dns2 = dns2 || dns1;
+    SerialHelper.addCommand("static_ip {0},{1},{2},{3},{4}".format(static_ip, gw, netmask, dns1, dns2));
+  }
   SerialHelper.addCommand({cmd:"wifi \"" + ssid + "\",\"" + pass + "\"" + (sapPass ? ",\"" + sapPass + "\"" : ""), endOKstr:"GOT IP", onOK:onSetWifiConnected});
+
 }
 
 function onSetWifiConnected() {
@@ -117,24 +148,6 @@ function init() {
 
   $('#mainTabs a[href="#setupWifi"]').tab("show");
 }
-
-var KeepESPAwake = (function() {
-  var nopInterval;
-
-  function startNOPTimer() {
-    endNOPTimer();
-    nopInterval = setInterval(function() {SerialHelper.addCommand("nop")}, 60000);
-  }
-
-  function endNOPTimer() {
-    clearInterval(nopInterval);
-  }
-
-  return {
-    start : startNOPTimer,
-    end   : endNOPTimer
-  }
-})()
 
 
 init();

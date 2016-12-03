@@ -80,6 +80,9 @@ var TreeNavigation = (function () {
       selectable: false,
       nodes: genericConfiguration
     }, {
+      text: "vESPrino",
+      href: "#vESPrino"
+    }, {
       text: "Settings",
       href: "#settings"
     }, {

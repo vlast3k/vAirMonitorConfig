@@ -11,6 +11,15 @@ var SerialHelper = (function () {
   var iterationSerialData="";
 
 
+  function init() {
+     state = IDLE;
+     serialDataFromCurrentExecution = "";
+     collectedSerialData = "";
+     currentSequence;
+     sequenceTerminateTimer;
+     serialTimeout;
+     iterationSerialData="";
+  }
   function startSequence() {
     currentSequence = Date.now();
   }
@@ -47,7 +56,7 @@ var SerialHelper = (function () {
     serialDataFromCurrentExecution = "";
     iterationSerialData = "";
     console.log("sending command: " + JSON.stringify(cmdQueue[0]));
-    chrome.serial.send(AutoConnect.getConnectionId(), str2ab(cmdQueue[0].cmd + "\n"), function() {});
+    chrome.serial && chrome.serial.send(AutoConnect.getConnectionId(), str2ab(cmdQueue[0].cmd + "\n"), function() {});
     sequenceTerminateTimer = setTimeout(onTerminateCurrentSequence, cmdQueue[0].timeout);
     state = SENDING;
 
@@ -66,7 +75,7 @@ var SerialHelper = (function () {
 
   function onReceiveCallback(info) {
     clearTimeout(serialTimeout);
-    serialTimeout = setTimeout(processCurrentData, 100);
+    serialTimeout = setTimeout(processCurrentData, 50);
     iterationSerialData += ab2str(info.data);
   }
 
@@ -77,12 +86,15 @@ var SerialHelper = (function () {
       console.log("found:" +cmdQueue[0].endOKstr + ", in: " + serialDataFromCurrentExecution);
       clearTimeout(sequenceTerminateTimer);
       cmdQueue[0].onOK && cmdQueue[0].onOK(serialDataFromCurrentExecution);
+      var idx = serialDataFromCurrentExecution.indexOf(cmdQueue[0].endOKstr);
+      idx += cmdQueue[0].endOKstr.length;
+      serialDataFromCurrentExecution = serialDataFromCurrentExecution.substring(idx);
       cmdQueue.shift();
       state = IDLE;
       setTimeout(doSend, 0);
     }
     iterationSerialData = "";
-    if (serialDataFromCurrentExecution.length > 50000) serialDataFromCurrentExecution = "";
+    if (serialDataFromCurrentExecution.length > 50000) serialDataFromCurrentExecution = serialDataFromCurrentExecution.substring(40000);
   }
 
   /* Interprets an ArrayBuffer as UTF-8 encoded string data. */
@@ -108,6 +120,7 @@ var SerialHelper = (function () {
     sendSequence: sendSequence,
     startSequence: startSequence,
     ab2str : ab2str,
-    str2ab : str2ab
+    str2ab : str2ab,
+    init : init
   }
 })();
