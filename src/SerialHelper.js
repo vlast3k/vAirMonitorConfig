@@ -65,9 +65,9 @@ var SerialHelper = (function () {
   }
 
   function startSending(cmd) {
-    var toSend = cmd.substring(0, 10);
+    var toSend = cmd.substring(0, 50);
     if (!toSend) return;
-    var nextSend = cmd.substring(10);
+    var nextSend = cmd.substring(50)
     chrome.serial.send(AutoConnect.getConnectionId(), str2ab(toSend), function() {chrome.serial.flush(AutoConnect.getConnectionId(),function(){startSending(nextSend)})});
 
   }
