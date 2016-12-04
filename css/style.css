@@ -3,3 +3,8 @@
     pointer-events: none;
     opacity: 0.4;
 }
+
+.panel-resizable {
+    resize: vertical;
+  overflow: auto
+}

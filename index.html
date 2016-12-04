@@ -14,13 +14,25 @@
 
 <body>
 
-  <div class="container-fluid" style="height:800px;overflow-y:scroll">
+  <div class="container-fluid" style="height:800px;overflow-y:scroll;resize: vertical">
     <div class="row">
       <div class="col-xs-4">
-        <div id="tree" style="height:400px;overflow-y:scroll"></div>
+        <div class="row">
+          <div class="panel panel-default ">
+            <div class="panel-body">
+            <input id="btnAutoConnect" type="button" class="btn btn-info" value="Auto Connect">
+            &nbsp;
+            <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
+              Test Configuration
+            </button>
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div id="tree" style="height:300px;overflow-y:scroll"></div>
+        </div>
       </div>
       <div class="col-xs-8">
-        <br/>
         <div>
           <ul id="mainTabs" class="nav nav-tabs hidden" role="tablist">
             <li role="presentation" class="active"><a href="#setupWifi" aria-controls="setupWifi" role="tab" data-toggle="tab">WiFi</a></li>
@@ -44,17 +56,9 @@
             <li role="presentation"> <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
             <li role="presentation"> <a href="#repAbout" aria-controls="repAbout" role="tab" data-toggle="tab">About</a></li>
           </ul>
-
           <!-- Tab panes -->
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="setupWifi">
-              <div class="row">
-                <div class="col-xs-2">
-                  <input id="btnAutoConnect" type="button" class="btn btn-info" value="Auto Connect">
-                </div>
-              </div>
-
-
               <div class="panel panel-default ">
                 <div class="panel-body">
               <div class="row">
@@ -118,6 +122,9 @@
           </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repThingSpeak">
+              <div class="panel panel-default ">
+                <div class="panel-body">
+
               <div class="row">
                 <div class="col-xs-12">
                   <form class="form-inline">
@@ -164,7 +171,12 @@
                 </div>
               </div>
             </div>
+          </div>
+            </div>
             <div role="tabpanel" class="tab-pane" id="repUbidots">
+              <div class="panel panel-default ">
+                <div class="panel-body">
+
               <div class="row" >
                 <div class="col-xs-12 form-inline">
                   <label for="ubiToken">Token</label>
@@ -194,7 +206,12 @@
                 </div>
               </div>
             </div>
+          </div>
+            </div>
             <div role="tabpanel" class="tab-pane" id="repBeebotte">
+              <div class="panel panel-default ">
+                <div class="panel-body">
+
               <div class="row" >
                 <div class="col-xs-12 form-inline">
                   <label for="beeChannel">Channel Name</label>
@@ -221,9 +238,10 @@
                 <br>
                 <div class="row">
                   <button id="beeSaveBtn" type="submit" class="btn btn-default">	Save	</button>
-                  <button id="beeSaveBtn3" type="submit" class="btn btn-default">	Save	</button>
                 </div>
               </div>
+            </div>
+            </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repDomoticz">
               <div class="row" >
@@ -807,14 +825,6 @@
         </div>
       </div>
     </div>
-    <div class="row" >
-      <div class="col-md-10">
-        <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
-          Test Configuration
-        </button>
-      </div>
-    </div>
-
     <div class="row hidden">
       <div class="col-md-6">
         <button id="brgMin" type="submit" class="btn btn-default">
