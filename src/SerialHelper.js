@@ -9,7 +9,7 @@ var SerialHelper = (function () {
   var sequenceTerminateTimer;
   var serialTimeout;
   var iterationSerialData="";
-
+  var isSendCRC = true;
 
   function init() {
      state = IDLE;
@@ -37,7 +37,7 @@ var SerialHelper = (function () {
       cmdJ = {cmd:cmd};
     }
     cmdJ.sequence = currentSequence > -1 ? currentSequence : Date.now();
-    cmdJ.timeout  = cmdJ.timeout || 2000;
+    cmdJ.timeout  = cmdJ.timeout || 5000;
     cmdJ.endOKstr = cmdJ.endOKstr || "ready >";
     console.log(JSON.stringify(cmdJ));
     cmdQueue = cmdQueue.concat(cmdJ);
@@ -50,13 +50,36 @@ var SerialHelper = (function () {
 
   }
 
+  function computeXORCrc(cmd) {
+    var bytes = new Uint8Array(cmd.length);
+    var crc = 0;
+    for (var i=0; i < cmd.length; ++i) bytes[i] = cmd.charCodeAt(i);
+    for (var i=0; i < bytes .length; i++)  crc ^= bytes[i];
+    var scrc = crc.toString(16);
+    if (scrc.length == 1) scrc = "0" + scrc;
+    return scrc.toUpperCase();
+  }
+
+  function getCmdWithCrc(cmd) {
+    return "crc" + computeXORCrc(cmd) + cmd;
+  }
+
+  function startSending(cmd) {
+    var toSend = cmd.substring(0, 10);
+    if (!toSend) return;
+    var nextSend = cmd.substring(10);
+    chrome.serial.send(AutoConnect.getConnectionId(), str2ab(toSend), function() {chrome.serial.flush(AutoConnect.getConnectionId(),function(){startSending(nextSend)})});
+
+  }
   function doSend() {
+    if (!chrome.serial) return;
     if (state === SENDING) return;
     if (!cmdQueue.length) return;
     serialDataFromCurrentExecution = "";
     iterationSerialData = "";
+    var cmdToSend = isSendCRC && !cmdQueue[0].cmd["skipCrc"]? getCmdWithCrc(cmdQueue[0].cmd) : cmdQueue[0].cmd;
     console.log("sending command: " + JSON.stringify(cmdQueue[0]));
-    chrome.serial && chrome.serial.send(AutoConnect.getConnectionId(), str2ab(cmdQueue[0].cmd + "\n"), function() {});
+    startSending(cmdToSend + "\n");
     sequenceTerminateTimer = setTimeout(onTerminateCurrentSequence, cmdQueue[0].timeout);
     state = SENDING;
 
@@ -114,6 +137,10 @@ var SerialHelper = (function () {
     return bytes.buffer;
   };
 
+  function sendCRC(mode) {
+    isSendCRC = mode;
+  }
+
   return {
     addCommand : addCommand,
     onReceiveCallback: onReceiveCallback,
@@ -121,6 +148,7 @@ var SerialHelper = (function () {
     startSequence: startSequence,
     ab2str : ab2str,
     str2ab : str2ab,
-    init : init
+    init : init,
+    sendCRC: sendCRC
   }
 })();

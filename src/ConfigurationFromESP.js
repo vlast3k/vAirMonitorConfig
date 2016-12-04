@@ -81,7 +81,15 @@ var ConfigurationFromESP = (function() {
 
 
   function applyGenericJSONConfig(json) {
-    var p = JSON.parse(json || "{}");
+
+    var p;
+    try {
+      p= JSON.parse(json || "{}");
+    } catch (e) {
+      console.log("Could not parse config: " + json);
+      console.log("Error: " + e);
+      return;
+    }
     p && Object.keys(p).forEach(function(key) {
       $("#" + key).val(p[key])
     });

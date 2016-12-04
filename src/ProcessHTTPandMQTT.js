@@ -201,6 +201,7 @@ var ProcessMQTTandHTTP = (function () {
 
   function onBtnCustom() {
     SerialHelper.startSequence();
+    SerialHelper.addCommand("nop");
     SerialHelper.addCommand('custom_url_clean');
     createCommandsForCustomHTTP().forEach(function(el) {
       SerialHelper.addCommand(el);
@@ -268,6 +269,7 @@ var ProcessMQTTandHTTP = (function () {
 
   function onSetMQTT() {
     SerialHelper.startSequence();
+    SerialHelper.addCommand("nop");
     createCommandsForCustomMQTT().forEach(function(el) {
       SerialHelper.addCommand(el);
     });

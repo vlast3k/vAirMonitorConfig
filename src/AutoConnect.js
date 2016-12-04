@@ -7,10 +7,25 @@ var AutoConnect = (function() {
     commandsAfterStart();
   }
 
+  function onGotInfo(info) {
+    console.log(info);
+    var buildIdx = -1;
+    if ((buildIdx = info.indexOf("build")) > -1) {
+      var buildNum = parseInt(info.substring(buildIdx + 5));
+      if (buildNum < 20161202) {
+        console.log("Disable CRC Sending: build is : " + buildNum);
+        SerialHelper.sendCRC(false);
+      } else {
+        SerialHelper.sendCRC(true);
+      }
+    }
+    ConfigurationFromESP.load();
+  }
+
   function commandsAfterStart() {
     SerialHelper.startSequence();
-    SerialHelper.addCommand({cmd:"nop 0", endOKstr: "ready >", timeout:40000});
-    SerialHelper.addCommand({cmd:"info", endOKstr: "ready >", onOK: ConfigurationFromESP.load});
+    SerialHelper.addCommand({cmd:"nop 0", endOKstr: "ready >", timeout:40000, skipCrc:true});
+    SerialHelper.addCommand({cmd:"info", endOKstr: "ready >", onOK: onGotInfo, skipCrc:true});
     SerialHelper.sendSequence();
   }
 
