@@ -29,7 +29,11 @@
         </div>
         </div>
         <div class="row">
-          <div id="tree" style="height:300px;overflow-y:scroll"></div>
+          <div style="height:300px;overflow-y:scroll">
+            <a href="http://vair-monitor.com/2016/11/18/sales-season-starting/" target="_new"><img src="assets/christmas-sale-1sm.jpg" width="170px"/>
+            </a>
+            <div id="tree" ></div>
+          </div>
         </div>
       </div>
       <div class="col-xs-8">
@@ -244,99 +248,111 @@
             </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repDomoticz">
-              <div class="row" >
-                <div class="col-xs-12 form-inline">
-                  <label for="dzHost">Domoticz Host</label>
-                  <input type="text" class="form-control" id="dzHost" placeholder="192.168.1.42">
-                  &nbsp;&nbsp;&nbsp;
-                  <label for="dzHttpPort">Domoticz HTTP Port</label>
-                  <input type="text" class="form-control" id="dzHttpPort">
-                </div>
-              </div>
+              <div class="panel panel-default ">
+                <div class="panel-body">
+                  <div class="row" >
+                    <div class="col-xs-12 form-inline">
+                      <label for="dzHost">Domoticz Host</label>
+                      <input type="text" class="form-control" id="dzHost" placeholder="192.168.1.42">
+                      &nbsp;&nbsp;&nbsp;
+                      <label for="dzHttpPort">Domoticz HTTP Port</label>
+                      <input type="text" class="form-control" id="dzHttpPort">
+                    </div>
+                  </div>
 
-              <br/>
-              <div id="dz_fields">
-                <!-- https://www.domoticz.com/wiki/Domoticz_API/JSON_URL's#Air_quality -->
-                <div class="row form-inline">
-                  <div class="col-xs-2 text-right">
-                    <label for="dzCO2">CO2</label>
+                  <br/>
+                  <div id="dz_fields">
+                    <!-- https://www.domoticz.com/wiki/Domoticz_API/JSON_URL's#Air_quality -->
+                    <div class="row form-inline">
+                      <div class="col-xs-2 text-right">
+                        <label for="dzCO2">CO2</label>
+                      </div>
+                      <div class="col-xs-10">
+                        <input type="text" class="form-control" id="dzCO2" placeholder="IDX">
+                        (Air Quality device (nvalue=ppm))
+                      </div>
+                    </div>
+                    <div class="row form-inline">
+                      <div class="col-xs-2 text-right">
+                        <label for="dzTH">Temp / Humidity</label>
+                      </div>
+                      <div class="col-xs-10">
+                        <input type="text" class="form-control" id="dzTH" placeholder="IDX">
+                        (Temp/Humidity/Pressure device (svalue=TEMP;HUM;0))
+                      </div>
+                    </div>
+                    <div class="row form-inline">
+                      <div class="col-xs-2 text-right">
+                        <label for="dzTHB">Temp / Humidity / Pressure</label>
+                      </div>
+                      <div class="col-xs-10">
+                        <input type="text" class="form-control" id="dzTHB" placeholder="IDX">
+                        (Temp/Humidity/Pressure device (svalue=TEMP;HUM;0;BAR;0))
+                      </div>
+                    </div>
+                    <div class="row form-inline">
+                      <div class="col-xs-2  text-right">
+                        <label for="dzDust25">Dust PM2.5</label>
+                      </div>
+                      <div class="col-xs-10">
+                        <input type="text" class="form-control" id="dzDust25" placeholder="IDX">
+                        (Air Quality Device (nvalue=PM2.5))
+                      </div>
+                    </div>
+                    <div class="row form-inline">
+                      <div class="col-xs-2  text-right">
+                        <label for="dzDust10">Dust PM10</label>
+                      </div>
+                      <div class="col-xs-10">
+                        <input type="text" class="form-control" id="dzDust10" placeholder="IDX">
+                        (Air Quality Device (nvalue=PM10))
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <button id="dzSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                    </div>
                   </div>
-                  <div class="col-xs-10">
-                    <input type="text" class="form-control" id="dzCO2" placeholder="IDX">
-                    (Air Quality device (nvalue=ppm))
-                  </div>
-                </div>
-                <div class="row form-inline">
-                  <div class="col-xs-2 text-right">
-                    <label for="dzTH">Temp / Humidity</label>
-                  </div>
-                  <div class="col-xs-10">
-                    <input type="text" class="form-control" id="dzTH" placeholder="IDX">
-                    (Temp/Humidity/Pressure device (svalue=TEMP;HUM;0))
-                  </div>
-                </div>
-                <div class="row form-inline">
-                  <div class="col-xs-2 text-right">
-                    <label for="dzTHB">Temp / Humidity / Pressure</label>
-                  </div>
-                  <div class="col-xs-10">
-                    <input type="text" class="form-control" id="dzTHB" placeholder="IDX">
-                    (Temp/Humidity/Pressure device (svalue=TEMP;HUM;0;BAR;0))
-                  </div>
-                </div>
-                <div class="row form-inline">
-                  <div class="col-xs-2  text-right">
-                    <label for="dzDust25">Dust PM2.5</label>
-                  </div>
-                  <div class="col-xs-10">
-                    <input type="text" class="form-control" id="dzDust25" placeholder="IDX">
-                    (Air Quality Device (nvalue=PM2.5))
-                  </div>
-                </div>
-                <div class="row form-inline">
-                  <div class="col-xs-2  text-right">
-                    <label for="dzDust10">Dust PM10</label>
-                  </div>
-                  <div class="col-xs-10">
-                    <input type="text" class="form-control" id="dzDust10" placeholder="IDX">
-                    (Air Quality Device (nvalue=PM10))
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <button id="dzSaveBtn" type="submit" class="btn btn-default">	Save	</button>
                 </div>
               </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repOpenHab">
-              <div class="row" >
-                <div class="col-xs-12 form-inline">
-                  <label for="ohHost">MQTT Server Host</label>
-                  <input type="text" class="form-control" id="ohHost">
-                  &nbsp;&nbsp;&nbsp;
-                  <label for="ohPort">MQTT Server Port</label>
-                  <input type="text" class="form-control" id="ohPort">
+              <div class="panel panel-default ">
+                <div class="panel-body">
+                <div class="row" >
+                  <div class="col-xs-12 form-inline">
+                    <label for="ohHost">MQTT Server Host</label>
+                    <input type="text" class="form-control" id="ohHost">
+                    &nbsp;&nbsp;&nbsp;
+                    <label for="ohPort">MQTT Server Port</label>
+                    <input type="text" class="form-control" id="ohPort">
+                  </div>
                 </div>
-              </div>
 
-              <br/>
-              <div id="oh_fields">
-                <div class="row">
-                  <div class="labelAndInput2" prefix="oh" label="CO2" placeholder="topic"></div>
-                  <div class="labelAndInput2" prefix="oh" label="TEMP" placeholder="topic"></div>
-                  <div class="labelAndInput2" prefix="oh" label="HUM" placeholder="topic"></div>
-                  <div class="labelAndInput2" prefix="oh" label="PRES" placeholder="topic"></div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="labelAndInput2" prefix="oh" label="PM25" placeholder="topic"></div>
-                  <div class="labelAndInput2" prefix="oh" label="PM10" placeholder="topic"></div>
-                </div>
-                <br>
-                <div class="row">
-                  <button id="ohSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                <br/>
+                <div id="oh_fields">
+                  <div class="row">
+                    <div class="labelAndInput2" prefix="oh" label="CO2" placeholder="topic"></div>
+                    <div class="labelAndInput2" prefix="oh" label="TEMP" placeholder="topic"></div>
+                    <div class="labelAndInput2" prefix="oh" label="HUM" placeholder="topic"></div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="labelAndInput2" prefix="oh" label="PRES" placeholder="topic"></div>
+                    <div class="labelAndInput2" prefix="oh" label="PM25" placeholder="topic"></div>
+                    <div class="labelAndInput2" prefix="oh" label="PM10" placeholder="topic"></div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="labelAndInput2" prefix="oh" label="LUX" placeholder="topic"></div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <button id="ohSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                  </div>
                 </div>
               </div>
+            </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repJeedom">
               <div class="row" >
@@ -428,28 +444,36 @@
               </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repEmon">
-              <div class="row" >
-                <div class="col-xs-4 form-inline">
-                  <label for="pimaHost">EmonCMS APIKey</label>
-                  <input type="text" class="form-control" id="emonKey">
-                </div>
-              </div>
-              <br/>
-              <div id="emon_fields">
-                <div class="row">
-                  <div class="labelAndInput2" prefix="emon" label="CO2" placeholder="Input Key"></div>
-                  <div class="labelAndInput2" prefix="emon" label="TEMP" placeholder="Input Key"></div>
-                  <div class="labelAndInput2" prefix="emon" label="HUM" placeholder="Input Key"></div>
-                  <div class="labelAndInput2" prefix="emon" label="PRES" placeholder="Input Key"></div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="labelAndInput2" prefix="emon" label="PM25" placeholder="Input Key"></div>
-                  <div class="labelAndInput2" prefix="emon" label="PM10" placeholder="Input Key"></div>
-                </div>
-                <br>
-                <div class="row">
-                  <button id="emonSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+              <div class="panel panel-default ">
+                <div class="panel-body">
+                  <div class="row" >
+                    <div class="col-xs-4 form-inline">
+                      <label for="pimaHost">EmonCMS APIKey</label>
+                      <input type="text" class="form-control" id="emonKey">
+                    </div>
+                  </div>
+                  <br/>
+                  <div id="emon_fields">
+                    <div class="row">
+                      <div class="labelAndInput2" prefix="emon" label="CO2" placeholder="Input Key"></div>
+                      <div class="labelAndInput2" prefix="emon" label="TEMP" placeholder="Input Key"></div>
+                      <div class="labelAndInput2" prefix="emon" label="HUM" placeholder="Input Key"></div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="labelAndInput2" prefix="emon" label="PRES" placeholder="Input Key"></div>
+                      <div class="labelAndInput2" prefix="emon" label="PM25" placeholder="Input Key"></div>
+                      <div class="labelAndInput2" prefix="emon" label="PM10" placeholder="Input Key"></div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="labelAndInput2" prefix="emon" label="LUX" placeholder="Input Key"></div>
+                    </div>
+                  </div>
+                  <br/>
+                  <div class="row">
+                    <input id="emonSaveBtn" type="button" class="btn btn-default" value="Save"</input>
+                  </div>
                 </div>
               </div>
             </div>
@@ -480,34 +504,39 @@
               </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repDomotiGa">
-              <div class="row" >
-                <div class="col-xs-4 form-inline">
-                  <label for="dgaHost">Host</label>
-                  <input type="text" class="form-control" id="dgaHost">
-                </div>
-              </div>
-              <div class="row" >
-                <div class="col-xs-4 form-inline">
-                  <label for="dgaPort">Port</label>
-                  <input type="text" class="form-control" id="dgaPort">
-                </div>
-              </div>
-              <br/>
-              <div id="dga_fields">
-                <div class="row">
-                  <div class="labelAndInput2" prefix="dga" label="CO2" placeholder="IDX"></div>
-                  <div class="labelAndInput2" prefix="dga" label="TEMP" placeholder="IDX"></div>
-                  <div class="labelAndInput2" prefix="dga" label="HUM" placeholder="IDX"></div>
-                  <div class="labelAndInput2" prefix="dga" label="PRES" placeholder="IDX"></div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="labelAndInput2" prefix="dga" label="PM25" placeholder="IDX"></div>
-                  <div class="labelAndInput2" prefix="dga" label="PM10" placeholder="IDX"></div>
-                </div>
-                <br>
-                <div class="row">
-                  <button id="dgaSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+              <div class="panel panel-default ">
+                <div class="panel-body">
+
+                  <div class="row" >
+                    <div class="col-xs-4 form-inline">
+                      <label for="dgaHost">Host</label>
+                      <input type="text" class="form-control" id="dgaHost">
+                    </div>
+                  </div>
+                  <div class="row" >
+                    <div class="col-xs-4 form-inline">
+                      <label for="dgaPort">Port</label>
+                      <input type="text" class="form-control" id="dgaPort">
+                    </div>
+                  </div>
+                  <br/>
+                  <div id="dga_fields">
+                    <div class="row">
+                      <div class="labelAndInput2" prefix="dga" label="CO2" placeholder="IDX"></div>
+                      <div class="labelAndInput2" prefix="dga" label="TEMP" placeholder="IDX"></div>
+                      <div class="labelAndInput2" prefix="dga" label="HUM" placeholder="IDX"></div>
+                      <div class="labelAndInput2" prefix="dga" label="PRES" placeholder="IDX"></div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="labelAndInput2" prefix="dga" label="PM25" placeholder="IDX"></div>
+                      <div class="labelAndInput2" prefix="dga" label="PM10" placeholder="IDX"></div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <button id="dgaSaveBtn" type="submit" class="btn btn-default">	Save	</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -615,10 +644,6 @@
                   <label for="mqttClientId">Client ID</label>
                   <input type="text" class="form-control" id="mqttClientId">
                 </div>
-                <div class="col-xs-6">
-                  <label for="mqttTopic">Topic</label>
-                  <input type="text" class="form-control" id="mqttTopic">
-                </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
@@ -712,18 +737,18 @@
                 <div class="col-xs-12">
                   <form class="form-inline">
                     <div class="form-group">
-                      Dust Sensor Quiet Time (e.g. Start=18:00, End=7:00, TZ=180 (GMT+180 min). Interval is in minutes. &lt;300 = dynamic mode)<br/>
+                      <b>Dust Sensor Quiet Time</b><br/> (e.g. Start=18:00, End=7:00, TZ=180 (GMT+180 min). Interval is in minutes. &lt;300 = dynamic mode)<br/>
                       <label for="pm2005.qstart">Start:</label>
-                      <input type="text" class="form-control" id="pm2005.qstart">
+                      <input type="text" class="form-control" style="width:100px" id="pm2005.qstart">
                       <label for="pm2005.qend">End:</label>
-                      <input type="text" class="form-control" id="pm2005.qend">
+                      <input type="text" class="form-control" style="width:100px" id="pm2005.qend">
                       <label for="tz.offset">TZ:</label>
-                      <input type="text" class="form-control" id="tz.offset">
+                      <input type="text" class="form-control" style="width:100px" id="tz.offset">
                       <p/>
                       <label for="pm2005.int.active">Interval Active:</label>
-                      <input type="text" class="form-control" id="pm2005.int.active">
+                      <input type="text" class="form-control" style="width:100px" id="pm2005.int.active">
                       <label for="pm2005.int.quiet">Quiet:</label>
-                      <input type="text" class="form-control" id="pm2005.int.quiet">
+                      <input type="text" class="form-control" style="width:100px" id="pm2005.int.quiet">
                       <button id="updPM2005btn" class="btn btn-default">
                         Set
                       </button>
@@ -814,12 +839,25 @@
               </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repAbout">
-              <a href="http://vair-monitor.com" target="_new">Home Page</a>
-              <br>
-              <a href="https://github.com/vlast3k/simple-co2-monitor-fw/wiki" target="_new">Install USB Driver</a>
-              <br>
-              <a href="https://www.facebook.com/vairmonitor" target="_new">Like the Facebook Page</a>, <a href="https://twitter.com/vAirMon" target="_new">Follow the Twitter</a> or <a href="https://github.com/vlast3k/simple-co2-monitor-fw/wiki/Version-History"
-              target="_new">Watch the Github Page</a>, to get notified when there is a new version
+              <div class="panel panel-default ">
+                <div class="panel-body">
+                  <div class="row">
+                    <a href="http://vair-monitor.com" target="_new">Home Page</a>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <a href="http://vair-monitor.com/device-types/" target="_new">Install USB Driver</a>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <a href="https://www.facebook.com/vairmonitor" target="_new">Like the Facebook Page</a>, <a href="https://twitter.com/vAirMon" target="_new">Follow the Twitter</a> or <a href="https://github.com/vlast3k/simple-co2-monitor-fw/wiki/Version-History"
+                    target="_new">Watch the Github Page</a>, to get notified when there is a new version
+                  </div>
+                  <br>
+
+                  <div>Icons made by <a href="http://www.flaticon.com/authors/prosymbols" target = "_new" title="Prosymbols">Prosymbols</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -851,14 +889,16 @@
     </div>
     <div class="row">
       <div class="form-group form-inline">
-        <div class="col-xs-6">
+        <div class="col-xs-8">
           <label for="serial">Send command: </label>
-          <input type="text" class="form-control" id="serial">
+          <input type="text" class="form-control" autocomplete="serialInput" style="width:400px" id="serial">
           <button id="btnSerialSend" type="Set Wifi" class="btn btn-default">Send</button>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-4">
           <div class="checkbox">
-            <input id="cbPauseSerialUpdate" type="checkbox"> Pause Updates </input>
+            <label>
+              <input id="cbPauseSerialUpdate" type="checkbox"> Pause Updates </input>
+            </label>
           </div>
         </div>
       </div>

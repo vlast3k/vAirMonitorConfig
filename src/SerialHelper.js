@@ -9,7 +9,7 @@ var SerialHelper = (function () {
   var sequenceTerminateTimer;
   var serialTimeout;
   var iterationSerialData="";
-  var isSendCRC = true;
+  var isSendCRC = false;
 
   function init() {
      state = IDLE;

@@ -9,6 +9,7 @@ $("#resetESP").click(onResetESP);
 $("#setWifi").click(onSetWifi);
 $(".directSerialSend").click(onSerialDataButton);
 $(".directSerialSendBoolProp").click(onDirectSerialSendBoolProp);
+$("#serial").on('keyup', function (e) { e.keyCode == 13 && onSerialSend();});
 // $("#bttnSetAction").click(onBttnSetAction);
 // $("#rfidSetAction").click(onRFIDSetAction);
 // $("#cmdSetAction").click(onCMDSetAction);
@@ -76,7 +77,7 @@ function onSSIDChange() {
 }
 
 function onSerialSend() {
-  if ($("#serial").val().startsWith("COM")) {
+  if ($("#serial").val().startsWith("COM") || $("#serial").val().startsWith("/dev/")) {
     deviceType = VTHING;
     onVAirFound($("#serial").val());
   } else {
