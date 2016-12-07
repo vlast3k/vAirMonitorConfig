@@ -16,7 +16,7 @@
 
   <div class="container-fluid" style="height:800px;overflow-y:scroll;resize: vertical">
     <div class="row">
-      <div class="col-xs-4">
+      <div class="col-xs-3">
         <div class="row">
           <div class="panel panel-default ">
             <div class="panel-body">
@@ -36,7 +36,7 @@
           </div>
         </div>
       </div>
-      <div class="col-xs-8">
+      <div class="col-xs-9">
         <div>
           <ul id="mainTabs" class="nav nav-tabs hidden" role="tablist">
             <li role="presentation" class="active"><a href="#setupWifi" aria-controls="setupWifi" role="tab" data-toggle="tab">WiFi</a></li>
@@ -448,8 +448,12 @@
                 <div class="panel-body">
                   <div class="row" >
                     <div class="col-xs-4 form-inline">
-                      <label for="pimaHost">EmonCMS APIKey</label>
+                      <label for="emonKey">EmonCMS APIKey</label>
                       <input type="text" class="form-control" id="emonKey">
+                    </div>
+                    <div class="col-xs-3 form-inline">
+                      <label for="emonHost">Host</label>
+                      <input type="text" class="form-control" placeholder="optional "id="emonHost">
                     </div>
                   </div>
                   <br/>

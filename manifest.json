@@ -1,6 +1,6 @@
 {
   "name": "vThings - Device Configuration Tool",
-  "version": "8.2",
+  "version": "8.3",
   "manifest_version": 2,
   "permissions": ["serial", "storage"],
   "minimum_chrome_version": "23",

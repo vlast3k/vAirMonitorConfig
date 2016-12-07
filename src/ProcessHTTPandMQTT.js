@@ -93,13 +93,18 @@ var ProcessMQTTandHTTP = (function () {
   function processEmonCMSURLConfig() {
     var key = $("#emonKey").val();
     if (!key) return [];
-    var pay = "";
+    var host = $("#emonHost").val() || "http://emoncms.org/";
+    if (host[host.length -1] != '/') host += '/';
+
+    var pay = "", host;
     $("#emon_fields :input").filter(".lbi").each(function() {
       if (!$(this).val()) return;
-      pay += "{0}:%{1}%".format($(this).val(), $(this).attr("data-label"));
+      pay += "{0}:%{1}%,".format($(this).val(), $(this).attr("data-label"));
     });
     if (!pay) return [];
-    return "#http://emoncms.org/input/post.json?json={" + pay + "}&apikey=" + key;
+    pay = pay.substring(0, pay.length - 1);
+
+    return "#" + host + "input/post.json?json={" + pay + "}&apikey=" + key;
   }
 
   //http://192.168.1.xxx/JSON?request=controldevicebyvalue&ref=1234&value=%s

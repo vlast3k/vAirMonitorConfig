@@ -7,6 +7,9 @@ var TreeNavigation = (function () {
       text: "dweet.io",
       href: "#repDweet"
     }, {
+      text: "EmonCMS",
+      href: "#repEmon"
+    }, {
       text: "ThingSpeak",
       href: "#repThingSpeak"
     }, {
@@ -19,9 +22,6 @@ var TreeNavigation = (function () {
     }, {
       text: "DomoticZ",
       href: "#repDomoticz"
-    }, {
-      text: "EmonCMS",
-      href: "#repEmon"
     }, {
       text: "FHEM",
       href: "#repOpenHab"
