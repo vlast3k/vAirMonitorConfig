@@ -10,10 +10,15 @@ $("#setWifi").click(onSetWifi);
 $(".directSerialSend").click(onSerialDataButton);
 $(".directSerialSendBoolProp").click(onDirectSerialSendBoolProp);
 $("#serial").on('keyup', function (e) { e.keyCode == 13 && onSerialSend();});
+
+
+$("#blynkTemplate").appendTo($("#repBlynk"))
+
 // $("#bttnSetAction").click(onBttnSetAction);
 // $("#rfidSetAction").click(onRFIDSetAction);
 // $("#cmdSetAction").click(onCMDSetAction);
 var deviceType = null;
+
 
 String.prototype.format = function() {
   var args = arguments;
@@ -141,6 +146,7 @@ function init() {
   ProcessMQTTandHTTP.init();
   HTMLFieldsEnhancer.init();
   RFHandler.init();
+  Blynk.init();
   TreeNavigation.init("#tree");
   SimpleCommands.init();
 
