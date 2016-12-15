@@ -23,7 +23,7 @@
             <input id="btnAutoConnect" type="button" class="btn btn-info" value="Auto Connect">
             &nbsp;
             <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
-              Test Configuration
+              Test
             </button>
           </div>
         </div>
@@ -41,6 +41,7 @@
           <ul id="mainTabs" class="nav nav-tabs hidden" role="tablist">
             <li role="presentation" class="active"><a href="#setupWifi" aria-controls="setupWifi" role="tab" data-toggle="tab">WiFi</a></li>
             <li role="presentation"> <a href="#repThingSpeak" aria-controls="repThingSpeak" role="tab" data-toggle="tab">ThingSpeak</a></li>
+            <li role="presentation"> <a href="#repBlynk" aria-controls="repBlynk" role="tab" data-toggle="tab">Blynk</a></li>
             <li role="presentation"> <a href="#repUbidots" aria-controls="repUbidots" role="tab" data-toggle="tab">Ubidots</a></li>
             <li role="presentation"> <a href="#repBeebotte" aria-controls="repBeebotte" role="tab" data-toggle="tab">Beebotte</a></li>
             <li role="presentation"> <a href="#repDomoticz" aria-controls="repDomoticz" role="tab" data-toggle="tab">Domoticz</a></li>
@@ -128,60 +129,59 @@
             <div role="tabpanel" class="tab-pane" id="repThingSpeak">
               <div class="panel panel-default ">
                 <div class="panel-body">
-
-              <div class="row">
-                <div class="col-xs-12">
-                  <form class="form-inline">
-                    <div class="form-group">
-                      <label for="ts">ThingSpeak Write API Key</label>
-                      <input type="text" class="form-control" id="tsKey">
-                      <button id="tsBtn" type="submit" class="btn btn-default">	Save	</button>
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <form class="form-inline">
+                        <div class="form-group">
+                          <label for="ts">ThingSpeak Write API Key</label>
+                          <input type="text" class="form-control" id="tsKey">
+                          <button id="tsBtn" type="submit" class="btn btn-default">	Save	</button>
+                        </div>
+                      </form>
                     </div>
-                  </form>
+                  </div>
+                  <br/>
+                  <div id="ts_fields">
+                    <div class="row">
+                      <div class="col-xs-2">
+                        <div class="select_dataid" label="field1" default="CO2"></div>
+                      </div>
+                      <div class="col-xs-2">
+                        <div class="select_dataid" label="field2" default="TEMP"></div>
+                      </div>
+                      <div class="col-xs-2">
+                        <div class="select_dataid" label="field3" default="HUM"></div>
+                      </div>
+                      <div class="col-xs-2">
+                        <div class="select_dataid" label="field4" default="PRES"></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-2">
+                        <div class="select_dataid" label="field5"></div>
+                      </div>
+                      <div class="col-xs-2">
+                        <div class="select_dataid" label="field6"></div>
+                      </div>
+                      <div class="col-xs-2">
+                        <div class="select_dataid" label="field7"></div>
+                      </div>
+                      <div class="col-xs-2">
+                        <div class="select_dataid" label="field8"></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <a href="https://thingspeak.com/channels" target="_new">Create Thingspeak channel</a>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <br>
-              <div id="ts_fields">
-                <div class="row">
-                  <div class="col-xs-2">
-                    <div class="select_dataid" label="field1" default="CO2"></div>
-                  </div>
-                  <div class="col-xs-2">
-                    <div class="select_dataid" label="field2" default="TEMP"></div>
-                  </div>
-                  <div class="col-xs-2">
-                    <div class="select_dataid" label="field3" default="HUM"></div>
-                  </div>
-                  <div class="col-xs-2">
-                    <div class="select_dataid" label="field4" default="PRES"></div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-xs-2">
-                    <div class="select_dataid" label="field5"></div>
-                  </div>
-                  <div class="col-xs-2">
-                    <div class="select_dataid" label="field6"></div>
-                  </div>
-                  <div class="col-xs-2">
-                    <div class="select_dataid" label="field7"></div>
-                  </div>
-                  <div class="col-xs-2">
-                    <div class="select_dataid" label="field8"></div>
-                  </div>
-                </div>
-                <div class="row">
-                  <a href="https://thingspeak.com/channels" target="_new">Create Thingspeak channel</a>
-                </div>
-              </div>
-            </div>
-          </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repUbidots">
               <div class="panel panel-default ">
                 <div class="panel-body">
 
-              <div class="row" >
+                  <div class="row" >
                 <div class="col-xs-12 form-inline">
                   <label for="ubiToken">Token</label>
                   <input type="text" class="form-control" id="ubiToken">
@@ -191,26 +191,30 @@
                 </div>
               </div>
 
-              <br/>
-              <div id="ubi_fields">
+                  <br/>
+                  <div id="ubi_fields">
                 <div class="row">
                   <div class="labelAndInput2" prefix="ubi" label="CO2" placeholder="Variable Label"></div>
                   <div class="labelAndInput2" prefix="ubi" label="TEMP" placeholder="Variable Label"></div>
                   <div class="labelAndInput2" prefix="ubi" label="HUM" placeholder="Variable Label"></div>
-                  <div class="labelAndInput2" prefix="ubi" label="PRES" placeholder="Variable Label"></div>
                 </div>
                 <br>
                 <div class="row">
+                  <div class="labelAndInput2" prefix="ubi" label="PRES" placeholder="Variable Label"></div>
                   <div class="labelAndInput2" prefix="ubi" label="PM25" placeholder="Variable Label"></div>
                   <div class="labelAndInput2" prefix="ubi" label="PM10" placeholder="Variable Label"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="ubi" label="LUX" placeholder="Variable Label"></div>
                 </div>
                 <br>
                 <div class="row">
                   <button id="ubiSaveBtn" type="submit" class="btn btn-default">	Save	</button>
                 </div>
               </div>
-            </div>
-          </div>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repBeebotte">
               <div class="panel panel-default ">
@@ -232,12 +236,16 @@
                   <div class="labelAndInput2" prefix="bee" label="CO2" placeholder="Resource Name"></div>
                   <div class="labelAndInput2" prefix="bee" label="TEMP" placeholder="Resource Name"></div>
                   <div class="labelAndInput2" prefix="bee" label="HUM" placeholder="Resource Name"></div>
-                  <div class="labelAndInput2" prefix="bee" label="PRES" placeholder="Resource Name"></div>
                 </div>
                 <br>
                 <div class="row">
+                  <div class="labelAndInput2" prefix="bee" label="PRES" placeholder="Resource Name"></div>
                   <div class="labelAndInput2" prefix="bee" label="PM25" placeholder="Resource Name"></div>
                   <div class="labelAndInput2" prefix="bee" label="PM10" placeholder="Resource Name"></div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="labelAndInput2" prefix="bee" label="LUX" placeholder="Resource Name"></div>
                 </div>
                 <br>
                 <div class="row">
@@ -842,6 +850,7 @@
                 <button id="setRF" type="submit" class="btn btn-default">Save RF Config</button>
               </div>
             </div>
+            <div role="tabpanel" class="tab-pane" id="repBlynk"></div>
             <div role="tabpanel" class="tab-pane" id="repAbout">
               <div class="panel panel-default ">
                 <div class="panel-body">
@@ -910,8 +919,63 @@
   </div>
   <hr/>
 
+  <div id="blynkTemplate">
+    <div class="panel panel-default ">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <form class="form-inline">
+              <div class="form-group">
+                <label for="blynkAuth">Blynk Auth Token</label>
+                <input type="text" class="form-control" id="blynkAuth">
+                <button id="blynkBtn" type="submit" class="btn btn-default">	Save	</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <br/>
+        <div id="blynk_fields">
+          <div class="row">
+            <div class="col-xs-2">
+              <div class="select_dataid" label="V0" default="CO2"></div>
+            </div>
+            <div class="col-xs-2">
+              <div class="select_dataid" label="V2" default="TEMP"></div>
+            </div>
+            <div class="col-xs-2">
+              <div class="select_dataid" label="V3" default="HUM"></div>
+            </div>
+            <div class="col-xs-2">
+              <div class="select_dataid" label="V4" default="PRES"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-2">
+              <div class="select_dataid" label="V5"></div>
+            </div>
+            <div class="col-xs-2">
+              <div class="select_dataid" label="V6"></div>
+            </div>
+            <div class="col-xs-2">
+              <div class="select_dataid" label="V7"></div>
+            </div>
+            <div class="col-xs-2">
+              <div class="select_dataid" label="V8"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
   <script src="js/jquery.min.js"></script>
+
+  <script>
+  $("#blynkTemplate").appendTo($("#repBlynk"))
+  </script>
+
   <script src="js/bootstrap.min.js"></script>
   <script src="js/scripts.js"></script>
   <script src="slider/js/bootstrap-slider.js"></script>
