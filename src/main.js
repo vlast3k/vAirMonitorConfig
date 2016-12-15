@@ -102,21 +102,21 @@ function onBtnOTA() {
 }
 
 function onSetWifi() {
-  var ssid = document.getElementById('ssid').value;
-  var pass = document.getElementById('pass').value;
-  var sapPass = document.getElementById('sapPass').value;
-  var static_ip = $("static_ip").val();
-  var gw      = $("gateway").val();
-  var netmask = $("netmask").val();
-  var dns1    = $("dns1").val();
-  var dns2    = $("dns2").val();
-
+  var ssid =    $('#ssid').val();
+  var pass =    $('#pass').val();
+  var sapPass = $('#sapPass').val();
+  var static_ip=$("#static_ip").val();
+  var gw      = $("#gateway").val();
+  var netmask = $("#netmask").val();
+  var dns1    = $("#dns1").val();
+  var dns2    = $("#dns2").val();
+  netmask = netmask || "255.255.255.0";
   if (static_ip && gw && netmask) {
     dns1 = dns1 || gw;
     dns2 = dns2 || dns1;
     SerialHelper.addCommand("static_ip {0},{1},{2},{3},{4}".format(static_ip, gw, netmask, dns1, dns2));
   }
-  SerialHelper.addCommand({cmd:"!wifi \"" + ssid + "\",\"" + pass + "\"" + (sapPass ? ",\"" + sapPass + "\"" : ""), endOKstr:"GOT IP", onOK:onSetWifiConnected});
+  SerialHelper.addCommand({cmd:"!wifi \"" + ssid + "\",\"" + pass + "\"" + (sapPass ? ",\"" + sapPass + "\"" : ""), endOKstr:"GOT IP", timeout: 15000, onOK:onSetWifiConnected});
 
 }
 

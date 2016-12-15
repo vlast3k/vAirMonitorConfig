@@ -43,6 +43,7 @@ var Blynk = (function() {
     SerialHelper.addCommand("prop_jset \"blynk.enabled\"" + (bAuth != undefined));
     SerialHelper.addCommand("prop_jset \"blynk.auth\"" + bAuth);
     SerialHelper.addCommand("prop_jset \"blynk.cfg\"" + cfg);
+    SerialHelper.addCommand("restart");
   }
 
   function init() {
