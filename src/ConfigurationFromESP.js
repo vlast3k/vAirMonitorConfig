@@ -23,7 +23,8 @@ var ConfigurationFromESP = (function() {
     "mqtt.pass": "#mqttPass",
     "mqtt.topic": "#mqttTopic",
     "send.interval": "#upd_int",
-    "blynk.auth": "#blynkAuth"
+    "blynk.auth": "#blynkAuth",
+    "temp.adjustment":"#temp_adjustment"
   }
 
   function combineLines(obj, prefix) {

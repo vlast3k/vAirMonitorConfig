@@ -215,6 +215,13 @@
               </div>
                 </div>
               </div>
+              <div class="panel panel-default ">
+                <div class="panel-body">
+                  <div class="row">
+                    Tutorial: <a href="http://vair-monitor.com/2016/12/07/creating-online-dashboards-ubidots/" target="_new">Checkout this tutorial for setting up a scenario with Ubidots</a>
+                  </div>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repBeebotte">
               <div class="panel panel-default ">
@@ -253,6 +260,13 @@
                 </div>
               </div>
             </div>
+            </div>
+            <div class="panel panel-default ">
+              <div class="panel-body">
+                <div class="row">
+                  Tutorial: <a href="http://vair-monitor.com/2016/12/07/creating-online-dashboard-using-beebotte/" target="_new">Checkout this tutorial for setting up a scenario with Beebotte</a>
+                </div>
+              </div>
             </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repDomoticz">
@@ -689,119 +703,6 @@
                 </div>
               </div>
             </div>
-            <div role="tabpanel" class="tab-pane" id="settings">
-              <div class="row">
-                <div class="col-xs-12">
-                  <form class="form-inline">
-                    <div class="form-group">
-                      <label for="upd_int">Update Interval (sec)</label>
-                      <input type="text" class="form-control" id="upd_int">
-                    </div>
-                    <button id="updIntButton" class="btn btn-default">
-                      Set
-                    </button> (default is 120 sec)
-                    <p/>
-                  </form>
-                </div>
-              </div>
-              <div class="row panel panel-default panel-body">
-                <div class="row">
-                  <div class="col-xs-12">
-                    <form class="form-inline">
-                      <div class="checkbox">
-                        <label>
-                          <input id="debug" class="directSerialSendBoolProp" data-after="debugr" type="checkbox"> Debug Mode
-                        </label>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <p/>
-                <div class="row">
-                  <div class="col-xs-2">
-                    <button class="btn btn-default directSerialSend" type="submit"
-                            data-send="!restart" data-endokstr="Heap at start"
-                            data-onok="AutoConnect" data-onokfunc="commandsAfterStart"
-                            data-timeout=5000>
-                      Restart
-                    </button>
-                  </div>
-                  <div class="col-xs-3">
-                    <button class="btn btn-default directSerialSend" type="submit"
-                            data-send="!otah"
-                            data-endokstr="At setup end"
-                            data-onok="AutoConnect" data-onokfunc="commandsAfterStart"
-                            data-timeout=55000>
-                      Firmware Update
-                    </button>
-                  </div>
-                  <div class="col-xs-3">
-                    <button class="btn btn-default directSerialSend" type="submit"
-                            data-timeout="25000" data-confirm="true" data-send="!factory"
-                            data-endokstr="At setup end" data-onok="AutoConnect"
-                            data-onokfunc="commandsAfterStart" >
-                      Factory Reset...
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class="row panel panel-default panel-body">
-                <div class="col-xs-12">
-                  <form class="form-inline">
-                    <div class="form-group">
-                      <b>Dust Sensor Quiet Time</b><br/> (e.g. Start=18:00, End=7:00, TZ=180 (GMT+180 min). Interval is in minutes. &lt;300 = dynamic mode)<br/>
-                      <label for="pm2005.qstart">Start:</label>
-                      <input type="text" class="form-control" style="width:100px" id="pm2005.qstart">
-                      <label for="pm2005.qend">End:</label>
-                      <input type="text" class="form-control" style="width:100px" id="pm2005.qend">
-                      <label for="tz.offset">TZ:</label>
-                      <input type="text" class="form-control" style="width:100px" id="tz.offset">
-                      <p/>
-                      <label for="pm2005.int.active">Interval Active:</label>
-                      <input type="text" class="form-control" style="width:100px" id="pm2005.int.active">
-                      <label for="pm2005.int.quiet">Quiet:</label>
-                      <input type="text" class="form-control" style="width:100px" id="pm2005.int.quiet">
-                      <button id="updPM2005btn" class="btn btn-default">
-                        Set
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-              <p></p>
-              <div class="row">
-                <div class="col-xs-12">
-                  <form class="form-inline">
-                    <div class="form-group hidden" id="otherSettingsVair">
-                      <label for="setBRF">Set LED Brightness Factor (0.1 - 10, default 1)</label>
-                      <input type="text" class="form-control" id="setBRF">
-                      <button id="setBRFBtn" type="submit" class="btn btn-default">	Set	</button> Override the LED brightness factor. If the leds are too dim put a value > 1, if they are too bright
-                      < 1 <br/>
-                      <label for="setPPM">Set Current PPM</label>
-                      <input type="text" class="form-control" id="setPPM">
-                      <button id="setPPMBtn" type="submit" class="btn btn-default">	Set	</button> Override calibration data and preset CO2 Value (make sure that the device has warmed up for 15 minutes)
-                      <p/>
-                      <label for="setColors">Set Color Thresholds</label>
-                      <input type="text" class="form-control" id="setColors">
-                      <button id="setColorsBtn" type="submit" class="btn btn-default">	Set	</button> Set the threshold for each CO2 Level as 5 ppm values. E.g. default is: 700 1000 1300 1600 1900
-                      <p/>
-                      <p/>
-                      <button id="resetCal" type="submit" class="btn btn-default">Reset Calibration</button>
-                      <button id="resetAll" type="submit" class="btn btn-default">Factory Reset</button>
-                      <p/>
-                      <button id="ota" type="submit" class="btn btn-default">Update WiFi Firmware</button>
-
-                    </div>
-                    <div class="form-group hidden" id="otherSettingsVthing">
-                      <button id="resetCal" type="submit" class="btn btn-default">Re-Calibrate</button>
-                      <button id="resetAll" type="submit" class="btn btn-default">Factory Reset</button>
-                      <p></p>
-                      <button id="ota" type="submit" class="btn btn-default">Update WiFi Firmware</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
             <div role="tabpanel" class="tab-pane" id="repRF">
               <div class="row">
                 <div class="col-xs-12">
@@ -851,6 +752,7 @@
               </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repBlynk"></div>
+            <div role="tabpanel" class="tab-pane" id="settings"></div>
             <div role="tabpanel" class="tab-pane" id="repAbout">
               <div class="panel panel-default ">
                 <div class="panel-body">
@@ -863,8 +765,8 @@
                   </div>
                   <br>
                   <div class="row">
-                    <a href="https://www.facebook.com/vairmonitor" target="_new">Like the Facebook Page</a>, <a href="https://twitter.com/vAirMon" target="_new">Follow the Twitter</a> or <a href="https://github.com/vlast3k/simple-co2-monitor-fw/wiki/Version-History"
-                    target="_new">Watch the Github Page</a>, to get notified when there is a new version
+                    <a href="https://www.facebook.com/vairmonitor" target="_new">Like the Facebook Page</a>, <a href="https://twitter.com/vAirMon" target="_new">Follow the Twitter</a> 
+
                   </div>
                   <br>
 
@@ -919,6 +821,135 @@
   </div>
   <hr/>
 
+  <div id="settingsTemplate">
+    <div role="tabpanel" class="tab-pane" >
+      <div class="row">
+        <div class="col-xs-12">
+          <form class="form-inline">
+            <div class="form-group">
+              <label for="upd_int">Update Interval (sec)</label>
+              <input type="text" class="form-control" id="upd_int">
+            </div>
+            <button id="updIntButton" class="btn btn-default">
+              Set
+            </button> (default is 120 sec)
+            <p/>
+          </form>
+        </div>
+      </div>
+      <div class="row panel panel-default panel-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <form class="form-inline">
+              <div class="checkbox">
+                <label>
+                  <input id="debug" class="directSerialSendBoolProp" data-after="debugr" type="checkbox"> Debug Mode
+                </label>
+              </div>
+            </form>
+          </div>
+        </div>
+        <p/>
+        <div class="row">
+          <div class="col-xs-2">
+            <button class="btn btn-default directSerialSend" type="submit"
+                    data-send="!restart" data-endokstr="Heap at start"
+                    data-onok="AutoConnect" data-onokfunc="commandsAfterStart"
+                    data-timeout=5000>
+              Restart
+            </button>
+          </div>
+          <div class="col-xs-3">
+            <button class="btn btn-default directSerialSend" type="submit"
+                    data-send="!otah"
+                    data-endokstr="At setup end"
+                    data-onok="AutoConnect" data-onokfunc="commandsAfterStart"
+                    data-timeout=55000>
+              Firmware Update
+            </button>
+          </div>
+          <div class="col-xs-3">
+            <button class="btn btn-default directSerialSend" type="submit"
+                    data-timeout="25000" data-confirm="true" data-send="!factory"
+                    data-endokstr="At setup end" data-onok="AutoConnect"
+                    data-onokfunc="commandsAfterStart" >
+              Factory Reset...
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row panel panel-default panel-body">
+        <div class="col-xs-12">
+          <form class="form-inline">
+            <div class="form-group">
+              <b>Dust Sensor Quiet Time</b><br/> (e.g. Start=18:00, End=7:00, TZ=180 (GMT+180 min). Interval is in minutes. &lt;300 = dynamic mode)<br/>
+              <label for="pm2005.qstart">Start:</label>
+              <input type="text" class="form-control" style="width:100px" id="pm2005.qstart">
+              <label for="pm2005.qend">End:</label>
+              <input type="text" class="form-control" style="width:100px" id="pm2005.qend">
+              <label for="tz.offset">TZ:</label>
+              <input type="text" class="form-control" style="width:100px" id="tz.offset">
+              <p/>
+              <label for="pm2005.int.active">Interval Active:</label>
+              <input type="text" class="form-control" style="width:100px" id="pm2005.int.active">
+              <label for="pm2005.int.quiet">Quiet:</label>
+              <input type="text" class="form-control" style="width:100px" id="pm2005.int.quiet">
+              <button id="updPM2005btn" class="btn btn-default">
+                Set
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row panel panel-default panel-body">
+        <div class="col-xs-12">
+          <form class="form-inline">
+            <div class="form-group">
+              <label for="temp_adjustment">Temperature Adjustment: </label>
+              <input type="text" class="form-control" style="width:100px" id="temp_adjustment">
+              <button id="tmpAdjBttn" class="btn btn-default">
+                Set
+              </button>
+              e.g. -1.5 will decrease actual temperature by 1.5 degrees
+            </div>
+          </form>
+        </div>
+      </div>
+      <p></p>
+      <div class="row">
+        <div class="col-xs-12">
+          <form class="form-inline">
+            <div class="form-group hidden" id="otherSettingsVair">
+              <label for="setBRF">Set LED Brightness Factor (0.1 - 10, default 1)</label>
+              <input type="text" class="form-control" id="setBRF">
+              <button id="setBRFBtn" type="submit" class="btn btn-default">	Set	</button> Override the LED brightness factor. If the leds are too dim put a value > 1, if they are too bright
+              < 1 <br/>
+              <label for="setPPM">Set Current PPM</label>
+              <input type="text" class="form-control" id="setPPM">
+              <button id="setPPMBtn" type="submit" class="btn btn-default">	Set	</button> Override calibration data and preset CO2 Value (make sure that the device has warmed up for 15 minutes)
+              <p/>
+              <label for="setColors">Set Color Thresholds</label>
+              <input type="text" class="form-control" id="setColors">
+              <button id="setColorsBtn" type="submit" class="btn btn-default">	Set	</button> Set the threshold for each CO2 Level as 5 ppm values. E.g. default is: 700 1000 1300 1600 1900
+              <p/>
+              <p/>
+              <button id="resetCal" type="submit" class="btn btn-default">Reset Calibration</button>
+              <button id="resetAll" type="submit" class="btn btn-default">Factory Reset</button>
+              <p/>
+              <button id="ota" type="submit" class="btn btn-default">Update WiFi Firmware</button>
+
+            </div>
+            <div class="form-group hidden" id="otherSettingsVthing">
+              <button id="resetCal" type="submit" class="btn btn-default">Re-Calibrate</button>
+              <button id="resetAll" type="submit" class="btn btn-default">Factory Reset</button>
+              <p></p>
+              <button id="ota" type="submit" class="btn btn-default">Update WiFi Firmware</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   <div id="blynkTemplate">
     <div class="panel panel-default ">
       <div class="panel-body">
@@ -966,6 +997,14 @@
         </div>
       </div>
     </div>
+    <div class="panel panel-default ">
+      <div class="panel-body">
+        <div class="row">
+          Tutorial: <a href="http://vair-monitor.com/2016/12/15/mobile-dashboard-with-blynk/" target="_new">Checkout this tutorial for setting up a scenario with Blynk</a>
+        </div>
+      </div>
+    </div>
+  </div>
   </div>
 
 

@@ -9,10 +9,12 @@ $("#resetESP").click(onResetESP);
 $("#setWifi").click(onSetWifi);
 $(".directSerialSend").click(onSerialDataButton);
 $(".directSerialSendBoolProp").click(onDirectSerialSendBoolProp);
+$("#tmpAdjBttn").click(onTempAdjBttn);
 $("#serial").on('keyup', function (e) { e.keyCode == 13 && onSerialSend();});
 
 
 $("#blynkTemplate").appendTo($("#repBlynk"))
+$("#settingsTemplate").appendTo($("#settings"))
 
 // $("#bttnSetAction").click(onBttnSetAction);
 // $("#rfidSetAction").click(onRFIDSetAction);
@@ -139,6 +141,10 @@ function onResetESP() {
       log("set rts : " + res)
     })
   }, 1000)
+}
+
+function onTempAdjBttn() {
+  SerialHelper.addCommand("prop_set \"temp.adjustment\",\"" + $('#temp_adjustment').val() + "\"");
 }
 
 function init() {
