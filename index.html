@@ -94,22 +94,22 @@
                   <div class="panel panel-default">
                     <div class="panel-body">
                       <form class="form-inline">
-                        <label for="static_ip">Static IP</label>
-                        <input type="text" class="form-control" id="static_ip">
+                        <label for="wifi_staticip">Static IP</label>
+                        <input type="text" class="form-control" id="wifi_staticip">
                         <br/>
                         <br/>
-                        <label for="gateway">Gateway</label>
-                        <input type="text" class="form-control" id="gateway">
+                        <label for="wifi_gateway">Gateway</label>
+                        <input type="text" class="form-control" id="wifi_gateway">
                         &nbsp;&nbsp;
-                        <label for="netmask">Subnet Mask</label>
-                        <input type="text" class="form-control" id="netmask" placeholder="default:255.255.255.0">
+                        <label for="wifi_subnet">Subnet Mask</label>
+                        <input type="text" class="form-control" id="wifi_subnet" placeholder="default:255.255.255.0">
                         <br/>
                         <br/>
-                        <label for="dns1">DNS 1</label>
-                        <input type="text" class="form-control" id="dns1" placeholder="default:gateway">
+                        <label for="wifi_dns1">DNS 1</label>
+                        <input type="text" class="form-control" id="wifi_dns1" placeholder="default:gateway">
                         &nbsp;&nbsp;
-                        <label for="dns2">DNS 2</label>
-                        <input type="text" class="form-control" id="dns2" placeholder="default:dns1">
+                        <label for="wifi_dns2">DNS 2</label>
+                        <input type="text" class="form-control" id="wifi_dns2" placeholder="default:dns1">
                       </form>
                     </div>
                   </div>
@@ -765,7 +765,7 @@
                   </div>
                   <br>
                   <div class="row">
-                    <a href="https://www.facebook.com/vairmonitor" target="_new">Like the Facebook Page</a>, <a href="https://twitter.com/vAirMon" target="_new">Follow the Twitter</a> 
+                    <a href="https://www.facebook.com/vairmonitor" target="_new">Like the Facebook Page</a>, <a href="https://twitter.com/vAirMon" target="_new">Follow the Twitter</a>
 
                   </div>
                   <br>
@@ -883,17 +883,17 @@
           <form class="form-inline">
             <div class="form-group">
               <b>Dust Sensor Quiet Time</b><br/> (e.g. Start=18:00, End=7:00, TZ=180 (GMT+180 min). Interval is in minutes. &lt;300 = dynamic mode)<br/>
-              <label for="pm2005.qstart">Start:</label>
-              <input type="text" class="form-control" style="width:100px" id="pm2005.qstart">
-              <label for="pm2005.qend">End:</label>
-              <input type="text" class="form-control" style="width:100px" id="pm2005.qend">
-              <label for="tz.offset">TZ:</label>
-              <input type="text" class="form-control" style="width:100px" id="tz.offset">
+              <label for="pm2005_qstart">Start:</label>
+              <input type="text" class="form-control" style="width:100px" id="pm2005_qstart">
+              <label for="pm2005_qend">End:</label>
+              <input type="text" class="form-control" style="width:100px" id="pm2005_qend">
+              <label for="tz_offset">TZ:</label>
+              <input type="text" class="form-control" style="width:100px" id="tz_offset">
               <p/>
-              <label for="pm2005.int.active">Interval Active:</label>
-              <input type="text" class="form-control" style="width:100px" id="pm2005.int.active">
-              <label for="pm2005.int.quiet">Quiet:</label>
-              <input type="text" class="form-control" style="width:100px" id="pm2005.int.quiet">
+              <label for="pm2005_int_active">Interval Active:</label>
+              <input type="text" class="form-control" style="width:100px" id="pm2005_int_active">
+              <label for="pm2005_int_quiet">Quiet:</label>
+              <input type="text" class="form-control" style="width:100px" id="pm2005_int_quiet">
               <button id="updPM2005btn" class="btn btn-default">
                 Set
               </button>

@@ -24,7 +24,6 @@ var ConfigurationFromESP = (function() {
     "mqtt.topic": "#mqttTopic",
     "send.interval": "#upd_int",
     "blynk.auth": "#blynkAuth",
-    "temp.adjustment":"#temp_adjustment"
   }
 
   function combineLines(obj, prefix) {
@@ -59,10 +58,13 @@ var ConfigurationFromESP = (function() {
     combineLines(obj, "mqtt_msg_arr");
 
     cleanAllInputs();
+
     Object.keys(obj).forEach(function(key) {
-      var el = $("[id='" + key + "']");
-      if (el.length) el.val(obj[key]);
-      else $(espMapping[key]).val(obj[key]);
+      var keyus = key.replace(/\./g, "_");
+      var el;
+      if      ((el = $("[id='" + key   + "']")).length) el.val(obj[key]);
+      else if ((el = $("[id='" + keyus + "']")).length) el.val(obj[key]);
+      else     $(espMapping[key]).val(obj[key]);
     });
 
     if (!obj["rf.enabled"] || obj["rf.enabled"].startsWith("false")) $("#rfEnable").prop("checked", false);

@@ -69,13 +69,13 @@ var SimpleCommands = (function() {
   }
 
   function onPM2005Setup() {
-    if ($("#pm2005.qstart").val()) {
-      SerialHelper.addCommand("pm2005quiet " + $("#pm2005.qstart").val() + "," + $("#pm2005.qend").val() + "," + tz.offset);
+    if ($("#pm2005_qstart").val()) {
+      SerialHelper.addCommand("pm2005quiet " + $("#pm2005_qstart").val() + "," + $("#pm2005_qend").val() + "," + $("#tz_offset").val());
     }
 
-    if ($("#pm2005.int.active").val()) {
-      if (!$("#pm2005.int.quiet").val($("#pm2005.int.active").val()));
-      SerialHelper.addCommand("pm2005int " + $("#pm2005.int.active").val() + "," + $("#pm2005.int.quiet").val());
+    if ($("#pm2005_int_active").val()) {
+      if (!$("#pm2005_int_quiet").val($("#pm2005_int_active").val()));
+      SerialHelper.addCommand("pm2005int " + $("#pm2005_int_active").val() + "," + $("#pm2005_int_quiet").val());
     }
   }
 

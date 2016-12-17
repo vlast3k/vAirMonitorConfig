@@ -107,11 +107,11 @@ function onSetWifi() {
   var ssid =    $('#ssid').val();
   var pass =    $('#pass').val();
   var sapPass = $('#sapPass').val();
-  var static_ip=$("#static_ip").val();
-  var gw      = $("#gateway").val();
-  var netmask = $("#netmask").val();
-  var dns1    = $("#dns1").val();
-  var dns2    = $("#dns2").val();
+  var static_ip=$("#wifi_staticip").val();
+  var gw      = $("#wifi_gateway").val();
+  var netmask = $("#wifi_subnet").val();
+  var dns1    = $("#wifi_dns1").val();
+  var dns2    = $("#wifi_dns2").val();
   netmask = netmask || "255.255.255.0";
   if (static_ip && gw && netmask) {
     dns1 = dns1 || gw;
