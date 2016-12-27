@@ -1,8 +1,10 @@
 var AutoConnect = (function() {
   var connectionId;
   function onConnect2(conn) {
-    connectionId = conn.connectionId;
-    chrome.serial.onReceive.addListener(SerialHelper.onReceiveCallback);
+    if (chrome.serial) {
+      connectionId = conn.connectionId;
+      chrome.serial.onReceive.addListener(SerialHelper.onReceiveCallback);
+    }
     SerialHelper.init();
     commandsAfterStart();
   }
@@ -35,7 +37,8 @@ var AutoConnect = (function() {
       document.getElementById('btnAutoConnect').value ="Not Found";
     } else {
       log ("\n" + deviceType  + " found on : " + comPort);
-      chrome.serial.connect(comPort, {bitrate: 9600}, onConnect2);
+      chrome.serial && chrome.serial.connect(comPort, {bitrate: 9600}, onConnect2);
+      wsclient && onConnect2();
       document.getElementById('btnAutoConnect').className="btn btn-success";
       document.getElementById('btnAutoConnect').value ="Connected";
       if (deviceType == Constants.VTHING) {
@@ -74,22 +77,28 @@ var AutoConnect = (function() {
       })
     }
   }
-
+  function onDisconnect() {
+    if (wsclient) {
+      wsclient.close();
+      wsclient = null;
+    } else {
+      connectionId = null;
+      chrome.serial.onReceive.removeListener(SerialHelper.onReceiveCallback);
+    }
+    document.getElementById('btnAutoConnect').className="btn btn-info";
+    document.getElementById('btnAutoConnect').value ="Auto Connect";
+  }
   function onbtnAutoConnect() {
-    if (connectionId) {
-      chrome.serial.disconnect(connectionId, function() {
-        connectionId = null;
-        chrome.serial.onReceive.removeListener(SerialHelper.onReceiveCallback);
-        document.getElementById('btnAutoConnect').className="btn btn-info";
-        document.getElementById('btnAutoConnect').value ="Auto Connect";
-      })
+    if (connectionId || wsclient) {
+      chrome.serial && chrome.serial.disconnect(connectionId, onDisconnect);
+      wsclient && onDisconnect();
     } else {
       document.getElementById('btnAutoConnect').className="btn btn-warning";
       document.getElementById('btnAutoConnect').value ="Searching...";
       if (chrome.serial) {
         DeviceFinder(onVAirFound, "Searching for v.Air ", 9600);
       } else {
-        initWebSocketClient();
+        searchServer(onVAirFound);
       }
     }
   }

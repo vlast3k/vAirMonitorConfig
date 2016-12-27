@@ -29,20 +29,40 @@ String.prototype.format = function() {
   });
 };
 
+var sockets = [];
+
+function tryWSS(i, onFound) {
+  var ws = new WebSocket("ws://192.168.1." + i + ":81");
+  sockets.push(ws);
+  ws.onopen = function(evt) {
+    log ("Found WebSocketServer on:" + i);
+    initWebSocketClient(ws, onFound);
+  };
+  // ws.onclose = function(evt) { };
+  // ws.onmessage = function(evt) { };
+  // ws.onerror = function(evt) { console.log("onerror: " + i);};
+}
+function searchServer(onFound) {
+  for (var i=1; i < 255; i++) {
+    tryWSS(i, onFound);
+  }
+}
 var wsclient;
-function initWebSocketClient() {
-  wsclient = new WebSocket("ws://192.168.1.115:81");
+function initWebSocketClient(ws, onFound) {
+  wsclient = ws;
+  log("WS Connected");
+  SerialHelper.init();
+  doSend("info");
   wsclient.onopen = function(evt) { onOpen(evt) };
   wsclient.onclose = function(evt) { onClose(evt) };
   wsclient.onmessage = SerialHelper.onReceiveCallback;
   wsclient.onerror = function(evt) { onError(evt) };
+  deviceType = Constants.VESPRINO_V1;
+  onFound("WebSocket");
 }
 
-function onOpen(evt) {
-  log("WS Connected");
-  SerialHelper.init();
-  doSend("info");
-}
+// function onOpen(evt) {
+// }
 
 function onClose(evt) {
   log("DISCONNECTED");
