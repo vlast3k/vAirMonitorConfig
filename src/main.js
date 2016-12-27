@@ -118,7 +118,7 @@ function onSetWifi() {
     dns2 = dns2 || dns1;
     SerialHelper.addCommand("static_ip {0},{1},{2},{3},{4}".format(static_ip, gw, netmask, dns1, dns2));
   }
-  SerialHelper.addCommand({cmd:"wifi \"" + ssid + "\",\"" + pass + "\"" + (sapPass ? ",\"" + sapPass + "\"" : ""), endOKstr:"GOT IP", timeout: 15000, onOK:onSetWifiConnected});
+  SerialHelper.addCommand({cmd:"wifi \"" + ssid + "\",\"" + pass + "\"" + (sapPass ? ",\"" + sapPass + "\"" : ""), endOKstr:"GOT IP", timeout: 5000, onOK:onSetWifiConnected});
 
 }
 
