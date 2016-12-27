@@ -29,6 +29,42 @@ String.prototype.format = function() {
   });
 };
 
+var wsclient;
+function initWebSocketClient() {
+  wsclient = new WebSocket("ws://192.168.1.115:81");
+  wsclient.onopen = function(evt) { onOpen(evt) };
+  wsclient.onclose = function(evt) { onClose(evt) };
+  wsclient.onmessage = SerialHelper.onReceiveCallback;
+  wsclient.onerror = function(evt) { onError(evt) };
+}
+
+function onOpen(evt) {
+  log("WS Connected");
+  SerialHelper.init();
+  doSend("info");
+}
+
+function onClose(evt) {
+  log("DISCONNECTED");
+}
+
+function onMessage(evt) {
+  log ("inbound: " + evt.data);
+  //writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
+  //wsclient.close();
+}
+
+function onError(evt) {
+  log ("error:" + evt.data);
+  //writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+}
+
+function doSend(message) {
+  //writeToScreen("SENT: " + message);
+  wsclient.send(message);
+}
+
+
 function onSerialDataButton(event) {
   event.preventDefault();
   var onok;

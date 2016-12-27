@@ -86,7 +86,11 @@ var AutoConnect = (function() {
     } else {
       document.getElementById('btnAutoConnect').className="btn btn-warning";
       document.getElementById('btnAutoConnect').value ="Searching...";
-      DeviceFinder(onVAirFound, "Searching for v.Air ", 9600);
+      if (chrome.serial) {
+        DeviceFinder(onVAirFound, "Searching for v.Air ", 9600);
+      } else {
+        initWebSocketClient();
+      }
     }
   }
 
