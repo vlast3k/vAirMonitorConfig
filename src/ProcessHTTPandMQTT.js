@@ -285,9 +285,12 @@ var ProcessMQTTandHTTP = (function () {
   }
 
   var changedFields = {};
-  $(":input").click(function() {
-    changedFields[$(this).attr("id")] = true
-  });
+  function registerChangedFields() {
+    $(":input").click(function() {
+      console.log("Changed: " + $(this).attr("id"));
+      changedFields[$(this).attr("id")] = true
+    });
+  }
 
   function init() {
     $("#tsBtn").click(onBtnCustom);
@@ -306,6 +309,7 @@ var ProcessMQTTandHTTP = (function () {
     $("#ohSaveBtn").click(onSetMQTT);
   }
   return {
-    init : init
+    init : init,
+    registerChangedFields: registerChangedFields
   }
 })();

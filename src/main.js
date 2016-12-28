@@ -231,6 +231,7 @@ function init() {
   if (chrome.serial) AutoConnect.onbtnAutoConnect();
 
   $('#mainTabs a[href="#setupWifi"]').tab("show");
+  ProcessMQTTandHTTP.registerChangedFields();
 }
 
 function getIPs(onSuccess) {
