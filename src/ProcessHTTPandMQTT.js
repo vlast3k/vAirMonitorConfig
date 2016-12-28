@@ -208,7 +208,7 @@ var ProcessMQTTandHTTP = (function () {
     var res = [];
     $(".prop_set").each(function() {
       if (containsChanges($(this).attr("id"))) {
-        res.push("prop_jset \"" + $(this).data("key") + "\"" + $(this).val());
+        res.push("prop_jset \"" + $(this).attr("id") + "\"" + $(this).val());
       }
     });
     return res;
@@ -316,6 +316,8 @@ var ProcessMQTTandHTTP = (function () {
     $("#dgaSaveBtn").click(onBtnCustom);
     $("#dwSaveBtn").click(onBtnCustom);
     $("#hsSaveBtn").click(onBtnCustom);
+    $(".saveBtn").click(onBtnCustom);
+
 
     $("#customBtn").click(onBtnCustom);
     $("#setMQTT").click(onSetMQTT);
