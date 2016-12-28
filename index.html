@@ -702,6 +702,13 @@
                   </form>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <button class="btn btn-default directSerialSend" type="submit" data-send="prop_list">
+                    List Properties
+                  </button>
+                </div>
+              </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="repRF">
               <div class="row">
@@ -906,7 +913,7 @@
           <form class="form-inline">
             <div class="form-group">
               <label for="temp_adjustment">Temperature Adjustment: </label>
-              <input type="text" class="form-control" style="width:100px" id="temp_adjustment">
+              <input type="text" class="form-control prop_set" style="width:100px" data-key="temp.adjustment" id="temp.adjustment">
               <button id="tmpAdjBttn" class="btn btn-default">
                 Set
               </button>

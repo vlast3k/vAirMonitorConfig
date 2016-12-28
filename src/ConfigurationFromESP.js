@@ -40,6 +40,7 @@ var ConfigurationFromESP = (function() {
 
   function cleanAllInputs() {
     $(":input[type='text'][id!='serial']").val("");
+    $(":input[type='checkbox'].directSerialSendBoolProp").prop("checked",false);
     $("textarea[id!='buffer']").val("");
   }
 
@@ -49,8 +50,8 @@ var ConfigurationFromESP = (function() {
     for (var i = 0; i < lines.length; i++) {
       var t = lines[i].indexOf("=");
       if (t == -1) continue;
-      var key = lines[i].substring(0, t);
-      var value = lines[i].substring(t + 1);
+      var key = lines[i].substring(0, t).trim();
+      var value = lines[i].substring(t + 1).trim();
       if (value.length == 0) continue;
       obj[key] = value;
     }
@@ -59,10 +60,15 @@ var ConfigurationFromESP = (function() {
 
     cleanAllInputs();
 
+    function setMyValue(el, val) {
+      if (el.attr("type") === "checkbox") el.prop("checked", val && val != 0 && val != "false");
+      else el.val(val);
+    }
     Object.keys(obj).forEach(function(key) {
       var keyus = key.replace(/\./g, "_");
+      //key = key.replace(/\./g, "\\.");
       var el;
-      if      ((el = $("[id='" + key   + "']")).length) el.val(obj[key]);
+      if      ((el = $("[id='" + key   + "']")).length) setMyValue(el, obj[key]);
       else if ((el = $("[id='" + keyus + "']")).length) el.val(obj[key]);
       else     $(espMapping[key]).val(obj[key]);
     });

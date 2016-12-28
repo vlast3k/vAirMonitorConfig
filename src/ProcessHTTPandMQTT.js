@@ -204,10 +204,24 @@ var ProcessMQTTandHTTP = (function () {
     return res;
   }
 
+  function createCommandsForGenericPropertyFields() {
+    var res = [];
+    $(".prop_set").each(function() {
+      if (containsChanges($(this).attr("id"))) {
+        res.push("prop_jset \"" + $(this).data("key") + "\"" + $(this).val());
+      }
+    });
+    return res;
+
+  }
+
   function onBtnCustom() {
     SerialHelper.startSequence();
     SerialHelper.addCommand("nop");
     SerialHelper.addCommand('custom_url_clean');
+    createCommandsForGenericPropertyFields().forEach(function(el) {
+      SerialHelper.addCommand(el);
+    });
     createCommandsForCustomHTTP().forEach(function(el) {
       SerialHelper.addCommand(el);
     });
