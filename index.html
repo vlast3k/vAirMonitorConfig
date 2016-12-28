@@ -714,10 +714,11 @@
                     <button class="btn btn-default directSerialSend" type="submit" data-send="wss_start">
                       Start WebSocket Server
                     </button>
-                    Port is 8266
+                    Port is 8266.
                   </form>
                 </div>
               </div>
+              Note: Both servers stop once device goes to deep sleep. And will start after power cycle again.
               <div class="row">
                 <div class="col-xs-12">
                   <form class="form-inline">
@@ -740,6 +741,41 @@
                   </form>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <form class="form-inline">
+                    <div class="form-group">
+                      <label for="log.dest.url">Logging HTTP Dest: </label>
+                      <input type="text" class="form-control prop_set" style="width:100px" id="log.dest.url">
+                      Device will send POST requests with the output here. You can use <a href="https://raw.githubusercontent.com/vlast3k/vESPrino/master/tools/httpsrv.js" target="_new"> this Node.js script to capture them</a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <form class="form-inline">
+                    <div class="form-group">
+                      <label for="pwr.iterdur">Internal Cycle Length(sec): </label>
+                      <input type="text" class="form-control prop_set" style="width:100px" id="pwr.iterdur">
+                      How often the device will wakeup (e.g. for keeping Powerbanks alive). Default 30sec. Iteration Duration is a multiple of this
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <form class="form-inline">
+                    <div class="form-group">
+                      <label for="pwr.timeoutint">Go to sleep time(sec): </label>
+                      <input type="text" class="form-control prop_set" style="width:100px" id="pwr.timeoutint">
+                      When will the device switch to sleep mode. Default(300 sec). O disables it. CM1102 and CM1106 sensors disable deep sleep. WebServer and WebSocketServer will no longer accept connection when in deep sleep. Config tool disables it as well once connected
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+
 
               <div class="row">
                 <div class="col-xs-12">
@@ -948,20 +984,6 @@
               <button id="updPM2005btn" class="btn btn-default">
                 Set
               </button>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="row panel panel-default panel-body">
-        <div class="col-xs-12">
-          <form class="form-inline">
-            <div class="form-group">
-              <label for="temp_adjustment">Temperature Adjustment: </label>
-              <input type="text" class="form-control prop_set" style="width:100px" data-key="temp.adjustment" id="temp.adjustment">
-              <button id="tmpAdjBttn" class="btn btn-default">
-                Set
-              </button>
-              e.g. -1.5 will decrease actual temperature by 1.5 degrees
             </div>
           </form>
         </div>
