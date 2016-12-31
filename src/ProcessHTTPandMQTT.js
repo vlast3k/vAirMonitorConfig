@@ -152,9 +152,10 @@ var ProcessMQTTandHTTP = (function () {
 
 
   function containsChanges(rootTag) {
-    if (!$("#" + rootTag).length) return [];
+    if (!$("[id='" + rootTag + "']").length) return [];
     return Object.keys(changedFields).filter(function(key) {
-      return $("#" + key) && $.contains($("#" + rootTag).get(0), $("#" + key).get(0))
+      return $("[id='" + key   + "']") &&
+        (rootTag === key || $.contains($("[id='" + rootTag + "']").get(0), $("[id='" + key + "']").get(0)))
     });
   }
 
@@ -207,8 +208,10 @@ var ProcessMQTTandHTTP = (function () {
   function createCommandsForGenericPropertyFields() {
     var res = [];
     $(".prop_set").each(function() {
-      if (containsChanges($(this).attr("id"))) {
-        res.push("prop_jset \"" + $(this).attr("id") + "\"" + $(this).val());
+      var id = $(this).attr("id");
+      if (containsChanges(id).length) {
+        res.push("prop_jset \"" + id + "\"" + $(this).val());
+        cleanChanges(id);
       }
     });
     return res;
@@ -225,7 +228,7 @@ var ProcessMQTTandHTTP = (function () {
     createCommandsForCustomHTTP().forEach(function(el) {
       SerialHelper.addCommand(el);
     });
-    SerialHelper.addCommand(processTSStoreConfig());
+    //SerialHelper.addCommand(processTSStoreConfig());
     SerialHelper.addCommand(processGenericIDConfig("repUbidots", "ubi.cfg"));
     SerialHelper.addCommand(processGenericIDConfig("repDomoticz", "dz.cfg"));
     SerialHelper.addCommand(processGenericIDConfig("repJeedom", "jee.cfg"));
@@ -300,7 +303,8 @@ var ProcessMQTTandHTTP = (function () {
 
   var changedFields = {};
   function registerChangedFields() {
-    $(":input").click(function() {
+    $(":input").mousedown(function() {
+      if ($(this).hasClass("btn")) return;
       console.log("Changed: " + $(this).attr("id"));
       changedFields[$(this).attr("id")] = true
     });

@@ -101,7 +101,7 @@ var ConfigurationFromESP = (function() {
       return;
     }
     p && Object.keys(p).forEach(function(key) {
-      $("#" + key).val(p[key])
+      $("[id='" + key   + "']").val(p[key])
     });
   }
 

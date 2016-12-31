@@ -134,7 +134,7 @@
                       <form class="form-inline">
                         <div class="form-group">
                           <label for="ts">ThingSpeak Write API Key</label>
-                          <input type="text" class="form-control" id="tsKey">
+                          <input type="text" class="form-control prop_set" id="tsKey">
                           <button id="tsBtn" type="submit" class="btn btn-default">	Save	</button>
                         </div>
                       </form>
@@ -722,6 +722,21 @@
               <div class="row">
                 <div class="col-xs-12">
                   <form class="form-inline">
+                    <div class="checkbox">
+                      <label>
+                        <input id="mqtt.listen" class="directSerialSendBoolProp" type="checkbox"> Lisen on MQTT
+                      </label>
+                    </div>
+                    <br/>
+                    <label for="mqtt.subs.topic">MQTT Inbound Topic: </label>
+                    <input type="text" class="form-control prop_set" style="width:100px" id="mqtt.subs.topic">
+                    send commands to {topic}/cmd. Configure MQTT Server as well. Needs restart.
+                  </form>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <form class="form-inline">
                     <div class="form-group">
                       <label for="hostname">Hostname: </label>
                       <input type="text" class="form-control prop_set" style="width:100px" id="hostname">
@@ -778,9 +793,14 @@
 
 
               <div class="row">
-                <div class="col-xs-12">
+                <div class="col-xs-3">
                   <button class="btn btn-default directSerialSend" type="submit" data-send="prop_list">
                     List Properties
+                  </button>
+                </div>
+                <div class="col-xs-3">
+                  <button class="btn btn-default directSerialSend" type="submit" data-send="scan">
+                    WiFi Scan
                   </button>
                 </div>
               </div>

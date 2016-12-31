@@ -137,7 +137,7 @@ function initChromeStorageSync() {
     var id = this.id;
     if (chrome.storage) {
       chrome.storage.sync.get(this.id, function(value) {
-        $("#" + id).val(value[id])
+        $("[id='" + id + "']").val(value[id])
       })
     }
   })
@@ -187,7 +187,7 @@ function onSetWifi() {
   if (static_ip && gw && netmask) {
     dns1 = dns1 || gw;
     dns2 = dns2 || dns1;
-    SerialHelper.addCommand("static_ip {0},{1},{2},{3},{4}".format(static_ip, gw, netmask, dns1, dns2));
+    SerialHelper.addCommand("static_ip {0},{1},{2},{3},{4},".format(static_ip, gw, netmask, dns1, dns2));
   }
   SerialHelper.addCommand({cmd:"wifi \"" + ssid + "\",\"" + pass + "\"" + (sapPass ? ",\"" + sapPass + "\"" : ""), endOKstr:"GOT IP", timeout: 5000, onOK:onSetWifiConnected});
 
