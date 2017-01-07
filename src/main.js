@@ -32,7 +32,7 @@ String.prototype.format = function() {
 var sockets = [];
 
 function tryWSS(i, onFound) {
-  var ws = new WebSocket("ws://" + i +  ":81");
+  var ws = new WebSocket("ws://" + i +  ":8266");
   sockets.push(ws);
   ws.onopen = function(evt) {
     log ("Found WebSocketServer on:" + i);
