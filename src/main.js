@@ -30,14 +30,19 @@ String.prototype.format = function() {
 };
 
 var sockets = [];
+var backendIp;
 
-function tryWSS(i, onFound) {
+function tryWSS(i, onFound, onerror) {
+  console.log("trying hard")
   var ws = new WebSocket("ws://" + i +  ":8266");
   sockets.push(ws);
   ws.onopen = function(evt) {
     log ("Found WebSocketServer on:" + i);
+    backendIp = i;
     initWebSocketClient(ws, onFound);
   };
+  ws.onerror = onerror;
+
   // ws.onclose = function(evt) { };
   // ws.onmessage = function(evt) { };
   // ws.onerror = function(evt) { console.log("onerror: " + i);};
@@ -63,8 +68,12 @@ function searchServer(onFound) {
   });
 }
 var wsclient;
+var checkWSInt;
 function initWebSocketClient(ws, onFound) {
   wsclient = ws;
+  if (checkWSInt) clearInterval(checkWSInt);
+  sockets.forEach(function(s) {if (s !== ws) s.close()});
+  sockets = [];
   log("WS Connected");
   SerialHelper.init();
   doSend("info");
@@ -72,6 +81,23 @@ function initWebSocketClient(ws, onFound) {
   wsclient.onclose = function(evt) { onClose(evt) };
   wsclient.onmessage = SerialHelper.onReceiveCallback;
   wsclient.onerror = function(evt) { onError(evt) };
+  checkWSInt = setInterval(function() {
+    if (wsclient === null) {
+      clearInterval(checkWSInt);
+      return;
+    }
+    console.log(wsclient.readyState);
+    if (wsclient.readyState != 1) {
+      clearInterval(checkWSInt);
+      //console.log("will retry in 5 sec: " + backendIp);
+      function f() {
+        console.log("trying");
+        tryWSS(backendIp, onFound, f);
+      }
+      f();
+      //setTimeout(f, 5000);
+    }
+  }, 2000);
   deviceType = Constants.VESPRINO_V1;
   onFound("WebSocket");
 }
