@@ -33,7 +33,6 @@ var sockets = [];
 var backendIp;
 
 function tryWSS(i, onFound, onerror) {
-  console.log("trying hard")
   var ws = new WebSocket("ws://" + i +  ":8266");
   sockets.push(ws);
   ws.onopen = function(evt) {

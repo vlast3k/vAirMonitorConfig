@@ -109,6 +109,7 @@ var SerialHelper = (function () {
   function processCurrentData() {
     serialDataFromCurrentExecution += iterationSerialData;
     log ("[" + iterationSerialData.trim() + "]"); // + "\n waiting for : " + onOKString);
+    //console.log("IterationData: " + "[" + iterationSerialData.trim() + "]");
     if (cmdQueue.length && serialDataFromCurrentExecution.indexOf(cmdQueue[0].endOKstr) > -1) {
       console.log("found:" +cmdQueue[0].endOKstr + ", in: " + serialDataFromCurrentExecution);
       clearTimeout(sequenceTerminateTimer);
