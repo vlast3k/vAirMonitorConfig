@@ -118,7 +118,7 @@
 
               <div class="row">
                 <div class="col-xs-12">
-                  <button id="setWifi" class="btn btn-default">
+                  <button id="setWifi" type="submit" class="btn btn-default">
                     Set Wifi
                   </button>
                 </div>
@@ -893,10 +893,10 @@
         <button id="brgPlus" type="submit" class="btn btn-default">
           Brg +
         </button>
-        <button id="co2Min" class="btn btn-default">
+        <button id="co2Min" type="submit" class="btn btn-default">
           CO2 -
         </button>
-        <button id="co2Plus" class="btn btn-default">
+        <button id="co2Plus" type="submit" class="btn btn-default">
           CO2 +
         </button>
       </div>
@@ -912,11 +912,12 @@
     <div class="row">
       <div class="form-group form-inline">
         <div class="col-xs-8">
-          <label for="serial">Send command: </label>
-          <input type="text" class="form-control" autocomplete="serialInput" style="width:400px" id="serial">
-          <button id="btnSerialSend" type="Set Wifi" class="btn btn-default">Send</button>
+          <input type="text" placeholder="Send Command" class="form-control" autocomplete="serialInput" style="width:100%" id="serial">
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-2">
+          <button id="btnSerialSend" type="submit" class="btn btn-default">Send</button>
+        </div>
+        <div class="col-xs-2">
           <div class="checkbox">
             <label>
               <input id="cbPauseSerialUpdate" type="checkbox"> Pause Updates </input>
@@ -937,7 +938,7 @@
               <label for="upd_int">Update Interval (sec)</label>
               <input type="text" class="form-control" id="upd_int">
             </div>
-            <button id="updIntButton" class="btn btn-default">
+            <button id="updIntButton" type="submit" class="btn btn-default">
               Set
             </button> (default is 120 sec)
             <p/>
@@ -1001,7 +1002,7 @@
               <input type="text" class="form-control" style="width:100px" id="pm2005_int_active">
               <label for="pm2005_int_quiet">Quiet:</label>
               <input type="text" class="form-control" style="width:100px" id="pm2005_int_quiet">
-              <button id="updPM2005btn" class="btn btn-default">
+              <button id="updPM2005btn" type="submit" class="btn btn-default">
                 Set
               </button>
             </div>

@@ -74,7 +74,7 @@ var SimpleCommands = (function() {
     }
 
     if ($("#pm2005_int_active").val()) {
-      if (!$("#pm2005_int_quiet").val($("#pm2005_int_active").val()));
+      if (!$("#pm2005_int_quiet").val()) $("#pm2005_int_quiet").val($("#pm2005_int_active").val());
       SerialHelper.addCommand("pm2005int " + $("#pm2005_int_active").val() + "," + $("#pm2005_int_quiet").val());
     }
   }
