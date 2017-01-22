@@ -1,12 +1,12 @@
 var AutoConnect = (function() {
   var connectionId;
-  function onConnect2(conn) {
+  function onConnect2(connId) {
     if (chrome.serial) {
-      connectionId = conn.connectionId;
+      connectionId = connId;
       chrome.serial.onReceive.addListener(SerialHelper.onReceiveCallback);
     }
     SerialHelper.init();
-    commandsAfterStart();
+    //commandsAfterStart();
   }
 
   function onGotInfo(info) {
@@ -22,6 +22,7 @@ var AutoConnect = (function() {
       }
     }
     ConfigurationFromESP.load();
+    SerialHelper.addCommand({cmd:"nop 0", endOKstr: "ready >", skipCrc:true});
   }
 
   function commandsAfterStart() {
@@ -31,14 +32,16 @@ var AutoConnect = (function() {
     SerialHelper.sendSequence();
   }
 
-  function onVAirFound(comPort) {
+  function onVAirFound(comPort, connId, collectedLog) {
     if (!comPort) {
       document.getElementById('btnAutoConnect').className="btn btn-danger";
       document.getElementById('btnAutoConnect').value ="Not Found";
     } else {
       log ("\n" + deviceType  + " found on : " + comPort);
-      chrome.serial && chrome.serial.connect(comPort, {bitrate: 9600}, onConnect2);
+      //chrome.serial && chrome.serial.connect(comPort, {bitrate: 9600}, onConnect2);
+      chrome.serial && onConnect2(connId);
       wsclient && onConnect2();
+      onGotInfo(collectedLog);
       document.getElementById('btnAutoConnect').className="btn btn-success";
       document.getElementById('btnAutoConnect').value ="Connected";
       if (deviceType == Constants.VTHING) {

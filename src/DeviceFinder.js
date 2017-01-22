@@ -2,14 +2,15 @@ var DeviceFinder = function (onDeviceFound, text, baud) {
   var devices = {};
   var findInterval = setInterval(function() { log(" . ", true);  }, 500);
 
-  function onIntDeviceFound(comPort, connId) {
+  function onIntDeviceFound(comPort, connId, collectedLog) {
     clearInterval(findInterval);
     clearTimeout(foundTimeout);
     Object.keys(devices).forEach(function(_connId) {
-     chrome.serial.disconnect(+_connId, function() {});
+     if (+_connId != connId) chrome.serial.disconnect(+_connId, function() {});
     });
     chrome.serial.onReceive.removeListener(onRecvFindDev);
-    setTimeout(function() {onDeviceFound(comPort)}, 1000);
+    onDeviceFound(comPort, connId, collectedLog);
+    //setTimeout(function() {onDeviceFound(comPort)}, 1000);
   }
 
   var foundTimeout = setTimeout(function() {
@@ -27,7 +28,7 @@ var DeviceFinder = function (onDeviceFound, text, baud) {
     else if (s.indexOf(Constants.VTHING_H801) > -1)  deviceType = Constants.VTHING_H801;
     else if (s.indexOf(Constants.VESPRINO_V1) > -1)  deviceType = Constants.VESPRINO_V1;
     else return;
-    onIntDeviceFound(devices[conn.connectionId].path, conn.connectionId);
+    onIntDeviceFound(devices[conn.connectionId].path, conn.connectionId, devices[conn.connectionId].str);
   }
 
 
