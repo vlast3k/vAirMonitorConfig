@@ -39,9 +39,15 @@ var AutoConnect = (function() {
     } else {
       log ("\n" + deviceType  + " found on : " + comPort);
       //chrome.serial && chrome.serial.connect(comPort, {bitrate: 9600}, onConnect2);
-      chrome.serial && onConnect2(connId);
-      wsclient && onConnect2();
-      onGotInfo(collectedLog);
+      if (chrome.serial) {
+         onConnect2(connId);
+         onGotInfo(collectedLog);
+      }
+      if (wsclient) {
+         onConnect2();
+         commandsAfterStart();
+       }
+
       document.getElementById('btnAutoConnect').className="btn btn-success";
       document.getElementById('btnAutoConnect').value ="Connected";
       if (deviceType == Constants.VTHING) {

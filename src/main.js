@@ -85,7 +85,7 @@ function initWebSocketClient(ws, onFound) {
       clearInterval(checkWSInt);
       return;
     }
-    console.log(wsclient.readyState);
+    //console.log(wsclient.readyState);
     if (wsclient.readyState != 1) {
       clearInterval(checkWSInt);
       //console.log("will retry in 5 sec: " + backendIp);
@@ -98,7 +98,7 @@ function initWebSocketClient(ws, onFound) {
     }
   }, 2000);
   deviceType = Constants.VESPRINO_V1;
-  onFound("WebSocket");
+  onFound("WebSocket", "", "");
 }
 
 // function onOpen(evt) {
@@ -214,6 +214,8 @@ function onSetWifi() {
     dns1 = dns1 || gw;
     dns2 = dns2 || dns1;
     SerialHelper.addCommand("static_ip {0},{1},{2},{3},{4},".format(static_ip, gw, netmask, dns1, dns2));
+  } else {
+    SerialHelper.addCommand("static_ip ,,,,,");
   }
   SerialHelper.addCommand({cmd:"wifi \"" + ssid + "\",\"" + pass + "\"" + (sapPass ? ",\"" + sapPass + "\"" : ""), endOKstr:"GOT IP", timeout: 5000, onOK:onSetWifiConnected});
 
