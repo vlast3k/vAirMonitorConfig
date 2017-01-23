@@ -275,13 +275,21 @@
                   <div class="row" >
                     <div class="col-xs-12 form-inline">
                       <label for="dzHost">Domoticz Host</label>
-                      <input type="text" class="form-control" id="dzHost" placeholder="192.168.1.42">
+                      <input type="text" class="form-control" id="dzHost">
                       &nbsp;&nbsp;&nbsp;
                       <label for="dzHttpPort">Domoticz HTTP Port</label>
                       <input type="text" class="form-control" id="dzHttpPort">
                     </div>
                   </div>
-
+                  <div class="row" >
+                    <div class="col-xs-12 form-inline">
+                      <label for="dzUser">User</label>
+                      <input type="text" class="form-control" id="dzUser">
+                      &nbsp;&nbsp;&nbsp;
+                      <label for="dzPass">Pass</label>
+                      <input type="text" class="form-control" id="dzPass">
+                    </div>
+                  </div>
                   <br/>
                   <div id="dz_fields">
                     <!-- https://www.domoticz.com/wiki/Domoticz_API/JSON_URL's#Air_quality -->
@@ -328,6 +336,15 @@
                       <div class="col-xs-10">
                         <input type="text" class="form-control" id="dzDust10" placeholder="IDX">
                         (Air Quality Device (nvalue=PM10))
+                      </div>
+                    </div>
+                    <div class="row form-inline">
+                      <div class="col-xs-2  text-right">
+                        <label for="dzLux">Light LUX</label>
+                      </div>
+                      <div class="col-xs-10">
+                        <input type="text" class="form-control" id="dzLux" placeholder="IDX">
+
                       </div>
                     </div>
                     <br>
@@ -414,6 +431,7 @@
                 <div class="row">
                   <div class="labelAndInput2" prefix="jee" label="PM25" placeholder="IDX"></div>
                   <div class="labelAndInput2" prefix="jee" label="PM10" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="jee" label="LUX"  placeholder="IDX"></div>
                 </div>
                 <br>
                 <div class="row">
@@ -458,6 +476,7 @@
                 <div class="row">
                   <div class="labelAndInput2" prefix="pima" label="PM25" placeholder="variable"></div>
                   <div class="labelAndInput2" prefix="pima" label="PM10" placeholder="variable"></div>
+                  <div class="labelAndInput2" prefix="pima" label="LUX"  placeholder="variable"></div>
                 </div>
                 <br>
                 <div class="row">
@@ -522,6 +541,7 @@
                 <div class="row">
                   <div class="labelAndInput2" prefix="dw" label="PM25" placeholder="Parameter Name"></div>
                   <div class="labelAndInput2" prefix="dw" label="PM10" placeholder="Parameter Name"></div>
+                  <div class="labelAndInput2" prefix="dw" label="LUX" placeholder="Parameter Name"></div>
                 </div>
                 <br>
                 <div class="row">
@@ -557,6 +577,7 @@
                     <div class="row">
                       <div class="labelAndInput2" prefix="dga" label="PM25" placeholder="IDX"></div>
                       <div class="labelAndInput2" prefix="dga" label="PM10" placeholder="IDX"></div>
+                      <div class="labelAndInput2" prefix="dga" label="LUX"  placeholder="IDX"></div>
                     </div>
                     <br>
                     <div class="row">
@@ -591,6 +612,7 @@
                 <div class="row">
                   <div class="labelAndInput2" prefix="hs" label="PM25" placeholder="IDX"></div>
                   <div class="labelAndInput2" prefix="hs" label="PM10" placeholder="IDX"></div>
+                  <div class="labelAndInput2" prefix="hs" label="LUX"  placeholder="IDX"></div>
                 </div>
                 <br>
                 <div class="row">

@@ -39,6 +39,9 @@ var ProcessMQTTandHTTP = (function () {
     var dzHost = $("#dzHost").val();
     if (!dzHost) return [];
     var dzPort = $("#dzHttpPort").val();
+    var dzUser = $("#dzUser").val();
+    var dzPass = $("#dzPass").val();
+    if (dzUser) dzHost = dzUser + ":" + dzPass + "@" + dzHost;
 
     var urls = [];
     ///json.htm?type=command&param=udevice&idx=IDX&nvalue=PPM
