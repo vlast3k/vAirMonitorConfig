@@ -20,6 +20,7 @@ var AutoConnect = (function() {
       } else {
         SerialHelper.sendCRC(true);
       }
+      checkForLatestVersion(buildNum);
     }
     ConfigurationFromESP.load();
     SerialHelper.addCommand({cmd:"nop 0", endOKstr: "ready >", skipCrc:true});

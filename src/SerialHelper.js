@@ -23,6 +23,7 @@ var SerialHelper = (function () {
   }
 
   function addCommand(cmd) {
+    if (!AutoConnect.getConnectionId()) return;
     if (!cmd) return;
     console.log("cmd=" + cmd + ", type=" + (typeof cmd) + ", arr: " + Array.isArray(cmd) );
     if (Array.isArray(cmd)) {
@@ -63,7 +64,7 @@ var SerialHelper = (function () {
   }
 
   function startSending(cmd) {
-    if (chrome && chrome.serial) {
+    if (chrome && chrome.serial && AutoConnect.getConnectionId()) {
       var toSend = cmd.substring(0, 50);
       if (!toSend) return;
       var nextSend = cmd.substring(50)

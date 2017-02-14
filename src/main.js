@@ -15,6 +15,7 @@ $("#serial").on('keyup', function (e) { e.keyCode == 13 && onSerialSend();});
 
 $("#blynkTemplate").appendTo($("#repBlynk"))
 $("#settingsTemplate").appendTo($("#settings"))
+$("#rgbLedTemplate").appendTo($("#repRGBLed"))
 
 // $("#bttnSetAction").click(onBttnSetAction);
 // $("#rfidSetAction").click(onRFIDSetAction);
@@ -28,6 +29,24 @@ String.prototype.format = function() {
     return args[n];
   });
 };
+
+function checkForLatestVersion(currentBuild) {
+  var latestBuild = 20170214;
+  console.log("Device build is: " + currentBuild);
+  if (latestBuild > currentBuild) {
+    $("#firmwareUpdateNotification").removeClass("hidden");
+    $("#firmwareUpdateNotification").html(
+      "<small>Latest build is <a href='http://forum.vair-monitor.com/showthread.php?tid=10' target='_new'>\
+        {0}</a>, yours is {1} ({2} days older). <br/>You can update from 'Settings'</small>"
+        .format(latestBuild, currentBuild, latestBuild - currentBuild));
+  } else {
+    $("#firmwareUpdateNotification").addClass("hidden");
+
+  }
+
+  console.log(latestBuild > currentBuild);
+}
+
 
 var sockets = [];
 var backendIp;
@@ -226,7 +245,7 @@ function onSetWifi() {
 }
 
 function onSetWifiConnected() {
-  SerialHelper.addCommand("fupd");
+  //SerialHelper.addCommand("fupd");
 }
 
 function onResetESP() {
@@ -258,6 +277,7 @@ function init() {
   Blynk.init();
   TreeNavigation.init("#tree");
   SimpleCommands.init();
+  RGBSelect.init();
 
   setTimeout(onSSIDChange, 500);
   if (chrome && chrome.serial) AutoConnect.onbtnAutoConnect();
@@ -311,6 +331,33 @@ function getIPs(onSuccess) {
       });
   }
 }
+
+var RGBSelect = (function () {
+  function init() {
+    $("#rgbLEDSelect").change(onRGBLedSelectChange);
+    ConfigurationFromESP.registerPropertyHandler("rgbled.cfg", onRGBLedCfgProp);
+  }
+
+  function onRGBLedCfgProp(key, value) {
+    var arr = value.split(",");
+    if (arr.length != 3) $("#rgbLEDSelect").val("none");
+    else $("#rgbLEDSelect").val(arr[0]);
+  }
+
+  function onRGBLedSelectChange() {
+    //console.log($("#rgbLEDSelect option").filter(":selected").text());
+    var value = $("#rgbLEDSelect option").filter(":selected").text();
+    var propValue = "";
+    if (value === "CO2") propValue ="CO2,400,3500";
+    else if (value === "PM25") propValue = "PM25,0,250";
+    SerialHelper.addCommand("prop_set \"rgbled.cfg\",\"" + propValue + "\"");
+  }
+
+  return {
+    init: init
+  }
+})();
+
 
 
 init();

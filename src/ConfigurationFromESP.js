@@ -1,4 +1,11 @@
 var ConfigurationFromESP = (function() {
+
+  var propHandler = {};
+  var x123 = "Asdasd";
+  function registerPropertyHandler(propKey, handler) {
+    propHandler[propKey] = handler;
+  }
+
   function loadPropertiesFromESP() {
     SerialHelper.addCommand({cmd:"prop_list", endOKstr:"---vESPrinoCFG_end---", timeout:4000, onOK:onPropListDone});
   }
@@ -45,6 +52,7 @@ var ConfigurationFromESP = (function() {
   }
 
   function processConfigurationFromESP(data) {
+    console.log(x123);
     var lines = data.split("\n");
     var obj = {};
     for (var i = 0; i < lines.length; i++) {
@@ -68,7 +76,8 @@ var ConfigurationFromESP = (function() {
       var keyus = key.replace(/\./g, "_");
       //key = key.replace(/\./g, "\\.");
       var el;
-      if      ((el = $("[id='" + key   + "']")).length) setMyValue(el, obj[key]);
+      if (propHandler[key]) propHandler[key](key, obj[key]);
+      else if ((el = $("[id='" + key   + "']")).length) setMyValue(el, obj[key]);
       else if ((el = $("[id='" + keyus + "']")).length) el.val(obj[key]);
       else     $(espMapping[key]).val(obj[key]);
     });
@@ -116,7 +125,8 @@ var ConfigurationFromESP = (function() {
     processConfigurationFromESP(testCfgData);
   }
   return {
-    load : loadPropertiesFromESP
+    load : loadPropertiesFromESP,
+    registerPropertyHandler: registerPropertyHandler
   }
 
 })();

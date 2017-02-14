@@ -20,14 +20,19 @@
         <div class="row">
           <div class="panel panel-default ">
             <div class="panel-body">
-            <input type="text" class="form-control" id="wss_address" placeholder="ip or blank for auto">
-            <input id="btnAutoConnect" type="button" class="btn btn-info" value="Auto Connect">
-            &nbsp;
-            <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
-              Test
-            </button>
+              <input type="text" class="form-control" id="wss_address" placeholder="ip or blank for auto">
+              <input id="btnAutoConnect" type="button" class="btn btn-info" value="Auto Connect">
+              &nbsp;
+              <button id="testCfgBtn" type="submit" class="btn btn-default testCfgBtn">
+                Test
+              </button>
+              <br/>
+              <div id="firmwareUpdateNotification" class="hidden">
+
+              </div>
+
+            </div>
           </div>
-        </div>
         </div>
         <div class="row">
           <div style="height:300px;overflow-y:scroll">
@@ -61,6 +66,7 @@
             <li role="presentation"> <a href="#vESPrino" aria-controls="vESPrino" role="tab" data-toggle="tab">vESPrino Setup</a></li>
             <li role="presentation"> <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
             <li role="presentation"> <a href="#repAbout" aria-controls="repAbout" role="tab" data-toggle="tab">About</a></li>
+            <li role="presentation"> <a href="#repRGBLed" aria-controls="repRGBLed" role="tab" data-toggle="tab">RGBLed</a></li>
           </ul>
           <!-- Tab panes -->
           <div class="tab-content">
@@ -122,6 +128,22 @@
                   <button id="setWifi" type="submit" class="btn btn-default">
                     Set Wifi
                   </button>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                    <div class="col-xs-12">
+                      <div class="panel panel-default">
+                        <div class="panel-body">
+                      <form class="form-inline">
+                        <div class="checkbox">
+                          <label>
+                            <input id="autocfg.disable" class="directSerialSendBoolProp" type="checkbox"> Disable Hotspot if no WiFi Connection
+                          </label>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -904,6 +926,7 @@
                 </div>
               </div>
             </div>
+            <div role="tabpanel" class="tab-pane" id="repRGBLed"></div>
           </div>
         </div>
       </div>
@@ -1122,6 +1145,42 @@
       </div>
     </div>
   </div>
+  <div id="rgbLedTemplate">
+    <div class="panel panel-default ">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-4">
+            <label>Select Value to Display on LED</label>
+          </div>
+          <div class="col-xs-2">
+            <div class='form-group'>
+              <select class='form-control' id='rgbLEDSelect'>
+                <option value="none"></option>
+                <option value="CO2">CO2</option>
+                <option value="PM25">PM25</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <button class="btn btn-default directSerialSend" type="submit" data-send="rgbled_test">
+            Sweep Color Range
+          </button>
+        </div>
+        <br/>
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="well">
+              CO2 Threshold: 400 - 3000 ppm<p/>
+              PM 2.5 Threshold: 0 - 250 ug/m3<p/><p/>
+              Press [Sweep Color Range] to see color to value mapping
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 

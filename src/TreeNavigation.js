@@ -53,6 +53,9 @@ var TreeNavigation = (function () {
     }, {
       text: "RF 433/315",
       href: "#repRF"
+    }, {
+      text: "RGB LED",
+      href: "#repRGBLed"
     }];
 
     var tree = [{
