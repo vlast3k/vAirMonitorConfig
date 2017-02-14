@@ -63,12 +63,12 @@ var SerialHelper = (function () {
   }
 
   function startSending(cmd) {
-    if (chrome.serial) {
+    if (chrome && chrome.serial) {
       var toSend = cmd.substring(0, 50);
       if (!toSend) return;
       var nextSend = cmd.substring(50)
       chrome.serial.send(AutoConnect.getConnectionId(), str2ab(toSend), function() {chrome.serial.flush(AutoConnect.getConnectionId(),function(){startSending(nextSend)})});
-    } else {
+    } else if (wsclient) {
       cmd = cmd.substring(0, cmd.length-1);
       wsclient.send(cmd);
     }
@@ -102,7 +102,7 @@ var SerialHelper = (function () {
   function onReceiveCallback(info) {
     clearTimeout(serialTimeout);
     serialTimeout = setTimeout(processCurrentData, 50);
-    if (chrome.serial) iterationSerialData += ab2str(info.data);
+    if (chrome && chrome.serial) iterationSerialData += ab2str(info.data);
     else iterationSerialData += info.data;
   }
 

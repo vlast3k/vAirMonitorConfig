@@ -32,7 +32,8 @@ var SimpleCommands = (function() {
   }
 
 
-  function onUpdIntButton() {
+  function onUpdIntButton(e) {
+    //e.preventDefault();
     SerialHelper.addCommand("wsi " + $("#upd_int").val());
   }
 
@@ -84,7 +85,7 @@ var SimpleCommands = (function() {
     $("#brgMin").click(onBrgMinus);
     $("#co2Min").click(onCo2Minus);
     $("#co2Plus").click(onCo2Plus);
-    $("#updIntButton").click(onUpdIntButton);
+
     $("#updThrButton").click(onUpdThrButton);
     $("#resetCal").click(onResetCal);
     $("#resetAll").click(onResetFact);
@@ -97,6 +98,7 @@ var SimpleCommands = (function() {
 
   }
   return {
-    init:init
+    init:init,
+    onUpdIntButton, onUpdIntButton
   }
 })();

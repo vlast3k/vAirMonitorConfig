@@ -1,7 +1,7 @@
 var AutoConnect = (function() {
   var connectionId;
   function onConnect2(connId) {
-    if (chrome.serial) {
+    if (chrome && chrome.serial) {
       connectionId = connId;
       chrome.serial.onReceive.addListener(SerialHelper.onReceiveCallback);
     }
@@ -39,7 +39,7 @@ var AutoConnect = (function() {
     } else {
       log ("\n" + deviceType  + " found on : " + comPort);
       //chrome.serial && chrome.serial.connect(comPort, {bitrate: 9600}, onConnect2);
-      if (chrome.serial) {
+      if (chrome && chrome.serial) {
          onConnect2(connId);
          onGotInfo(collectedLog);
       }
@@ -104,7 +104,7 @@ var AutoConnect = (function() {
     } else {
       document.getElementById('btnAutoConnect').className="btn btn-warning";
       document.getElementById('btnAutoConnect').value ="Searching...";
-      if (chrome.serial) {
+      if (chrome && chrome.serial) {
         DeviceFinder(onVAirFound, "Searching for v.Air ", 9600);
       } else {
         searchServer(onVAirFound);

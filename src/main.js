@@ -1,11 +1,11 @@
-
+$("button").click(function (e) {e.preventDefault()});
 
 $("#btnAutoConnect").click(AutoConnect.onbtnAutoConnect);
 $("#btnSerialSend").click(onSerialSend);
 $("#ssid").change(onSSIDChange);
 $("#ota").click(onBtnOTA);
 $("#resetESP").click(onResetESP);
-
+$("#updIntButton").click(SimpleCommands.onUpdIntButton);
 $("#setWifi").click(onSetWifi);
 $(".directSerialSend").click(onSerialDataButton);
 $(".directSerialSendBoolProp").click(onDirectSerialSendBoolProp);
@@ -62,9 +62,13 @@ function browseNetworks(ips, onFound) {
 }
 
 function searchServer(onFound) {
-  getIPs(function(ips) {
-    browseNetworks(ips, onFound);
-  });
+  if ($("#wss_address").val()) {
+    tryWSS($("#wss_address").val(), onFound);
+  } else {
+    getIPs(function(ips) {
+      browseNetworks(ips, onFound);
+    });
+  }
 }
 var wsclient;
 var checkWSInt;
@@ -161,7 +165,7 @@ function initChromeStorageSync() {
 
   $(inputSelector).each(function() {
     var id = this.id;
-    if (chrome.storage) {
+    if (chrome && chrome.storage) {
       chrome.storage.sync.get(this.id, function(value) {
         $("[id='" + id + "']").val(value[id])
       })
@@ -256,7 +260,7 @@ function init() {
   SimpleCommands.init();
 
   setTimeout(onSSIDChange, 500);
-  if (chrome.serial) AutoConnect.onbtnAutoConnect();
+  if (chrome && chrome.serial) AutoConnect.onbtnAutoConnect();
 
   $('#mainTabs a[href="#setupWifi"]').tab("show");
   ProcessMQTTandHTTP.registerChangedFields();
