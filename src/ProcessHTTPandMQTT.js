@@ -48,8 +48,8 @@ var ProcessMQTTandHTTP = (function () {
     if ($("#dzCO2").val()) urls = urls.concat("#http://{0}:{1}/json.htm?type=command&param=udevice&idx={2}&nvalue=%CO2%".format(dzHost, dzPort, $("#dzCO2").val()));
     if ($("#dzTH").val()) urls = urls.concat("#http://{0}:{1}/json.htm?type=command&param=udevice&idx={2}&nvalue=0&svalue=%TEMP%;%HUM%;0".format(dzHost, dzPort, $("#dzTH").val()));
     if ($("#dzTHB").val()) urls = urls.concat("#http://{0}:{1}/json.htm?type=command&param=udevice&idx={2}&nvalue=0&svalue=%TEMP%;%HUM%;0;%PRES%;0".format(dzHost, dzPort, $("#dzTHB").val()));
-    if ($("#dzDust25").val()) urls = urls.concat("#http://{0}:{1}/json.htm?type=command&param=udevice&idx={2}&nvalue=%CO2%".format(dzHost, dzPort, $("#dzDust25").val()));
-    if ($("#dzDust10").val()) urls = urls.concat("#http://{0}:{1}/json.htm?type=command&param=udevice&idx={2}&nvalue=%CO2%".format(dzHost, dzPort, $("#dzDust10").val()));
+    if ($("#dzDust25").val()) urls = urls.concat("#http://{0}:{1}/json.htm?type=command&param=udevice&idx={2}&nvalue=%PM25%".format(dzHost, dzPort, $("#dzDust25").val()));
+    if ($("#dzDust10").val()) urls = urls.concat("#http://{0}:{1}/json.htm?type=command&param=udevice&idx={2}&nvalue=%PM10%".format(dzHost, dzPort, $("#dzDust10").val()));
     return urls;
   }
 
