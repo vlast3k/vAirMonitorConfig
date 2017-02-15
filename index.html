@@ -1013,16 +1013,16 @@
         <div class="row">
           <div class="col-xs-2">
             <button class="btn btn-default directSerialSend" type="submit"
-                    data-send="!restart" data-endokstr="Heap at start"
+                    data-send="!restart" data-endokstr="Device initialized"
                     data-onok="AutoConnect" data-onokfunc="commandsAfterStart"
-                    data-timeout="5000">
+                    data-timeout="8000">
               Restart
             </button>
           </div>
           <div class="col-xs-3">
             <button class="btn btn-default directSerialSend" type="submit"
                     data-send="!otah"
-                    data-endokstr="At setup end"
+                    data-endokstr="Device initialized"
                     data-onok="AutoConnect" data-onokfunc="commandsAfterStart"
                     data-timeout="5000">
               Firmware Update
@@ -1030,8 +1030,17 @@
           </div>
           <div class="col-xs-3">
             <button class="btn btn-default directSerialSend" type="submit"
-                    data-timeout="5000" data-confirm="true" data-send="!factory"
-                    data-endokstr="At setup end" data-onok="AutoConnect"
+                    data-send='##prop_jset"stored.i2c"##prop_jset"cubic.co2.missing"##prop_jset"ds18b20.port"##prop_jset"has.sensors"##restart##'
+                    data-endokstr="Device initialized"
+                    data-onok="AutoConnect" data-onokfunc="commandsAfterStart"
+                    data-timeout="15000">
+              Rescan Sensors
+            </button>
+          </div>
+          <div class="col-xs-3">
+            <button class="btn btn-default directSerialSend" type="submit"
+                    data-timeout="15000" data-confirm="true" data-send="!factory"
+                    data-endokstr="Device initialized" data-onok="AutoConnect"
                     data-onokfunc="commandsAfterStart" >
               Factory Reset...
             </button>
