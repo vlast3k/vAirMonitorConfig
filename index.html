@@ -847,7 +847,7 @@
                       <div class="form-group">
                         <label for="ldr.override">Brightness Override: </label>
                         <input type="text" class="form-control prop_set" style="width:100px" id="ldr.override">
-                        In case of no BuiltIn Light Sensor use this setting to manage brightness of led 1-30 (default:6)
+                        With BuiltIn Sensor - adjust auto-brightness (-20;+20). W/o - set brightness level (0;30). Default: 0
                       </div>
                     </form>
                   </div>
@@ -1027,7 +1027,7 @@
             <button class="btn btn-default directSerialSend" type="submit"
                     data-send="!restart" data-endokstr="Device initialized"
                     data-onok="AutoConnect" data-onokfunc="commandsAfterStart"
-                    data-timeout="8000">
+                    data-timeout="18000">
               Restart
             </button>
           </div>
@@ -1036,7 +1036,7 @@
                     data-send="!otah"
                     data-endokstr="Device initialized"
                     data-onok="AutoConnect" data-onokfunc="commandsAfterStart"
-                    data-timeout="5000">
+                    data-timeout="15000">
               Firmware Update
             </button>
           </div>

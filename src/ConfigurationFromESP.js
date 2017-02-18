@@ -7,7 +7,7 @@ var ConfigurationFromESP = (function() {
   }
 
   function loadPropertiesFromESP() {
-    SerialHelper.addCommand({cmd:"prop_list", endOKstr:"---vESPrinoCFG_end---", timeout:4000, onOK:onPropListDone});
+    SerialHelper.addCommand({cmd:"prop_list", endOKstr:"---vESPrinoCFG_end---", timeout:14000, onOK:onPropListDone});
   }
 
   function onPropListDone(data) {
