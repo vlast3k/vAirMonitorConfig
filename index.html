@@ -739,127 +739,139 @@
               </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="vESPrino">
-              <div class="row">
-                <div class="col-xs-12">
-                  <form class="form-inline">
-                    <div class="checkbox">
-                      <label>
-                        <input id="ws.autostart" class="directSerialSendBoolProp" type="checkbox"> Autostart WebServer
-                      </label>
-                    </div>
-                    <button class="btn btn-default directSerialSend" type="submit" data-send="start_webserver">
-                      Start Web Server
+              <div class="container-fluid" style="height:400px;overflow-y:scroll;resize: vertical">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <form class="form-inline">
+                      <div class="checkbox">
+                        <label>
+                          <input id="ws.autostart" class="directSerialSendBoolProp" type="checkbox"> Autostart WebServer
+                        </label>
+                      </div>
+                      <button class="btn btn-default directSerialSend" type="submit" data-send="start_webserver">
+                        Start Web Server
+                      </button>
+                      Port is 80
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <form class="form-inline">
+                      <div class="checkbox">
+                        <label>
+                          <input id="wss.autostart" class="directSerialSendBoolProp" type="checkbox"> Autostart WebSocket Server
+                        </label>
+                      </div>
+                      <button class="btn btn-default directSerialSend" type="submit" data-send="wss_start">
+                        Start WebSocket Server
+                      </button>
+                      Port is 8266.
+                    </form>
+                  </div>
+                </div>
+                Note: Both servers stop once device goes to deep sleep. And will start after power cycle again.
+                <div class="row">
+                  <div class="col-xs-12">
+                    <form class="form-inline">
+                      <div class="checkbox">
+                        <label>
+                          <input id="mqtt.listen" class="directSerialSendBoolProp" type="checkbox"> Lisen on MQTT
+                        </label>
+                      </div>
+                      <br/>
+                      <label for="mqtt.subs.topic">MQTT Inbound Topic: </label>
+                      <input type="text" class="form-control prop_set" style="width:100px" id="mqtt.subs.topic">
+                      send commands to {topic}/cmd. Configure MQTT Server as well. Needs restart.
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <label for="hostname">Hostname: </label>
+                        <input type="text" class="form-control prop_set" style="width:100px" id="hostname">
+                        access via http://hostname.local or http://hostname (default is "vthing")
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <label for="temp_adjustment">Temperature Adjustment: </label>
+                        <input type="text" class="form-control prop_set" style="width:100px" id="temp.adjustment">
+                        e.g. -1.5 will decrease actual temperature by 1.5 degrees
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <label for="log.dest.url">Logging HTTP Dest: </label>
+                        <input type="text" class="form-control prop_set" style="width:100px" id="log.dest.url">
+                        Device will send POST requests with the output here. You can use <a href="https://raw.githubusercontent.com/vlast3k/vESPrino/master/tools/httpsrv.js" target="_new"> this Node.js script to capture them</a>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <label for="pwr.iterdur">Internal Cycle Length(sec): </label>
+                        <input type="text" class="form-control prop_set" style="width:100px" id="pwr.iterdur">
+                        How often the device will wakeup (e.g. for keeping Powerbanks alive). Default 30sec. Iteration Duration is a multiple of this
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <label for="pwr.timeoutint">Go to sleep time(sec): </label>
+                        <input type="text" class="form-control prop_set" style="width:100px" id="pwr.timeoutint">
+                        When will the device switch to sleep mode. Default(300 sec). O disables it. CM1102 and CM1106 sensors disable deep sleep. WebServer and WebSocketServer will no longer accept connection when in deep sleep. Config tool disables it as well once connected
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <label for="ldr.override">Brightness Override: </label>
+                        <input type="text" class="form-control prop_set" style="width:100px" id="ldr.override">
+                        In case of no BuiltIn Light Sensor use this setting to manage brightness of led 1-30 (default:6)
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+
+
+                <div class="row">
+                  <div class="col-xs-3">
+                    <button class="btn btn-default directSerialSend" type="submit" data-send="prop_list">
+                      List Properties
                     </button>
-                    Port is 80
-                  </form>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12">
-                  <form class="form-inline">
-                    <div class="checkbox">
-                      <label>
-                        <input id="wss.autostart" class="directSerialSendBoolProp" type="checkbox"> Autostart WebSocket Server
-                      </label>
-                    </div>
-                    <button class="btn btn-default directSerialSend" type="submit" data-send="wss_start">
-                      Start WebSocket Server
+                  </div>
+                  <div class="col-xs-3">
+                    <button class="btn btn-default directSerialSend" type="submit" data-send="scan">
+                      WiFi Scan
                     </button>
-                    Port is 8266.
-                  </form>
+                  </div>
                 </div>
-              </div>
-              Note: Both servers stop once device goes to deep sleep. And will start after power cycle again.
-              <div class="row">
-                <div class="col-xs-12">
-                  <form class="form-inline">
-                    <div class="checkbox">
-                      <label>
-                        <input id="mqtt.listen" class="directSerialSendBoolProp" type="checkbox"> Lisen on MQTT
-                      </label>
-                    </div>
-                    <br/>
-                    <label for="mqtt.subs.topic">MQTT Inbound Topic: </label>
-                    <input type="text" class="form-control prop_set" style="width:100px" id="mqtt.subs.topic">
-                    send commands to {topic}/cmd. Configure MQTT Server as well. Needs restart.
-                  </form>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12">
-                  <form class="form-inline">
-                    <div class="form-group">
-                      <label for="hostname">Hostname: </label>
-                      <input type="text" class="form-control prop_set" style="width:100px" id="hostname">
-                      access via http://hostname.local or http://hostname (default is "vthing")
-                    </div>
-                  </form>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12">
-                  <form class="form-inline">
-                    <div class="form-group">
-                      <label for="temp_adjustment">Temperature Adjustment: </label>
-                      <input type="text" class="form-control prop_set" style="width:100px" id="temp.adjustment">
-                      e.g. -1.5 will decrease actual temperature by 1.5 degrees
-                    </div>
-                  </form>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12">
-                  <form class="form-inline">
-                    <div class="form-group">
-                      <label for="log.dest.url">Logging HTTP Dest: </label>
-                      <input type="text" class="form-control prop_set" style="width:100px" id="log.dest.url">
-                      Device will send POST requests with the output here. You can use <a href="https://raw.githubusercontent.com/vlast3k/vESPrino/master/tools/httpsrv.js" target="_new"> this Node.js script to capture them</a>
-                    </div>
-                  </form>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12">
-                  <form class="form-inline">
-                    <div class="form-group">
-                      <label for="pwr.iterdur">Internal Cycle Length(sec): </label>
-                      <input type="text" class="form-control prop_set" style="width:100px" id="pwr.iterdur">
-                      How often the device will wakeup (e.g. for keeping Powerbanks alive). Default 30sec. Iteration Duration is a multiple of this
-                    </div>
-                  </form>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12">
-                  <form class="form-inline">
-                    <div class="form-group">
-                      <label for="pwr.timeoutint">Go to sleep time(sec): </label>
-                      <input type="text" class="form-control prop_set" style="width:100px" id="pwr.timeoutint">
-                      When will the device switch to sleep mode. Default(300 sec). O disables it. CM1102 and CM1106 sensors disable deep sleep. WebServer and WebSocketServer will no longer accept connection when in deep sleep. Config tool disables it as well once connected
-                    </div>
-                  </form>
-                </div>
-              </div>
 
-
-
-              <div class="row">
-                <div class="col-xs-3">
-                  <button class="btn btn-default directSerialSend" type="submit" data-send="prop_list">
-                    List Properties
-                  </button>
-                </div>
-                <div class="col-xs-3">
-                  <button class="btn btn-default directSerialSend" type="submit" data-send="scan">
-                    WiFi Scan
-                  </button>
+                <div class="row">
+                  <button type="submit" class="btn btn-default saveBtn">	Save	</button>
                 </div>
               </div>
-
-              <div class="row">
-                <button type="submit" class="btn btn-default saveBtn">	Save	</button>
-              </div>
-
             </div>
             <div role="tabpanel" class="tab-pane" id="repRF">
               <div class="row">
@@ -1066,6 +1078,20 @@
               <button id="updPM2005btn" type="submit" class="btn btn-default">
                 Set
               </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row panel panel-default panel-body">
+        <div class="col-xs-12">
+          <form class="form-inline">
+            <div class="form-group">
+              <b>Built In Light Senor</b>
+              <div class="checkbox">
+                <label>
+                  <input id="ldr.enabled" class="directSerialSendBoolProp" type="checkbox"> Enabled
+                </label>
+              </div>
             </div>
           </form>
         </div>
