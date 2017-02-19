@@ -31,7 +31,7 @@ String.prototype.format = function() {
 };
 
 function checkForLatestVersion(currentBuild) {
-  var latestBuild = 20170214;
+  var latestBuild = 20170219;
   console.log("Device build is: " + currentBuild);
   if (latestBuild > currentBuild) {
     $("#firmwareUpdateNotification").removeClass("hidden");
@@ -52,9 +52,11 @@ var sockets = [];
 var backendIp;
 
 function tryWSS(i, onFound, onerror) {
+  console.log("trying: " + i);
   var ws = new WebSocket("ws://" + i +  ":8266");
   sockets.push(ws);
   ws.onopen = function(evt) {
+    console.log("Found WebSocketServer on:" + i);
     log ("Found WebSocketServer on:" + i);
     backendIp = i;
     initWebSocketClient(ws, onFound);
@@ -66,12 +68,34 @@ function tryWSS(i, onFound, onerror) {
   // ws.onerror = function(evt) { console.log("onerror: " + i);};
 }
 
+function scanFrom(base, onFound, idx) {
+  var ttt;
+  console.log("scan from:" + idx);
+  for (var i=idx; i < 255; i++) {
+    console.log("test:" + i);
+    ttt = setTimeout(function() {scanFrom(base, onFound, i)}, 5000);
+    tryWSS(base + i, onFound);
+    clearTimeout(ttt);
+    console.log("end:" + i);
+  }
+
+}
+
 function browseOneNet(ip, onFound) {
   var base = ip.substring(0, ip.lastIndexOf('.') + 1);
   console.log("will search base: " + base);
-  for (var i=1; i < 255; i++) {
-    tryWSS(base + i, onFound);
-  }
+  scanFrom(base, onFound, 1);
+  // for (var i=1; i < 255; i++) {
+  //   console.log("test:" + i);
+  //   tryWSS(base + i, onFound);
+  //   console.log("end:" + i);
+  // }
+  // setTimeout(function() {
+  //   for (var i=150; i < 255; i++) {
+  //     tryWSS(base + i, onFound);
+  //   }}, 25000);
+
+
 }
 
 function browseNetworks(ips, onFound) {
@@ -82,9 +106,13 @@ function browseNetworks(ips, onFound) {
 
 function searchServer(onFound) {
   if ($("#wss_address").val()) {
-    tryWSS($("#wss_address").val(), onFound);
+    var wssAddr = $("#wss_address").val()
+    if (wssAddr.charAt(wssAddr.length - 1) == ".") browseNetworks([wssAddr], onFound);
+    tryWSS(wssAddr, onFound);
   } else {
+    console.log("Getting IPs");
     getIPs(function(ips) {
+      console.log("received ips: " + ips);
       browseNetworks(ips, onFound);
     });
   }
@@ -121,6 +149,8 @@ function initWebSocketClient(ws, onFound) {
     }
   }, 2000);
   deviceType = Constants.VESPRINO_V1;
+  window.localStorage["wssHost"] = backendIp;
+  $("#wss_address").val(backendIp);
   onFound("WebSocket", "", "");
 }
 
@@ -168,6 +198,7 @@ function onDirectSerialSendBoolProp(event) {
 }
 
 function log(msg, skipNL) {
+  console.log(msg);
   msg = msg.replace(/wifi.ssid=.*/, "wifi.ssid=[hidden]").replace(/wifi.p1=.*/, "wifi.p1=[hidden]");
   var buffer = document.querySelector('#buffer');
   buffer.value += msg + (skipNL ? "" : "\n");
@@ -179,7 +210,9 @@ function initChromeStorageSync() {
   $(inputSelector).change(function(event) {
     var obj = {};
     obj[event.target.id] = event.target.value;
-    chrome.storage.sync.set(obj);
+    if (chrome && chrome.storage) {
+      chrome.storage.sync.set(obj);
+    }
   });
 
   $(inputSelector).each(function() {
@@ -284,6 +317,21 @@ function init() {
 
   $('#mainTabs a[href="#setupWifi"]').tab("show");
   ProcessMQTTandHTTP.registerChangedFields();
+  //$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+  //})
+
+
+  if (window.localStorage["wssHost"]) {
+      $("#wss_address").val(window.localStorage["wssHost"]);
+  } else {
+    getIPs(function(ips) {
+      if (ips.length == 1) {
+        var base = ips[0].substring(0, ips[0].lastIndexOf('.') + 1);
+        $("#wss_address").val(base);
+      }
+    });
+  }
 }
 
 function getIPs(onSuccess) {

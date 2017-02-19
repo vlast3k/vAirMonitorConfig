@@ -23,7 +23,7 @@ var SerialHelper = (function () {
   }
 
   function addCommand(cmd) {
-    if (!AutoConnect.getConnectionId()) return;
+    if (!AutoConnect.getConnectionId() && !wsclient) return;
     if (!cmd) return;
     console.log("cmd=" + cmd + ", type=" + (typeof cmd) + ", arr: " + Array.isArray(cmd) );
     if (Array.isArray(cmd)) {
