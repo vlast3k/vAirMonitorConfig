@@ -31,7 +31,7 @@ String.prototype.format = function() {
 };
 
 function checkForLatestVersion(currentBuild) {
-  var latestBuild = 20170219;
+  var latestBuild = 20170221;
   console.log("Device build is: " + currentBuild);
   if (latestBuild > currentBuild) {
     $("#firmwareUpdateNotification").removeClass("hidden");

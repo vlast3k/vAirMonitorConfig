@@ -83,7 +83,8 @@ var ProcessMQTTandHTTP = (function () {
       if (!$(this).val()) return;
       var entry = {};
       entry.method = "PATCH";
-      entry.url = "http://{0}:{1}@{2}:{3}/api/variables/{4}".format(user, pass, host, port, $(this).val());
+      if (user) entry.url = "http://{0}:{1}@{2}:{3}/api/variables/{4}".format(user, pass, host, port, $(this).val());
+      else entry.url = "http://{2}:{3}/api/variables/{4}".format(user, pass, host, port, $(this).val());
       entry.ct = "application/json";
       entry.pay = '{"type": "value", "valueOrExpression": %' + $(this).attr("data-label") + '%}';
 
