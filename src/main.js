@@ -31,7 +31,7 @@ String.prototype.format = function() {
 };
 
 function checkForLatestVersion(currentBuild) {
-  var latestBuild = 20170221;
+  var latestBuild = 20170226;
   console.log("Device build is: " + currentBuild);
   if (latestBuild > currentBuild) {
     $("#firmwareUpdateNotification").removeClass("hidden");
@@ -313,7 +313,11 @@ function init() {
   RGBSelect.init();
 
   setTimeout(onSSIDChange, 500);
-  if (chrome && chrome.serial) AutoConnect.onbtnAutoConnect();
+  if (chrome && chrome.serial) {
+    AutoConnect.onbtnAutoConnect();
+  } else {
+    $("#wss_address").removeClass("hidden");
+  }
 
   $('#mainTabs a[href="#setupWifi"]').tab("show");
   ProcessMQTTandHTTP.registerChangedFields();
