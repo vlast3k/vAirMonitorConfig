@@ -23,15 +23,37 @@ var RFHandler = (function() {
   }
 
   function htmlMakeRFFields() {
-    $(".select_rfid").each(makeRfid);
+    $(".select_rfid").each(ttt);
 
-    function makeRfid() {
-      var sel = $(this).attr("label");
-      $(this).html(function() {
-        return '<div class="form-group"><label>' + sel + '&nbsp;</label><input type="text" id="rf.' + sel + '"/></div>';
-      });
+    function rfPropHandler(key, value) {
+      $("[id='" + key + "']").val(value);
+      //console.log(key  + " " + value);
     }
+
+    function ttt() {
+
+      var sel = "";// $(this).attr("default");
+      var prefix = "<div class='form-group'><label>{0}</label>\
+      <select class='form-control' id='rf.{0}'>\
+      <option></option>".format($(this).attr("label"));
+      var suffix = "</select></div>";
+      for (var i=130; i < 150; i++) {
+        var b = (~i & 0xF0) + (i & 0xF);
+        var num = (i << 8) + b;
+        var hex = num.toString(16);
+        var text = i + " / " + num + " / 0x" + hex;
+        prefix += "<option value='" + i + "'>" + text + "</option>"
+      }
+      prefix += suffix;
+      $(this).html(function() {
+        return prefix;
+      });
+      $(this).find("select").val(sel);
+      ConfigurationFromESP.registerPropertyHandler("rf." + $(this).attr("label"), rfPropHandler);
+    }
+
   }
+
   function init() {
     htmlMakeRFFields();
     $("#rfEnable").change(onRFEnableChange);

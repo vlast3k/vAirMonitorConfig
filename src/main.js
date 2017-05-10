@@ -202,6 +202,7 @@ function log(msg, skipNL) {
   msg = msg.replace(/wifi.ssid=.*/, "wifi.ssid=[hidden]").replace(/wifi.p1=.*/, "wifi.p1=[hidden]");
   var buffer = document.querySelector('#buffer');
   buffer.value += msg + (skipNL ? "" : "\n");
+  if (buffer.value.length > 10000) buffer.value = buffer.value.substring(buffer.value.length - 10000);
   if ($("#cbPauseSerialUpdate").is(':checked') == false) buffer.scrollTop = buffer.scrollHeight;
 }
 
