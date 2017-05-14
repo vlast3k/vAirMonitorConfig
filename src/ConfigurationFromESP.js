@@ -46,7 +46,7 @@ var ConfigurationFromESP = (function() {
 
 
   function cleanAllInputs() {
-    $(":input[type='text'][id!='serial']").val("");
+    $(":input[type='text'][id!='serial'][id!='wss_address']").val("");
     $(":input[type='checkbox'].directSerialSendBoolProp").prop("checked",false);
     $("textarea[id!='buffer']").val("");
   }
@@ -82,8 +82,8 @@ var ConfigurationFromESP = (function() {
       else     $(espMapping[key]).val(obj[key]);
     });
 
-    if (!obj["rf.enabled"] || obj["rf.enabled"].startsWith("false")) $("#rfEnable").prop("checked", false);
-    else $("#rfEnable").prop("checked", true);
+    // if (!obj["rf.enabled"] || obj["rf.enabled"].startsWith("false")) $("#rfEnable").prop("checked", false);
+    // else $("#rfEnable").prop("checked", true);
     RFHandler.onRFEnableChange();
     applyGenericJSONConfig(obj["ubi.cfg"]);
     applyGenericJSONConfig(obj["bee.cfg"]);

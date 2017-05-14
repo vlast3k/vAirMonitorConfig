@@ -4,9 +4,9 @@ var RFHandler = (function() {
       return 'prop_set "' + $(this).attr("id") + '","' + ($(this).val() || -1) + '"'
     });
     cmdList = cmdList.get();
-    var xx = ["a"];
-    xx = xx.concat(cmdList);
-    cmdList = ['prop_set "rf.enabled","' + $("#rfEnable").is(":checked") + '"'].concat(cmdList);
+    //var xx = ["a"];
+    //xx = xx.concat(cmdList);
+    //cmdList = ['prop_set "rf.enabled","' + $("#rfEnable").is(":checked") + '"'].concat(cmdList);
     SerialHelper.startSequence();
     cmdList.forEach(function(el) {
       SerialHelper.addCommand(el);
@@ -15,7 +15,7 @@ var RFHandler = (function() {
   }
 
   function onRFEnableChange() {
-    if ($("#rfEnable").is(':checked')) {
+    if ($("[id='rf.enabled']").is(':checked')) {
       $("#rf_fields :input").removeAttr("disabled");
     } else {
       $('#rf_fields :input').attr("disabled", "true");
@@ -56,7 +56,7 @@ var RFHandler = (function() {
 
   function init() {
     htmlMakeRFFields();
-    $("#rfEnable").change(onRFEnableChange);
+    $("[id='rf.enabled']").change(onRFEnableChange);
     $("#setRF").click(onSetRF);
   }
 

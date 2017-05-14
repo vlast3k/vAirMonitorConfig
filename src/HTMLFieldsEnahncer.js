@@ -8,7 +8,8 @@ var HTMLFieldsEnhancer = (function() {
         return "<div class='form-group'><label>{0}</label>\
         <select class='form-control' id='tsf{0}'>\
         <option></option><option>CO2</option><option>TEMP</option><option>HUM</option><option>PRES</option>\
-        <option>ALT</option><option>PM25</option><option>PM10</option><option>LUX</option><option>ALIGHT</option>\
+        <option>ALT</option><option>PM1</option><option>PM25</option><option>PM10</option><option>LUX</option><option>LDR</option>\
+        <option>RSSI</option><option>RUNTIME</option><option>VOC_PPM</option><option>VOC_R0PRV</option><option>VOC_R0</option>\
         </select></div>".format($(this).attr("label"))
       });
       $(this).find("select").val(sel);
