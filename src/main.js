@@ -30,8 +30,20 @@ String.prototype.format = function() {
   });
 };
 
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+    console.log('Query variable %s not found', variable);
+}
+
 function checkForLatestVersion(currentBuild) {
-  var latestBuild = 20170226;
+  var latestBuild = 20170515;
   console.log("Device build is: " + currentBuild);
   if (latestBuild > currentBuild) {
     $("#firmwareUpdateNotification").removeClass("hidden");
@@ -61,7 +73,10 @@ function tryWSS(i, onFound, onerror) {
     backendIp = i;
     initWebSocketClient(ws, onFound);
   };
-  ws.onerror = onerror;
+  if (onerror) ws.onerror = onerror;
+  // ws.onerror = function() {
+  //   console.log("dsfdsfdsfdsfdsfdsfdsfsfds");
+  // }
 
   // ws.onclose = function(evt) { };
   // ws.onmessage = function(evt) { };
@@ -104,11 +119,16 @@ function browseNetworks(ips, onFound) {
   });
 }
 
+function onFailedWSSConnect() {
+  document.getElementById('btnAutoConnect').className="btn btn-danger";
+  document.getElementById('btnAutoConnect').value ="Not Found";
+  console.log("failed wss connect");
+}
 function searchServer(onFound) {
   if ($("#wss_address").val()) {
     var wssAddr = $("#wss_address").val()
     if (wssAddr.charAt(wssAddr.length - 1) == ".") browseNetworks([wssAddr], onFound);
-    tryWSS(wssAddr, onFound);
+    tryWSS(wssAddr, onFound, onFailedWSSConnect);
   } else {
     console.log("Getting IPs");
     getIPs(function(ips) {
@@ -149,8 +169,10 @@ function initWebSocketClient(ws, onFound) {
     }
   }, 2000);
   deviceType = Constants.VESPRINO_V1;
-  window.localStorage["wssHost"] = backendIp;
-  $("#wss_address").val(backendIp);
+  if (backendIp) {
+    $("#wss_address").val(backendIp);
+  }
+  window.localStorage["wssHost"] = $("#wss_address").val();
   onFound("WebSocket", "", "");
 }
 
@@ -326,14 +348,18 @@ function init() {
     $('[data-toggle="tooltip"]').tooltip();
   //})
 
-
-  if (window.localStorage["wssHost"]) {
-      $("#wss_address").val(window.localStorage["wssHost"]);
+  if (getQueryVariable("host")) {
+    $("#wss_address").val(getQueryVariable("host"));
+    setTimeout(AutoConnect.onbtnAutoConnect, 500);
+  } else if (window.localStorage["wssHost"]) {
+    $("#wss_address").val(window.localStorage["wssHost"]);
+    setTimeout(AutoConnect.onbtnAutoConnect, 500);
   } else {
     getIPs(function(ips) {
       if (ips.length == 1) {
         var base = ips[0].substring(0, ips[0].lastIndexOf('.') + 1);
         $("#wss_address").val(base);
+        setTimeout(AutoConnect.onbtnAutoConnect, 500);
       }
     });
   }
@@ -403,8 +429,11 @@ var RGBSelect = (function () {
     var propValue = "";
     if (value === "CO2") propValue ="CO2,400,3500";
     else if (value === "PM25") propValue = "PM25,0,250";
+    else if (value === "RSSI") propValue = "RSSI,-100,-30,lrygb"
     SerialHelper.addCommand("prop_set \"rgbled.cfg\",\"" + propValue + "\"");
   }
+
+
 
   return {
     init: init

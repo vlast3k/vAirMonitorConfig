@@ -148,6 +148,12 @@
                             <input id="wss.disable" class="directSerialSendBoolProp" type="checkbox"> Disable Wifi Configuration on Start
                           </label>
                         </div>
+                        <br/>
+                        <div class="checkbox">
+                          <label>
+                            <input id="wifi.disable.ipreuse" class="directSerialSendBoolProp" type="checkbox"> Disable IP Resue after sleep
+                          </label>
+                        </div>
                       </form>
                     </div>
                   </div>
@@ -749,7 +755,7 @@
                           <input id="ws.autostart" class="directSerialSendBoolProp" type="checkbox"> Autostart WebServer
                         </label>
                       </div>
-                      <button class="btn btn-default directSerialSend" type="submit" data-send="start_webserver">
+                      <button class="btn btn-default directSerialSend" type="submit" data-send="webserver_start">
                         Start Web Server
                       </button>
                       Port is 80
@@ -864,22 +870,66 @@
                     </form>
                   </div>
                 </div>
-
-
-
                 <div class="row">
-                  <div class="col-xs-3">
+                  <div class="col-xs-12">
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <label for="event.onBttnFunc_0">On Button function 1.Red</label>
+                        <input type="text" class="form-control prop_set" style="width:100px" id="event.onBttnFunc_0">
+                        Command to send on Red LED
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <label for="event.onBttnFunc_1">On Button function 2.Blue</label>
+                        <input type="text" class="form-control prop_set" style="width:100px" id="event.onBttnFunc_1">
+                        Command to send on Red LED
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <label for="event.onBttnFunc_2">On Button function 3.Green</label>
+                        <input type="text" class="form-control prop_set" style="width:100px" id="event.onBttnFunc_2">
+                        Command to send on Red LED
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <label for="event.onBttnFunc_3">On Button function 4.Yellow</label>
+                        <input type="text" class="form-control prop_set" style="width:100px" id="event.onBttnFunc_3">
+                        Command to send on Red LED
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+
+                <br/>
+                <div class="row">
+                  <div class="col-xs-2">
                     <button class="btn btn-default directSerialSend" type="submit" data-send="prop_list">
                       List Properties
                     </button>
                   </div>
-                  <div class="col-xs-3">
+                  <div class="col-xs-2">
                     <button class="btn btn-default directSerialSend" type="submit" data-send="scan">
                       WiFi Scan
                     </button>
                   </div>
                 </div>
-
+                <br/>
                 <div class="row">
                   <button type="submit" class="btn btn-default saveBtn">	Save	</button>
                 </div>
@@ -891,7 +941,7 @@
                   <form class="form-inline">
                     <div class="checkbox">
                       <label>
-                        <input id="rfEnable" type="checkbox"> Enable RF
+                        <input id="rf.enabled" class="directSerialSendBoolProp" type="checkbox"> Enable RF
                       </label>
                     </div>
                   </form>
@@ -1223,6 +1273,7 @@
                 <option value="none"></option>
                 <option value="CO2">CO2</option>
                 <option value="PM25">PM25</option>
+                <option value="RSSI">RSSI</option>
               </select>
             </div>
           </div>
